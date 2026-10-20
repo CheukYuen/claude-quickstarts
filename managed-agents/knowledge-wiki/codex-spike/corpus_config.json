@@ -1,0 +1,112 @@
+{
+  "description": "Small original-source corpus for the Codex knowledge-wiki learning experiment; no existing research conclusions are inputs.",
+  "source_records_path": "/Users/leon/Stock/invest-lab/runs/trigiant-research-20261015/pre-price/official/source-records.json",
+  "source_records_sha256": "340ddcf31a785992ff52b00ea81596ba20edc0803787b80713eafa35a0ecfda6",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "POSSIBLE DISCLOSEABLE TRANSACTION - PROPOSED ACQUISITION OF 100% EQUITY INTERESTS IN QINGHAI ZHONGLI OPTICAL FIBRE TECHNOLOGY CO., LTD.",
+      "date": "2026-09-13",
+      "kind": "company_announcement",
+      "pdf_path": "/Users/leon/Stock/invest-sources/filings/1300.HK/1300.HK-20260913-announcement-qinghai-possible-acquisition.pdf",
+      "pdf_sha256": "539db33307bcbc1b7fe78e9ce101496accd61e1e0cee61100bb1f0f6832406c8",
+      "source_url": "https://api.aconnect.com.hk/Attachment/Web/1c26efbb-d053-499a-960b-c33e396445e8",
+      "pdf_page_count": 4,
+      "pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "text_dir": "/Users/leon/Stock/invest-lab/runs/trigiant-research-20261015/pre-price/official/text/1300.HK-20260913-announcement-qinghai-possible-acquisition",
+      "text_method": "existing_verbatim_page_text",
+      "text_sha256": {
+        "1": "c6b7870923991f811594fd42b5c53f370760ffe95bb31491c423ac9337524178",
+        "2": "8de633a78d66a1db02f6e1a24809bce0fe7dea317c93625a0139279e53f3e725",
+        "3": "0697442a281dea374ecdb1399eeeea4d318aa5189ca6f375ac8d981c4ad19151",
+        "4": "ceda999f4f0d8cf062ecc4772f4dded39cd5c48daa2e0af1f2e84b8dd9244093"
+      },
+      "original_source_id": "1300.HK-20260913-announcement-qinghai-possible-acquisition"
+    },
+    {
+      "id": "S02",
+      "title": "DISCLOSEABLE TRANSACTION - ACQUISITION OF 100% EQUITY INTERESTS IN QINGHAI ZHONGLI OPTICAL FIBRE TECHNOLOGY CO., LTD.",
+      "date": "2026-09-20",
+      "kind": "company_announcement",
+      "pdf_path": "/Users/leon/Stock/invest-sources/filings/1300.HK/1300.HK-20260920-announcement-qinghai-acquisition.pdf",
+      "pdf_sha256": "ccff01d2dad1fcc0b221d99f99ef4764c3ea40a2c1f6da6dc213d1a686280f68",
+      "source_url": "https://api.aconnect.com.hk/Attachment/Web/c1e1be62-2305-47fa-8000-4f371158386f",
+      "pdf_page_count": 8,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "text_dir": "/Users/leon/Stock/invest-lab/runs/trigiant-research-20261015/pre-price/official/text/1300.HK-20260920-announcement-qinghai-acquisition",
+      "text_method": "existing_verbatim_page_text",
+      "text_sha256": {
+        "1": "82ba8c3fe086830b7c159400a0a065e818e009d4ea60920abc507b289750161b",
+        "2": "42b8d241e9ec9f876b68ffb200dc2312724d4eb1b1e2b23a11123b67c45716b2",
+        "3": "cbf10f27adfe08948f8f8e82e9d694d5c526355217757ff6d16d3ccd824da931",
+        "4": "183287764eb750e14b0b22a7d17cac72e3d807ffe6fb9a0d6acc405c3bae8e17",
+        "5": "ae58fb7d873e53bfb2a07e156c150e8d971ae9163572cb5616b868aa14e61ea0",
+        "6": "25703f3a6f2d3ee4f335af2e8dbc6aac7e210da10e742cd4f637715671a5bbca",
+        "7": "0f8ad852050396ce778b0ada48371c282320534c5a9be240deffed12744a6858",
+        "8": "61dfcde2b878c93d2ee92f10a3522cb969ddcd4f5e5d893c865d424bf8aeabb7"
+      },
+      "original_source_id": "1300.HK-20260920-announcement-qinghai-acquisition"
+    },
+    {
+      "id": "S03",
+      "title": "PROGRESS UPDATE AND SUPPLEMENTAL ANNOUNCEMENT IN RELATION TO DISCLOSEABLE TRANSACTION - ACQUISITION OF 100% EQUITY INTERESTS IN QINGHAI ZHONGLI OPTICAL FIBRE TECHNOLOGY CO., LTD.",
+      "date": "2026-09-25",
+      "kind": "company_announcement",
+      "pdf_path": "/Users/leon/Stock/invest-sources/filings/1300.HK/1300.HK-20260925-announcement-qinghai-supplemental.pdf",
+      "pdf_sha256": "9ec5ecfe186e3fd3938c28a64fc544d9fd2528b8601a03f27c0ed4f3f04ba02a",
+      "source_url": "https://api.aconnect.com.hk/Attachment/Web/5af4e893-647a-4094-909f-50ded8884069",
+      "pdf_page_count": 4,
+      "pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "text_dir": "/Users/leon/Stock/invest-lab/runs/trigiant-research-20261015/pre-price/official/text/1300.HK-20260925-announcement-qinghai-supplemental",
+      "text_method": "existing_verbatim_page_text",
+      "text_sha256": {
+        "1": "15d05c3104791f5713c7d315cdac6628af441b63fcdc8e8e2f069a3e63e44033",
+        "2": "062b894b210d0c243ad8a8a8abc6f700065bfb00c5a1a0ebb8d34a1f1d30d8f5",
+        "3": "7976c4992f01123663f885cc1cfe0e3d62619422da04d116e4aa8d82dbbd0a10",
+        "4": "63d0716f8dedfe02a3e2c8555185e05851a0eb737c4c1e8c8b6c0df1b3509146"
+      },
+      "original_source_id": "1300.HK-20260925-announcement-qinghai-supplemental"
+    },
+    {
+      "id": "S04",
+      "title": "Trigiant Group - Preform acquisition powers AI growth",
+      "date": "2026-10-05",
+      "kind": "broker_research",
+      "pdf_path": "/Users/leon/Stock/invest-lab/runs/trigiant-research-20261015/held/sources/reports/fxbaogao/report-dbs-20261005-trigiant-equity-explorer/Trigiant Group_5-Oct-2026_HK_EE.pdf",
+      "pdf_sha256": "b137dc85deaca4336abf53ea63eaf098c84d2451e1ab77ec2ae212977ea80269",
+      "pdf_page_count": 13,
+      "pages": [
+        2,
+        5
+      ],
+      "text_method": "pdftotext_layout_selected_pages",
+      "selection_note": "Only PDF pages 2 and 5 are input. Full title and report date were verified on PDF page 1; other pages are outside the corpus. The report is later than the September announcements and is not a 2026-09-30 PIT dataset.",
+      "original_source_id": "report-dbs-20261005-trigiant-equity-explorer"
+    }
+  ],
+  "suggested_questions": [
+    "按这批资料，青海中利收购从拟议、签约到完成经历了哪些时间节点？分别给出来源和页码。",
+    "股权收购对价、承接债务或其他义务、会计负债分别是什么口径？能否直接相加？资料哪里有说明，哪里仍不明确？",
+    "语料中的光棒产能、销量、售价和利润数字分别来自公司披露还是DBS估计？哪些是已有经营数字，哪些带有预测假设？",
+    "仅靠这批资料，能否确认交割后的实际产量、实际毛利和最终现金支出？若不能，缺哪些证据？"
+  ]
+}
