@@ -126,7 +126,23 @@ runs/<run>/
 └── COMPARISON.md           仅 --baseline-for 补跑时生成
 ```
 
-最有用的阅读顺序是：`logs/extract-S02/prompt.md` → 其 `events.jsonl` → `wiki-v0/sources/S02.md` → `wiki-v1/resolutions.md` → `wiki-v2/_index.md` → `logs/q02/events.jsonl` → `logs/q02/final.md`。这条路径可以直接看到模型如何把一份原文变成后面可检索的笔记。
+### 第一次实验的阅读入口
+
+以下链接都指向第一次运行的 `runs/20261020T084430389111Z/`，不是 README 旁边的同名路径。先看输入与产物，需要追查模型行为时再看事件日志。
+
+| 阶段 | 先看什么 | 这一步实际做什么 | 按需查看日志 |
+|---|---|---|---|
+| S02逐源提取 | [输入原文](runs/20261020T084430389111Z/extract/S02/input/source.md) → [提取任务](runs/20261020T084430389111Z/logs/extract-S02/prompt.md) → [来源笔记](runs/20261020T084430389111Z/wiki-v0/sources/S02.md)及[问题清单](runs/20261020T084430389111Z/wiki-v0/open_questions/S02.md) | 只读S02，生成这份来源的笔记和疑问；Python随后原样复制到v0 | [提取事件](runs/20261020T084430389111Z/logs/extract-S02/events.jsonl) |
+| 跨源补缺 | [S04留下的问题](runs/20261020T084430389111Z/wiki-v0/open_questions/S04.md) → [补缺任务](runs/20261020T084430389111Z/logs/resolve/prompt.md) → [问题处置](runs/20261020T084430389111Z/wiki-v1/resolutions.md) | 模型读取S01–S04笔记；本次选中的五个原问题来自S04，并非只由S02生成 | [补缺事件](runs/20261020T084430389111Z/logs/resolve/events.jsonl) |
+| 按主题整编 | [整编任务](runs/20261020T084430389111Z/logs/consolidate/prompt.md) → [查询目录](runs/20261020T084430389111Z/wiki-v2/_index.md)、[指标表](runs/20261020T084430389111Z/wiki-v2/metrics.md)、[收购事件页](runs/20261020T084430389111Z/wiki-v2/entities/acquisition.md)及[缺口清单](runs/20261020T084430389111Z/wiki-v2/escalations.md) | 综合全部来源笔记及补缺结果，新增查询视图；保留来源笔记 | [整编事件](runs/20261020T084430389111Z/logs/consolidate/events.jsonl) |
+| q02只读问答 | [本次问题与任务](runs/20261020T084430389111Z/logs/q02/prompt.md) → [最终答案](runs/20261020T084430389111Z/logs/q02/final.md) | 从索引找到主题页，再回读S02/S03/S04笔记；索引本身不包含全部答案 | [查询事件](runs/20261020T084430389111Z/logs/q02/events.jsonl)及[运行记录](runs/20261020T084430389111Z/logs/q02/record.json) |
+
+这张表是阶段导览，不是一条“S02单份原文依次生成所有后续文件”的依赖链。`v0`、`v1`、`v2`是汇集多份来源后的阶段快照。
+
+日志里命令的相对路径，以该阶段的工作目录为基准，可在`record.json`的`workspace`字段查看。例如：
+
+- 提取S02时的`input/source.md`对应[extract/S02/input/source.md](runs/20261020T084430389111Z/extract/S02/input/source.md)。
+- 查询q02时的`wiki/metrics.md`对应[query/q02/wiki/metrics.md](runs/20261020T084430389111Z/query/q02/wiki/metrics.md)。它是v2的只读副本，不在`logs/q02/`里。
 
 例如第一次q02实际执行的三条命令：
 
