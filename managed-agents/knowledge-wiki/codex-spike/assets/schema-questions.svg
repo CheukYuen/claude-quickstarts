@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="1510" viewBox="0 0 1320 1510" role="img" aria-labelledby="title desc">
+  <title id="title">Codex knowledge-wiki：Schema、建库问题与用户查询</title>
+  <desc id="desc">Schema规定文件与记录格式。程序准备原文并启动模型，四个提取会话生成来源笔记和待解问题，程序汇集为wiki-v0。新模型交叉阅读后生成resolutions.md，得到wiki-v1；整编模型增加主题页和目录，得到wiki-v2。用户问题在只读新会话中检索wiki-v2，产生答案和日志，不自动改写知识库。问答回流再建库为可选下一轮，本次未执行。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#383a40"/></marker>
+    <marker id="soft-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#8b8c91"/></marker>
+    <style>
+      text {font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#272b33}
+      .heading{font-size:34px;font-weight:600}.sub{font-size:21px;fill:#64666c}
+      .band{fill:none;stroke:#b8b4ad;stroke-width:1.5;stroke-dasharray:6 7}
+      .band-title{font-size:22px;font-weight:600;fill:#62605b}
+      .model{fill:#fff0e4;stroke:#d66b32;stroke-width:1.8}
+      .artifact{fill:#eef5ff;stroke:#4a78b4;stroke-width:1.8}
+      .input{fill:#fff;stroke:#8d8c87;stroke-width:1.5}
+      .schema{fill:#edf5ed;stroke:#6b8b6c;stroke-width:1.5}
+      .wiki{fill:#e7f0ff;stroke:#326bb6;stroke-width:2.3}
+      .answer{fill:#eef5ed;stroke:#729371;stroke-width:1.6}
+      .ghost{fill:#f4f2ee;stroke:#b5b2ac;stroke-width:1.5;stroke-dasharray:6 6}
+      .title{font-size:23px;font-weight:600}.body{font-size:20px}.small{font-size:18px;fill:#62666d}
+      .mono{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:19px}
+      .edge{fill:none;stroke:#383a40;stroke-width:2;marker-end:url(#arrow)}
+      .soft-edge{fill:none;stroke:#8b8c91;stroke-width:1.6;stroke-dasharray:6 5;marker-end:url(#soft-arrow)}
+    </style>
+  </defs>
+  <rect width="1320" height="1510" rx="16" fill="#faf7f2"/>
+  <text class="heading" x="60" y="59">Codex knowledge-wiki：文件怎样变成可查询知识</text>
+  <text class="sub" x="60" y="96">展开本次实验的 Wiki 主路径 · 橙色：模型任务 · 蓝色：知识文件 · 箭头旁标明程序动作</text>
+
+  <rect class="schema" x="60" y="130" width="1200" height="110" rx="14"/>
+  <text class="title" x="84" y="163">Schema：放在哪里、记录什么、怎样引用与关联</text>
+  <text class="body" x="84" y="196">本实验写在 prompts/*.md：文件路径、[Sxx pN]、事实／预测／推断、补缺状态、主题页结构</text>
+  <text class="small" x="84" y="224">这些是给模型的格式约定；Python 另外检查必要文件、引用页码和哈希。原版 KG_SCHEMA 更详细。</text>
+  <path class="soft-edge" d="M470 240V277"/>
+  <text class="small" x="490" y="266">各阶段使用各自的 prompt 约定</text>
+
+  <rect class="band" x="40" y="285" width="1240" height="590" rx="16"/>
+  <text class="band-title" x="65" y="319">流程 1 · 建库：逐篇提取 → 跨篇补缺 → 按主题整编</text>
+
+  <rect class="input" x="70" y="350" width="210" height="145" rx="14"/>
+  <text class="title" x="175" y="384" text-anchor="middle">原始资料</text>
+  <text class="body" x="175" y="419" text-anchor="middle">3 份公告＋研报选页</text>
+  <text class="small" x="175" y="451" text-anchor="middle">Python 读原文、加页码</text>
+  <text class="mono" x="175" y="478" text-anchor="middle">corpus/S01–S04.md</text>
+
+  <rect class="model" x="340" y="350" width="260" height="145" rx="14"/>
+  <text class="title" x="470" y="384" text-anchor="middle">① 分别提取｜模型</text>
+  <text class="body" x="470" y="419" text-anchor="middle">每份来源一个新会话</text>
+  <text class="body" x="470" y="450" text-anchor="middle">写事实笔记＋待解问题</text>
+  <text class="small" x="470" y="478" text-anchor="middle">此时各自只读一份资料</text>
+
+  <rect class="artifact" x="660" y="350" width="260" height="145" rx="14"/>
+  <text class="title" x="790" y="384" text-anchor="middle">wiki-v0｜逐篇笔记</text>
+  <text class="mono" x="790" y="419" text-anchor="middle">sources/Sxx.md</text>
+  <text class="mono" x="790" y="448" text-anchor="middle">open_questions/Sxx.md</text>
+  <text class="small" x="790" y="478" text-anchor="middle">例：两个名称是同一公司吗？</text>
+
+  <rect class="model" x="980" y="350" width="260" height="145" rx="14"/>
+  <text class="title" x="1110" y="384" text-anchor="middle">② 交叉补缺｜模型</text>
+  <text class="body" x="1110" y="419" text-anchor="middle">读取所有笔记和问题</text>
+  <text class="body" x="1110" y="450" text-anchor="middle">最多处理 5 个高价值问题</text>
+  <text class="small" x="1110" y="478" text-anchor="middle">已解／冲突／当前语料缺失</text>
+
+  <path class="edge" d="M280 422H332"/>
+  <path class="edge" d="M600 422H652"/>
+  <text class="small" x="629" y="407" text-anchor="middle">汇集</text>
+  <path class="edge" d="M920 422H972"/>
+  <text class="small" x="950" y="334" text-anchor="middle">复制为 v1，再处理</text>
+  <path class="edge" d="M1110 495V630"/>
+  <text class="small" x="1130" y="558">写问题处置</text>
+
+  <rect class="artifact" x="980" y="640" width="260" height="140" rx="14"/>
+  <text class="title" x="1110" y="675" text-anchor="middle">wiki-v1｜补缺结果</text>
+  <text class="mono" x="1110" y="710" text-anchor="middle">＋ resolutions.md</text>
+  <text class="body" x="1110" y="742" text-anchor="middle">例：S03 明确披露更名</text>
+  <text class="small" x="1110" y="767" text-anchor="middle">原笔记保留，未解问题保留</text>
+
+  <rect class="model" x="640" y="640" width="280" height="140" rx="14"/>
+  <text class="title" x="780" y="675" text-anchor="middle">③ 按主题整编｜模型</text>
+  <text class="body" x="780" y="710" text-anchor="middle">归并已确认别名、归位事实</text>
+  <text class="body" x="780" y="742" text-anchor="middle">建立目录、时间线、指标表</text>
+  <text class="small" x="780" y="767" text-anchor="middle">模拟整编目的，不调用 Dreaming</text>
+
+  <rect class="wiki" x="70" y="620" width="500" height="180" rx="16"/>
+  <text class="title" x="320" y="656" text-anchor="middle">wiki-v2｜可查询的知识库</text>
+  <text class="mono" x="320" y="691" text-anchor="middle">_index.md · entities/*.md</text>
+  <text class="mono" x="320" y="722" text-anchor="middle">metrics.md · timeline.md · escalations.md</text>
+  <text class="body" x="320" y="757" text-anchor="middle">例：青海俊知实体页记录新旧名称及出处</text>
+  <text class="small" x="320" y="785" text-anchor="middle">保留逐源笔记、原问题和 resolutions.md</text>
+
+  <path class="edge" d="M980 710H928"/>
+  <text class="small" x="950" y="620" text-anchor="middle">复制为 v2，再整理</text>
+  <path class="edge" d="M640 710H578"/>
+  <text class="small" x="608" y="695" text-anchor="middle">新页</text>
+  <text class="small" x="420" y="824">建库 question：模型读资料时留下的疑问。</text>
+  <text class="small" x="420" y="851">这些问题进入补缺任务，影响下一版知识文件。</text>
+
+  <path class="edge" d="M320 800V902H680V1002"/>
+  <rect x="337" y="883" width="340" height="31" fill="#faf7f2"/>
+  <text class="small" x="350" y="905">Python 复制 v2，创建独立只读查询目录</text>
+
+  <rect class="band" x="40" y="935" width="1240" height="360" rx="16"/>
+  <text class="band-title" x="65" y="970">流程 2 · 每次用户查询：选择读取路径 → 回答；不会自动回写 wiki</text>
+
+  <rect class="input" x="70" y="1030" width="350" height="130" rx="14"/>
+  <text class="title" x="245" y="1068" text-anchor="middle">用户 question</text>
+  <text class="body" x="245" y="1105" text-anchor="middle">“对价、债务、负债能相加吗？”</text>
+  <text class="small" x="245" y="1137" text-anchor="middle">影响这次读哪些文件、回答什么</text>
+
+  <rect class="model" x="500" y="1010" width="360" height="170" rx="14"/>
+  <text class="title" x="680" y="1048" text-anchor="middle">④ 查询｜新的模型会话</text>
+  <text class="body" x="680" y="1084" text-anchor="middle">读 _index → 找主题页 → 查来源笔记</text>
+  <text class="body" x="680" y="1117" text-anchor="middle">根据问题组织答案，附页码引用</text>
+  <text class="small" x="680" y="1152" text-anchor="middle">Codex CLI 执行读取工具；read-only</text>
+
+  <rect class="answer" x="940" y="1030" width="300" height="130" rx="14"/>
+  <text class="title" x="1090" y="1068" text-anchor="middle">答案＋缺口说明</text>
+  <text class="mono" x="1090" y="1105" text-anchor="middle">final.md</text>
+  <text class="small" x="1090" y="1137" text-anchor="middle">引用 [Sxx pN]；缺项明确说明</text>
+  <path class="edge" d="M420 1095H492"/>
+  <path class="edge" d="M860 1095H932"/>
+
+  <path class="edge" d="M680 1180V1202"/>
+  <rect class="input" x="70" y="1210" width="1170" height="60" rx="10"/>
+  <text class="body" x="94" y="1248">Python 保存运行记录：</text>
+  <text class="mono" x="327" y="1248">prompt.md · events.jsonl · final.md · record.json</text>
+
+  <path class="soft-edge" d="M680 1270V1332"/>
+  <rect class="ghost" x="70" y="1340" width="1170" height="100" rx="14"/>
+  <text class="title" x="94" y="1376">可选下一轮｜本次实验未执行</text>
+  <text class="body" x="94" y="1412">汇总问答记录 → 提出补缺或整理任务 → 再次建库 → 发布新版本。用户提问本身不会触发这条链。</text>
+  <text class="small" x="60" y="1480">v0／v1／v2 是实验保存的阶段快照。Schema 约束格式；模型负责语义；程序负责流程、复制、权限和记录。</text>
+</svg>

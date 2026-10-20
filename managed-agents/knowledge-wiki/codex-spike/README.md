@@ -2,7 +2,29 @@
 
 这个实验让你沿实际源码观察：**Python 控制任务和产物，模型理解内容并选择工具操作，Codex CLI 执行 Agent 的工具循环。**
 
+![实验主流程：Schema约定、逐篇提取、跨篇补缺、按主题整编和只读问答](assets/schema-questions.svg)
+
 不需要 Claude Managed Agents、Dreaming API、向量库或模型训练。本地文件保存知识；Codex 使用你已有的 CLI 登录和配置的模型。本实验依然调用远程模型，并非离线推理。
+
+## 图解：Schema 与两类 question
+
+[打开 Schema 与 question 架构图 SVG](assets/schema-questions.svg) · [PNG 预览](assets/schema-questions.png)。图中展开建库和 Wiki 查询主线，不含原文对照旁路；灰色问答回流是本实验没有执行的可选下一轮。
+
+Schema 是“文件放哪里、记录保留哪些信息、引用和链接怎样写”的约定。原版在 notebook 的 `KG_SCHEMA` 字符串中要求实体 YAML、按源 metrics/relations、双链和出处；本实验简化为各阶段 prompt 中的 Markdown 文件约定，没有要求实体 YAML，也没有独立 JSON Schema 文件。
+
+```text
+逐源提取约定：sources/Sxx.md + open_questions/Sxx.md
+事实引用约定：重要事实附 [Sxx pN]，保留日期、单位、口径、事实/预测/推断属性
+补缺约定：resolutions.md，标 RESOLVED / CONFLICT / MISSING_IN_CORPUS
+整编约定：_index.md + entities/*.md + metrics.md + timeline.md + escalations.md
+```
+
+| 问题类型 | 从哪里来 | 影响什么 | 写出什么 |
+|---|---|---|---|
+| 建库 `open_questions` | 模型读单份资料时发现疑问 | resolver交叉查证、整编时形成主题事实或缺口 | `resolutions.md`，后续主题页或缺口清单 |
+| 用户查询 `question` | `run.py` 的 `QUESTIONS` 或使用者 | 本次检索路径、需要的解释和答案 | `logs/qxx/final.md` 和prompt/事件/用量记录 |
+
+四个测试问题虽然预先登记，当前代码只在查询阶段把它们传给模型；它们没有传入提取、补缺和整编任务。固定Wiki上换一个问题，不会改写Wiki，也不会自动向`open_questions/`追加缺口或触发取数。若希望研究问题指导建库，需要显式把问题传入上游prompt；若希望问答经验回流，需要另行启动整理/补缺并发布新版本。
 
 ## 运行
 
