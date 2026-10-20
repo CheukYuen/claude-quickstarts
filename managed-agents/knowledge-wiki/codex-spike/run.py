@@ -79,6 +79,33 @@ def inspect_events(path: Path) -> dict:
     return result
 
 
+def out_of_scope_commands(record: dict, root: str) -> list:
+    """Commands in a query trace that name a path outside the workspace's root dir.
+
+    A trace audit, not isolation: read-only sandboxes still allow reads anywhere.
+    """
+    flagged = []
+    for item in record["tools"]:
+        if item.get("type") != "command_execution":
+            flagged.append(item.get("type"))
+            continue
+        command = item.get("command", "")
+        match = re.search(r"-lc (['\"])(.*)\1$", command, re.S)
+        inner = match.group(2) if match else command
+        if (re.search(r"(^|[\s='\"])(/|~)", inner) or ".." in inner
+                or not re.search(r"(^|[\s'\"])" + root + r"(/|\s|$)", inner)):
+            flagged.append(inner)
+    return flagged
+
+
+def usage_of(record: dict) -> dict:
+    usage = record.get("usage") or {}
+    total_in = usage.get("input_tokens", 0)
+    cached = usage.get("cached_input_tokens", 0)
+    return {"input": total_in, "cached": cached, "uncached": total_in - cached,
+            "output": usage.get("output_tokens", 0)}
+
+
 class Pipeline:
     def __init__(self, run_dir: Path, args):
         self.run_dir = run_dir
@@ -225,6 +252,7 @@ class Pipeline:
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.args.workers) as pool:
             list(pool.map(query, QUESTIONS))
+        self.baseline(sources)
         for name, hashes in frozen.items():
             if tree_hashes(self.run_dir / name) != hashes:
                 raise RuntimeError(f"Frozen snapshot changed: {name}")
@@ -233,6 +261,78 @@ class Pipeline:
                 "checks": {"source_notes_preserved": True, "snapshots_unchanged": True,
                            "query_workspaces_unchanged": True, "citation_source_pages_exist": True},
                 "acceptance": "Program checks only; semantic correctness requires source readback."}
+
+    def baseline(self, sources: list):
+        """Ask the same questions against the raw corpus: same CLI flags, same answer rules.
+
+        Only the knowledge source differs - raw/ holds the prepared page text the
+        extractors read, plus the same _sources.json inventory the wiki carries.
+        """
+        inventory = [{key: s[key] for key in ("id", "title", "date", "kind")} | {"pages": s["pages"]}
+                     for s in sources]
+
+        def query(item):
+            key, question = item
+            workspace = self.run_dir / "baseline" / key
+            raw = workspace / "raw"
+            raw.mkdir(parents=True)
+            for source in sources:
+                shutil.copyfile(source["normalized_path"], raw / f"{source['id']}.md")
+            write_json(raw / "_sources.json", inventory)
+            return self.call(f"raw-{key}", workspace, prompt("baseline", QUESTION=question),
+                             read_only=True)
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.args.workers) as pool:
+            list(pool.map(query, QUESTIONS))
+
+    def comparison(self) -> list:
+        """Markdown lines comparing wiki and raw-corpus queries, per question and in total."""
+        by_stage = {r["stage"]: r for r in self.records}
+        lines = ["## Wiki vs raw-corpus baseline", "",
+                 "Same questions, CLI flags and answer rules; only the knowledge source differs.",
+                 "Tokens are CLI-reported: input includes cached input; uncached = input - cached.", "",
+                 "| Question | Source | Input | Cached | Uncached | Output | Tools | Seconds | Out-of-scope cmds |",
+                 "|---|---|---:|---:|---:|---:|---:|---:|---:|"]
+        totals = {"wiki": dict.fromkeys(("input", "cached", "uncached", "output", "tools"), 0),
+                  "raw": dict.fromkeys(("input", "cached", "uncached", "output", "tools"), 0)}
+        for key, _ in QUESTIONS:
+            for label, stage, root in (("wiki", key, "wiki"), ("raw", f"raw-{key}", "raw")):
+                record = by_stage.get(stage)
+                if not record:
+                    lines.append(f"| {key} | {label} | not run | | | | | | |")
+                    continue
+                usage = usage_of(record)
+                usage["tools"] = len(record["tools"])
+                for field, value in usage.items():
+                    totals[label][field] += value
+                lines.append(f"| {key} | {label} | {usage['input']:,} | {usage['cached']:,} | "
+                             f"{usage['uncached']:,} | {usage['output']:,} | {usage['tools']} | "
+                             f"{record['seconds']} | {len(out_of_scope_commands(record, root))} |")
+        for label in ("wiki", "raw"):
+            t = totals[label]
+            lines.append(f"| **total** | {label} | {t['input']:,} | {t['cached']:,} | {t['uncached']:,} | "
+                         f"{t['output']:,} | {t['tools']} | | |")
+        build = [usage_of(r) for r in self.records
+                 if r["stage"].startswith("extract-") or r["stage"] in ("resolve", "consolidate")]
+        build_in = sum(u["input"] for u in build)
+        build_out = sum(u["output"] for u in build)
+        # Only questions answered both ways enter the payback estimate.
+        paired = [key for key, _ in QUESTIONS if key in by_stage and f"raw-{key}" in by_stage]
+        saved = (sum(usage_of(by_stage[f"raw-{k}"])["input"] - usage_of(by_stage[k])["input"]
+                     for k in paired) / len(paired)) if paired else None
+        if saved is None:
+            payback = "No question was answered both ways; no payback estimate."
+        elif saved > 0:
+            payback = (f"Per question the wiki saved ~{saved:,.0f} input tokens; build input pays back after "
+                       f"~{build_in / saved:,.0f} questions (token count, not price).")
+        else:
+            payback = (f"Per question the wiki used ~{-saved:,.0f} more input tokens than the raw corpus: "
+                       "at this corpus size the build does not pay back.")
+        lines += ["", f"Wiki build (extract + resolve + consolidate): {build_in:,} input / {build_out:,} output tokens.",
+                  payback,
+                  "", "n=1 per cell. Compare the answers too: fewer tokens with a worse answer is not a win.",
+                  "Out-of-scope cmds counts trace commands naming paths outside wiki/ or raw/; inspect any non-zero.", ""]
+        return lines
 
     @staticmethod
     def validate_citations(wiki: Path, source_pages: dict):
@@ -258,15 +358,42 @@ class Pipeline:
             tokens = " / ".join(str(usage.get(k, "unknown")) for k in
                                 ("input_tokens", "cached_input_tokens", "output_tokens"))
             lines.append(f"| {item['stage']} | {item['status']} | {item['seconds']} | {tokens} | {len(item['tools'])} |")
-        lines += ["", "Token fields are CLI-reported; cached tokens may be included in input tokens. No price estimate.",
-                  "", "## Answers (model generated; inspect citations)", ""]
-        for key, question in QUESTIONS:
-            answer = self.run_dir / "logs" / key / "final.md"
-            lines += [f"### {key}: {question}", "", answer.read_text(encoding="utf-8") if answer.exists() else "Not executed.", ""]
+        lines += ["", "Token fields are CLI-reported; cached tokens may be included in input tokens. No price estimate.", ""]
+        lines += self.comparison()
+        lines += self.answers()
         lines += ["## Limits", "", "A successful CLI turn and valid source IDs/pages do not prove correct research.",
                   "Read-only constrains writes; source-only reading also depends on instructions and trace review.",
                   "Only the explicitly selected source pages are in scope. This is not formal research acceptance."]
         (self.run_dir / "REPORT.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    def answers(self) -> list:
+        lines = ["## Answers (model generated; inspect citations)", ""]
+        for key, question in QUESTIONS:
+            lines += [f"### {key}: {question}", ""]
+            for label, stage in (("From the wiki", key), ("From the raw corpus (baseline)", f"raw-{key}")):
+                answer = self.run_dir / "logs" / stage / "final.md"
+                lines += [f"#### {label}", "",
+                          answer.read_text(encoding="utf-8") if answer.exists() else "Not executed.", ""]
+        return lines
+
+    def baseline_for_existing_run(self):
+        """Add the baseline to a finished run; writes only new paths plus COMPARISON.md."""
+        if (self.run_dir / "baseline").exists():
+            raise FileExistsError(f"Baseline already present: {self.run_dir / 'baseline'}")
+        result = json.loads((self.run_dir / "result.json").read_text(encoding="utf-8"))
+        if result.get("status") != "runtime_complete":
+            raise RuntimeError(f"Run is not complete: {result.get('status')}")
+        self.records = json.loads((self.run_dir / "stages.json").read_text(encoding="utf-8"))
+        sources = json.loads((self.run_dir / "corpus-manifest.json").read_text(encoding="utf-8"))
+        for source in sources:
+            if sha256(Path(source["normalized_path"])) != source["normalized_sha256"]:
+                raise RuntimeError(f"Corpus changed since the run: {source['normalized_path']}")
+        self.baseline(sources)
+        lines = ["# Wiki vs raw-corpus baseline", "",
+                 f"Baseline added to an existing run on {datetime.now(timezone.utc):%Y-%m-%dT%H:%MZ}; "
+                 "wiki stages were not re-run.", ""]
+        lines += self.comparison() + self.answers()
+        (self.run_dir / "COMPARISON.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def main():
@@ -277,11 +404,23 @@ def main():
     parser.add_argument("--effort", choices=("low", "medium", "high", "xhigh", "ultra"), default="medium")
     parser.add_argument("--codex", default="codex")
     parser.add_argument("--prepare-only", action="store_true")
+    parser.add_argument("--baseline-for", type=Path, metavar="RUN_DIR",
+                        help="add only the raw-corpus baseline queries to a finished run")
     args = parser.parse_args()
     if args.minutes <= 0 or args.stage_timeout <= 0 or args.workers < 1:
         parser.error("minutes/stage-timeout/workers must be positive")
     if not args.prepare_only and not shutil.which(args.codex):
         parser.error("Codex CLI not found; run codex login first")
+    if args.baseline_for:
+        run_dir = args.baseline_for.expanduser().resolve()
+        pipeline = Pipeline(run_dir, args)
+        try:
+            pipeline.baseline_for_existing_run()
+        except Exception as error:
+            print(f"BASELINE INCOMPLETE: {error}", file=sys.stderr)
+            return 1
+        print(f"RESULT={run_dir / 'COMPARISON.md'}", flush=True)
+        return 0
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     run_dir = HERE / "runs" / stamp
     run_dir.mkdir(parents=True)

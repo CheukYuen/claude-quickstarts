@@ -20,6 +20,14 @@ python3.12 run.py --minutes 30 --workers 2
 python3.12 run.py --prepare-only
 ```
 
+完整运行会在 wiki 查询后，用同样的四个问题做原文对照（`raw-q01`…`raw-q04`）。给已完成的旧 run 补对照、不重建 wiki：
+
+```bash
+python3.12 run.py --baseline-for runs/20261020T084430389111Z
+```
+
+它只新增 `baseline/`、`logs/raw-*` 和 `COMPARISON.md`，并在 `stages.json` 中追加记录；不改 `REPORT.md` 和 wiki 快照。
+
 每次运行创建新的 `runs/<UTC时间>/`，不覆盖旧实验。默认继承 CLI 的模型，仅对本次调用把 reasoning effort 设为 `medium`，可用 `--effort` 修改。默认单任务超时 300 秒，整体预算 30 分钟；超时留下已执行产物并标记 incomplete。没有自动重跑模型任务，避免把重复执行混进第一次结果。
 
 `runs/` 被 Git 忽略。原始 PDF 不复制进仓库；来源项目和原件库只读。
@@ -30,7 +38,20 @@ python3.12 run.py --prepare-only
 
 最直观的例子是：研报提取者在 `extract/S04/notes/open_questions/S04.md` 留下“Qinghai Zhongli 与 Qinghai Trigiant 是否同一主体”的问题；resolver 从 S03 笔记找到明确更名披露，写入 `wiki-v1/resolutions.md`；整编后归入 `wiki-v2/entities/qinghai-trigiant.md`。Python 没有为这两个名字写匹配规则，语义关联由模型完成。
 
-原文抽样与一处保留的非核心措辞歧义见 [READBACK.md](READBACK.md)。本次没有原文查询对照，不据此声称更省token或更准确。
+原文抽样与一处保留的非核心措辞歧义见 [READBACK.md](READBACK.md)。
+
+## 原文对照（baseline）
+
+对照组用同样的 CLI 参数、同样的回答规则，只把知识来源从 `wiki/` 换成 `raw/`（抽取者读的那份逐页原文和同一份 `_sources.json`）。第一次 run 补跑后的结果见 [COMPARISON.md](runs/20261020T084430389111Z/COMPARISON.md)：
+
+| 四题合计 | 输入 token | 其中未缓存 | 输出 | 工具调用 |
+|---|---:|---:|---:|---:|
+| wiki | 294,787 | 59,523 | 2,564 | 19 |
+| 原文 | 310,279 | 58,375 | 2,908 | 26 |
+
+在这个规模上几乎打平：wiki 每题少约 3,900 输入 token（约 5%），未缓存部分基本相同；而建 wiki 花了约 58.7 万输入 token，按 token 数约 150 题才回本。答案质量也接近：关键金额、日期、口径和"语料无法回答"的边界一致。原因是语料只有约 4.9 万字符，wiki-v2（约 5.6 万字符）比原文还大，每次会话的固定开销又占输入的大头。原示例的省钱结论需要更大的语料才看得出来；这里只演示机制。每格 n=1。
+
+原文组的检索方式和 wiki 组不同：先 `rg` 搜关键词，再 `sed -n` 读行区间；wiki 组从 `_index.md` 开始，按路径 `cat` 整个文件。8 个查询 trace 都只读各自的 `wiki/` 或 `raw/`（`out_of_scope_commands()` 审计为 0）。
 
 ## 从哪里读源码
 
@@ -43,6 +64,7 @@ python3.12 run.py --prepare-only
 | 5 | `prompts/resolve.md` | 复制 v0 为 v1，启动一个新 CLI 会话 | 交叉读笔记，回答最多五个问题或记录缺口 |
 | 6 | `prompts/consolidate.md` | 复制 v1 为 v2，启动新会话，保留旧版本 | 去重、归位、建索引、时间线、指标表和实体页 |
 | 7 | `prompts/query.md` | 四个问题分别创建新会话和只读工作目录 | 从索引找相关文件，检索、阅读、引用、回答 |
+| 8 | `run.py::Pipeline.baseline()` + `prompts/baseline.md` | 同样四题，只读工作目录只放原文 `raw/`；汇总两组用量 | 在原文里搜索、阅读、引用、回答 |
 
 顶层 `inspect_events()` 是事件观察器。它解析 CLI 已发出的事件；实际工具循环在 Codex CLI runtime 内，不在本项目的 Python 代码中。
 
@@ -68,6 +90,7 @@ runs/<run>/
 │   ├── escalations.md
 │   └── sources/            不可变的逐源笔记仍保留
 ├── query/q01/wiki/         仅包含已整理 wiki 的查询工作副本
+├── baseline/q01/raw/       仅包含逐页原文的对照查询工作副本
 ├── logs/<stage>/
 │   ├── prompt.md           程序交给模型的任务
 │   ├── events.jsonl        Codex CLI 原始事件，包括工具调用及结果
@@ -77,7 +100,8 @@ runs/<run>/
 ├── stages.json
 ├── snapshots.json
 ├── result.json
-└── REPORT.md               各阶段运行结果及四个模型答案
+├── REPORT.md               各阶段运行结果、wiki/原文对照表及两组答案
+└── COMPARISON.md           仅 --baseline-for 补跑时生成
 ```
 
 最有用的阅读顺序是：`logs/extract-S02/prompt.md` → 其 `events.jsonl` → `wiki-v0/sources/S02.md` → `wiki-v1/resolutions.md` → `wiki-v2/_index.md` → `logs/q02/events.jsonl` → `logs/q02/final.md`。这条路径可以直接看到模型如何把一份原文变成后面可检索的笔记。
