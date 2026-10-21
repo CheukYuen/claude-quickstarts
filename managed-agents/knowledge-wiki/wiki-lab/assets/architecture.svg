@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 910" font-family="Charter, Georgia, 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', serif">
+<style>:root{--acc:#2a78d6;--bg:#fcfcfb;--card:#ffffff;--ink:#0b0b0b;--line:#dedcd5;--muted:#73726c;--s1:#2a78d6;--s3:#eda100;--sec:#52514e;}
+.d2-canvas{fill:color-mix(in srgb,var(--s3) 6%,var(--bg));}.d2-box{fill:var(--card);stroke:var(--ink);stroke-width:1.3;}.d2-hero{fill:#eb6834;stroke:var(--ink);stroke-width:1.6;stroke-dasharray:6 4;}.d2-bubble{fill:color-mix(in srgb,var(--s1) 14%,var(--card));stroke:color-mix(in srgb,var(--s1) 45%,var(--line));stroke-width:1.2;}.d2-web{fill:color-mix(in srgb,var(--s3) 14%,var(--card));stroke:var(--line);stroke-width:1.2;}
+.d2-t{font:700 17px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--ink);}.d2-hero-t{font:700 19px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#fff;}.d2-m{font:italic 11px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}.d2-hero-m{font:italic 11px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#ffe3d6;}.d2-b{font:12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--sec);}.d2-hero-b{font:12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#fff;}.d2-lbl{font:italic 11.5px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}.d2-prog{font:11px ui-monospace,Menlo,'PingFang SC','Hiragino Sans GB',monospace;fill:var(--muted);}.d2-cap{font:italic 12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}
+.d2-fl{stroke:var(--ink);stroke-width:1.6;fill:none;}.d2-fl2{stroke:var(--muted);stroke-width:1.4;opacity:.75;fill:none;}.d2-db{fill:var(--card);stroke:var(--ink);stroke-width:1.3;}.d2-db-kg{fill:color-mix(in srgb,var(--s1) 10%,var(--card));stroke:var(--acc);stroke-width:2;}.d2-band{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:3 5;opacity:.6;}.d2-bandlbl{font:700 12px ui-monospace,Menlo,'PingFang SC','Hiragino Sans GB',monospace;letter-spacing:.08em;fill:var(--muted);}.d2-step{fill:var(--ink);}.d2-stepn{font:700 12px ui-monospace,Menlo,monospace;fill:var(--bg);}
+svg{background:#faf7f2}</style>
+
+<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="var(--ink)"/></marker>
+<marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="var(--muted)"/></marker>
+</defs>
+<rect class="d2-canvas" x="0" y="0" width="960" height="910" rx="12"/>
+
+<!-- FLOW 1: build -->
+<rect class="d2-band" x="16" y="16" width="928" height="352" rx="10"/>
+<text class="d2-bandlbl" x="32" y="40">FLOW 1 &#183; 构建 &#8212; 抽取 &#8594; 补缺 &#8594; 整编，每步一个新 codex exec 会话</text>
+
+<path class="d2-db" d="M 40,96 v 96 a 70,12 0 0 0 140,0 v -96"/><ellipse class="d2-db" cx="110" cy="96" rx="70" ry="12"/>
+<text class="d2-t" x="110" y="126" text-anchor="middle" style="font-size:14px">原文语料</text>
+<text class="d2-b" x="110" y="146" text-anchor="middle">invest-sources 只读</text>
+<text class="d2-b" x="110" y="163" text-anchor="middle">37 份 &#183; 1,643 页</text>
+<text class="d2-m" x="110" y="180" text-anchor="middle">约 487 万字符</text>
+
+<rect class="d2-box" x="240" y="66" width="210" height="140" rx="14"/>
+<circle class="d2-step" cx="240" cy="66" r="11"/><text class="d2-stepn" x="240" y="70" text-anchor="middle">1</text>
+<text class="d2-t" x="345" y="94" text-anchor="middle">抽取 &#215; 约 55 块</text>
+<text class="d2-m" x="345" y="112" text-anchor="middle">每块约 10 万字符，一块一个会话</text>
+<text class="d2-b" x="345" y="136" text-anchor="middle">笔记 sources/</text>
+<text class="d2-b" x="345" y="153" text-anchor="middle">提到的主体 mentions/</text>
+<text class="d2-b" x="345" y="170" text-anchor="middle">开放问题，每题带 ID</text>
+<text class="d2-m" x="345" y="192" text-anchor="middle">prompts/extract.md</text>
+
+<rect class="d2-box" x="480" y="66" width="200" height="140" rx="14"/>
+<circle class="d2-step" cx="480" cy="66" r="11"/><text class="d2-stepn" x="480" y="70" text-anchor="middle">2</text>
+<text class="d2-t" x="580" y="94" text-anchor="middle">补缺 &#215; 约 10 批</text>
+<text class="d2-m" x="580" y="112" text-anchor="middle">每批约 40 题，处理全部问题</text>
+<text class="d2-b" x="580" y="136" text-anchor="middle">每题恰好一条处置</text>
+<text class="d2-b" x="580" y="153" text-anchor="middle">RESOLVED / MISSING / &#8230;</text>
+<text class="d2-b" x="580" y="170" text-anchor="middle">缺一题，这一版不算完成</text>
+<text class="d2-m" x="580" y="192" text-anchor="middle">prompts/resolve.md</text>
+
+<rect class="d2-hero" x="710" y="66" width="220" height="140" rx="14"/>
+<circle cx="710" cy="66" r="11" fill="#fff" stroke="var(--ink)" stroke-width="1"/><text x="710" y="70" text-anchor="middle" style="font:700 12px ui-monospace,Menlo,monospace;fill:#eb6834">3</text>
+<text class="d2-hero-t" x="820" y="96" text-anchor="middle">整编 &#183; 两个会话</text>
+<text class="d2-hero-m" x="820" y="114" text-anchor="middle">实体会话 + 视图会话</text>
+<text class="d2-hero-b" x="820" y="138" text-anchor="middle">实体页：别名、关系、有效期</text>
+<text class="d2-hero-b" x="820" y="155" text-anchor="middle">时间线 &#183; 指标 &#183; 风险 &#183; 索引</text>
+<text class="d2-hero-b" x="820" y="172" text-anchor="middle">时间线空白 &#8594; 新问题</text>
+<text class="d2-hero-m" x="820" y="194" text-anchor="middle">prompts/consolidate-*.md</text>
+
+<path class="d2-db" d="M 275,258 v 70 a 70,10 0 0 0 140,0 v -70"/><ellipse class="d2-db" cx="345" cy="258" rx="70" ry="10"/>
+<text class="d2-t" x="345" y="286" text-anchor="middle" style="font-size:14px">wiki-v0</text>
+<text class="d2-b" x="345" y="306" text-anchor="middle">笔记 + 问题 + 名字索引</text>
+<text class="d2-m" x="345" y="322" text-anchor="middle">彼此还没连起来</text>
+
+<path class="d2-db" d="M 510,258 v 70 a 70,10 0 0 0 140,0 v -70"/><ellipse class="d2-db" cx="580" cy="258" rx="70" ry="10"/>
+<text class="d2-t" x="580" y="286" text-anchor="middle" style="font-size:14px">wiki-v1</text>
+<text class="d2-b" x="580" y="306" text-anchor="middle">v0 + dispositions/</text>
+<text class="d2-m" x="580" y="322" text-anchor="middle">每题都有处置</text>
+
+<path class="d2-db-kg" d="M 750,258 v 70 a 70,10 0 0 0 140,0 v -70"/><ellipse class="d2-db-kg" cx="820" cy="258" rx="70" ry="10"/>
+<text class="d2-t" x="820" y="286" text-anchor="middle" style="font-size:14px">wiki-v2</text>
+<text class="d2-b" x="820" y="306" text-anchor="middle">v1 + 实体页、时间线</text>
+<text class="d2-m" x="820" y="322" text-anchor="middle">A 批完成</text>
+
+<line class="d2-fl2" x1="180" y1="136" x2="232" y2="136" marker-end="url(#ah2)"/>
+<text class="d2-prog" x="210" y="126" text-anchor="middle">程序切块</text>
+
+<line class="d2-fl2" x1="345" y1="206" x2="345" y2="244" marker-end="url(#ah2)"/>
+<text class="d2-prog" x="353" y="230">程序合并</text>
+<line class="d2-fl" x1="580" y1="206" x2="580" y2="244" marker-end="url(#ah)"/>
+<text class="d2-lbl" x="588" y="230">写处置</text>
+<line class="d2-fl" x1="820" y1="206" x2="820" y2="244" marker-end="url(#ah)"/>
+<text class="d2-lbl" x="828" y="230">写实体页和视图</text>
+
+<line class="d2-fl2" x1="415" y1="296" x2="502" y2="296" marker-end="url(#ah2)"/>
+<text class="d2-prog" x="458" y="286" text-anchor="middle">程序复制</text>
+<line class="d2-fl2" x1="650" y1="296" x2="742" y2="296" marker-end="url(#ah2)"/>
+<text class="d2-prog" x="696" y="286" text-anchor="middle">程序复制</text>
+
+<text class="d2-prog" x="480" y="356" text-anchor="middle">程序每步校验：来源笔记不变 &#183; 每题恰好一条处置 &#183; 别名不重复 &#183; 链接可达 &#183; 页码存在</text>
+
+<!-- FLOW 2: increment -->
+<rect class="d2-band" x="16" y="384" width="928" height="128" rx="10"/>
+<text class="d2-bandlbl" x="32" y="408">FLOW 2 &#183; 增量 &#8212; 只抽新文件，并重查旧问题</text>
+
+<rect class="d2-web" x="40" y="430" width="200" height="64" rx="14"/>
+<text class="d2-t" x="140" y="456" text-anchor="middle" style="font-size:14px">新增文件（B 批）</text>
+<text class="d2-b" x="140" y="476" text-anchor="middle">002309.SZ 中利集团公告</text>
+
+<rect class="d2-box" x="300" y="424" width="380" height="76" rx="14"/>
+<circle class="d2-step" cx="300" cy="424" r="11"/><text class="d2-stepn" x="300" y="428" text-anchor="middle">4</text>
+<text class="d2-t" x="490" y="450" text-anchor="middle">增量构建</text>
+<text class="d2-b" x="490" y="472" text-anchor="middle">抽取新块 &#183; 旧的 MISSING 问题重回补缺 &#183; 再整编</text>
+<text class="d2-m" x="490" y="490" text-anchor="middle">旧处置保留，新处置用 supersedes 指向旧处置</text>
+
+<path class="d2-db-kg" d="M 750,428 v 60 a 70,10 0 0 0 140,0 v -60"/><ellipse class="d2-db-kg" cx="820" cy="428" rx="70" ry="10"/>
+<text class="d2-t" x="820" y="454" text-anchor="middle" style="font-size:14px">wiki-v3</text>
+<text class="d2-b" x="820" y="472" text-anchor="middle">v2 + 新文件的结论</text>
+<text class="d2-m" x="820" y="487" text-anchor="middle">B 批完成</text>
+
+<line class="d2-fl" x1="240" y1="462" x2="292" y2="462" marker-end="url(#ah)"/>
+<line class="d2-fl" x1="680" y1="462" x2="742" y2="462" marker-end="url(#ah)"/>
+<text class="d2-lbl" x="711" y="452" text-anchor="middle">写入</text>
+<line class="d2-fl2" x1="870" y1="338" x2="870" y2="414" marker-end="url(#ah2)"/>
+<text class="d2-prog" x="878" y="380">程序复制</text>
+
+<!-- FLOW 3: query + baseline -->
+<rect class="d2-band" x="16" y="528" width="928" height="176" rx="10"/>
+<text class="d2-bandlbl" x="32" y="552">FLOW 3 &#183; 查询与原文对照 &#8212; 每题一个新会话，只读</text>
+
+<path class="d2-bubble" d="M50,580 h210 a10,10 0 0 1 10,10 v60 a10,10 0 0 1 -10,10 h-150 l-14,16 -2,-16 h-44 a10,10 0 0 1 -10,-10 v-60 a10,10 0 0 1 10,-10 z"/>
+<text class="d2-m" x="155" y="602" text-anchor="middle">questions/eval.json 评估题</text>
+<text class="d2-b" x="155" y="624" text-anchor="middle">构建 prompt 里不得出现</text>
+<text class="d2-b" x="155" y="642" text-anchor="middle">ask.py 也可随时提问</text>
+
+<rect class="d2-box" x="330" y="572" width="250" height="56" rx="14"/>
+<circle class="d2-step" cx="330" cy="572" r="11"/><text class="d2-stepn" x="330" y="576" text-anchor="middle">5</text>
+<text class="d2-t" x="455" y="597" text-anchor="middle">查询 &#183; 读 wiki</text>
+<text class="d2-m" x="455" y="616" text-anchor="middle">先读 _index.md，再按需读页面</text>
+
+<rect class="d2-box" x="330" y="640" width="250" height="52" rx="14"/>
+<text class="d2-t" x="455" y="663" text-anchor="middle">原文对照 &#183; 搜 corpus/</text>
+<text class="d2-m" x="455" y="681" text-anchor="middle">同一题，只换知识来源</text>
+
+<rect class="d2-web" x="650" y="572" width="280" height="120" rx="14"/>
+<text class="d2-t" x="790" y="600" text-anchor="middle" style="font-size:14px">答案 + STATUS 行</text>
+<text class="d2-b" x="790" y="622" text-anchor="middle">读过的文件、顺序、token 用量</text>
+<text class="d2-b" x="790" y="640" text-anchor="middle">wiki 与原文两组并列</text>
+<text class="d2-b" x="790" y="658" text-anchor="middle">打分：命中 / 遗漏 / 错误 / 拒答</text>
+<text class="d2-m" x="790" y="678" text-anchor="middle">queries/&lt;qid&gt;/，wiki 前后哈希一致</text>
+
+<line class="d2-fl" x1="270" y1="600" x2="322" y2="600" marker-end="url(#ah)"/>
+<path class="d2-fl" d="M270 646H300V666H322" marker-end="url(#ah)"/>
+<line class="d2-fl" x1="580" y1="600" x2="642" y2="600" marker-end="url(#ah)"/>
+<line class="d2-fl" x1="580" y1="666" x2="642" y2="666" marker-end="url(#ah)"/>
+<line class="d2-fl" x1="790" y1="498" x2="562" y2="564" marker-end="url(#ah)"/>
+<text class="d2-lbl" x="694" y="520" text-anchor="end">最新版 wiki 的副本</text>
+
+<!-- FLOW 4: usage consolidation -->
+<rect class="d2-band" x="16" y="720" width="928" height="140" rx="10"/>
+<text class="d2-bandlbl" x="32" y="744">FLOW 4 &#183; 用量整编 &#8212; 按实际提问重新组织</text>
+
+<rect class="d2-hero" x="330" y="764" width="350" height="80" rx="14"/>
+<circle cx="330" cy="764" r="11" fill="#fff" stroke="var(--ink)" stroke-width="1"/><text x="330" y="768" text-anchor="middle" style="font:700 12px ui-monospace,Menlo,monospace;fill:#eb6834">6</text>
+<text class="d2-hero-t" x="505" y="792" text-anchor="middle">用量整编</text>
+<text class="d2-hero-b" x="505" y="814" text-anchor="middle">读查询记录摘要，重排索引和交叉引用</text>
+<text class="d2-hero-b" x="505" y="832" text-anchor="middle">答不出的问题 &#8594; 开放问题，下一轮补缺</text>
+
+<path class="d2-db-kg" d="M 90,778 v 54 a 70,10 0 0 0 140,0 v -54"/><ellipse class="d2-db-kg" cx="160" cy="778" rx="70" ry="10"/>
+<text class="d2-t" x="160" y="804" text-anchor="middle" style="font-size:14px">wiki-v4</text>
+<text class="d2-b" x="160" y="822" text-anchor="middle">v3 + 按用量重组</text>
+<text class="d2-m" x="160" y="838" text-anchor="middle">整编后再问一遍</text>
+
+<path class="d2-fl" d="M790 692V804H688" marker-end="url(#ah)"/>
+<text class="d2-lbl" x="798" y="760">查询记录</text>
+<line class="d2-fl" x1="330" y1="804" x2="238" y2="804" marker-end="url(#ah)"/>
+<text class="d2-lbl" x="284" y="794" text-anchor="middle">写入</text>
+
+<text class="d2-cap" x="480" y="882" text-anchor="middle">实线框 = 模型会话（每个都是全新的 codex exec 进程）&#183; 灰色等宽字 = 程序动作 &#183; 蓝色圆柱 = wiki 版本，只增不改</text>
+<text class="d2-cap" x="480" y="900" text-anchor="middle">评估题分 train / test：train 在用量整编前问，test 只在之后问；构建 prompt 里不得出现任何评估题</text>
+</svg>
