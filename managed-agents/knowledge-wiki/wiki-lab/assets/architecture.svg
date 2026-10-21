@@ -73,7 +73,7 @@ svg{background:#faf7f2}</style>
 <rect class="d2-bubble" x="40" y="300" width="890" height="58" rx="12"/>
 <text class="d2-b" x="60" y="323">wiki-v1 的内容：entities/ · companies/trigiant/ · companies/yofc/ · industries/optical-fiber/ · 各对象 gaps · _index.md</text>
 <text class="d2-m" x="60" y="344">market/ 单独存放行情、目标价、评级和估值倍数，其他页面不引用；每条事实带原文页码和披露日</text>
-<text class="d2-prog" x="32" y="384">程序检查（不通过不提交）：已有笔记不改 · 只改本阶段路径 · 别名不重复 · 链接可达 · 页码存在 · 缺口有状态 · 市场词只在 market/</text>
+<text class="d2-prog" x="32" y="384">程序检查（不通过不进主线）：已有笔记不改 · 只改本阶段路径 · 别名不重复 · 链接可达 · 页码存在 · 缺口有状态 · 市场词只在 market/</text>
 
 <!-- FLOW 2: one increment with three held-back documents. -->
 <rect class="d2-band" x="16" y="416" width="928" height="150" rx="10"/>
