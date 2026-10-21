@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1004" font-family="Charter, Georgia, 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', serif" role="img" aria-labelledby="title description">
 <title id="title">Wiki Lab v2：以记录为底座的投研底账</title>
-<desc id="description">披露原文和研报按章节切块，每块一次模型调用抽成 JSON 记录；Choice 存档返回由代码按字段对照表转换。所有记录都过代码核验：摘录在所引页文字中、数值在摘录中、字段合法、Choice 值逐个回原文对数、必抽项覆盖、记录间一致；不通过的进人工队列或补抽。通过的记录组成 L1 记录层。代码在记录上组装研究底账 L2（主体登记表、时间线、指标序列、计算层、问题清单和缺口、截点视图），生成给人看的阅读页面，并把缺口按处理方式分流。研究 agent 经查询接口读取 L2、产出研究结果，结束后把判断回写 L2。库外公开可得的缺口生成 requests.json，由独立的取数阶段调用 Choice，保存原样返回和哈希、只追加登记，取回的文件进入资料库；建库只读冻结文件。新资料走同一条线增量，只重算受影响的视图。用问答评测比较直接读原文、P1 wiki 和新记录层三种底座，决定去留。</desc>
+<desc id="description">披露原文和研报按章节切块，每块一次模型调用抽成 JSON 记录；Choice 存档返回由代码按字段对照表转换。所有记录都过代码核验：摘录在所引页文字中、数值在摘录中、字段合法、Choice 值在对应报告里查得到、必抽项覆盖、记录间一致；不通过的进人工队列或补抽。通过的记录组成 L1 记录层。代码在记录上组装研究底账 L2（主体登记表、时间线、指标序列、计算层、问题清单和缺口、截点视图），生成给人看的阅读页面，并把缺口按处理方式分流。研究 agent 经查询接口读取 L2、产出研究结果，结束后把判断回写 L2。库外公开可得的缺口生成 requests.json，由独立的取数阶段调用 Choice，保存原样返回和哈希、只追加登记，取回的文件进入资料库；建库只读冻结文件。新资料走同一条线增量，只重算受影响的视图。用问答评测比较直接读原文、P1 wiki 和新记录层三种底座，决定去留。</desc>
 <style>:root{--acc:#2a78d6;--bg:#fcfcfb;--card:#ffffff;--ink:#0b0b0b;--line:#dedcd5;--muted:#73726c;--s1:#2a78d6;--s3:#eda100;--sec:#52514e;}
 .d2-canvas{fill:color-mix(in srgb,var(--s3) 6%,var(--bg));}.d2-box{fill:var(--card);stroke:var(--ink);stroke-width:1.3;}.d2-hero{fill:#eb6834;stroke:var(--ink);stroke-width:1.6;stroke-dasharray:6 4;}.d2-bubble{fill:color-mix(in srgb,var(--s1) 14%,var(--card));stroke:color-mix(in srgb,var(--s1) 45%,var(--line));stroke-width:1.2;}.d2-web{fill:color-mix(in srgb,var(--s3) 14%,var(--card));stroke:var(--line);stroke-width:1.2;}
 .d2-t{font:700 17px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--ink);}.d2-hero-t{font:700 19px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#fff;}.d2-m{font:italic 11px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}.d2-hero-m{font:italic 11px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#ffe3d6;}.d2-b{font:12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--sec);}.d2-hero-b{font:12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#fff;}.d2-lbl{font:italic 11.5px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}.d2-prog{font:11px ui-monospace,Menlo,'PingFang SC','Hiragino Sans GB',monospace;fill:var(--muted);}.d2-cap{font:italic 12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}
@@ -33,7 +33,7 @@ svg{background:#faf7f2}</style>
 <text class="d2-m" x="370" y="111" text-anchor="middle">每块一次模型调用，无工具循环</text>
 <text class="d2-b" x="370" y="137" text-anchor="middle">按章节切块 · 带必抽清单</text>
 <text class="d2-b" x="370" y="157" text-anchor="middle">输出 JSON 记录 + 覆盖清单</text>
-<text class="d2-m" x="370" y="176" text-anchor="middle">可走批量接口</text>
+<text class="d2-m" x="370" y="176" text-anchor="middle">单轮 codex exec</text>
 
 <rect class="d2-box" x="260" y="196" width="220" height="56" rx="14"/>
 <circle class="d2-step" cx="260" cy="196" r="11"/>
@@ -49,14 +49,14 @@ svg{background:#faf7f2}</style>
 <text class="d2-prog" x="630" y="137" text-anchor="middle">摘录在所引页文字中</text>
 <text class="d2-prog" x="630" y="155" text-anchor="middle">数值在摘录中</text>
 <text class="d2-prog" x="630" y="173" text-anchor="middle">字段取值合法</text>
-<text class="d2-prog" x="630" y="191" text-anchor="middle">Choice 值逐个回原文对数</text>
+<text class="d2-prog" x="630" y="191" text-anchor="middle">Choice 值查原文（报警）</text>
 <text class="d2-prog" x="630" y="209" text-anchor="middle">必抽项：已抽或「本文档无」</text>
 <text class="d2-prog" x="630" y="227" text-anchor="middle">记录间一致 · 表格列数对齐</text>
 
 <rect class="d2-box" x="780" y="64" width="150" height="188" rx="14"/>
 <text class="d2-t" x="855" y="93" text-anchor="middle" style="font-size:15px">人工队列</text>
 <text class="d2-m" x="855" y="111" text-anchor="middle">代码验不了的才看</text>
-<text class="d2-b" x="855" y="137" text-anchor="middle">对数不一致</text>
+<text class="d2-b" x="855" y="137" text-anchor="middle">Choice 值查不到</text>
 <text class="d2-b" x="855" y="157" text-anchor="middle">记录间冲突</text>
 <text class="d2-b" x="855" y="177" text-anchor="middle">主体同一性</text>
 <text class="d2-b" x="855" y="197" text-anchor="middle">性质分类 · 漏抽</text>
