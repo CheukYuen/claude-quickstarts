@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1252" font-family="Charter, Georgia, 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', serif" role="img" aria-labelledby="title description">
-<title id="title">Wiki Lab：构建、增量、对照与用量整编实验</title>
-<desc id="description">A批36份资料构建wiki-A-v2；增量加入B批，从wiki-A-v2生成wiki-AB-v3。用量整编另从冻结的wiki-A-v2生成wiki-A-usage-v3，仍为A批，仅使用train题的wiki查询记录。整编前后在相同来源集合上比较，test日志不进入整编。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 840" font-family="Charter, Georgia, 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', serif" role="img" aria-labelledby="title description">
+<title id="title">Wiki Lab：俊知、长飞公司 wiki 与光纤行业 wiki 的构建、增量和查看</title>
+<desc id="description">俊知、长飞和光纤行业资料共用一个笔记池：按块抽取后整编出实体页、两份公司页和行业页，补缺一次，发布 wiki-v1。补入 002309 公告和瑞银 9/23 两份研报做一次增量，得到 wiki-v2。不设对照组，由人阅读、抽查、提问和查看 changes.md 来判断这种形态能否用于 AI 投研。</desc>
 <style>:root{--acc:#2a78d6;--bg:#fcfcfb;--card:#ffffff;--ink:#0b0b0b;--line:#dedcd5;--muted:#73726c;--s1:#2a78d6;--s3:#eda100;--sec:#52514e;}
 .d2-canvas{fill:color-mix(in srgb,var(--s3) 6%,var(--bg));}.d2-box{fill:var(--card);stroke:var(--ink);stroke-width:1.3;}.d2-hero{fill:#eb6834;stroke:var(--ink);stroke-width:1.6;stroke-dasharray:6 4;}.d2-bubble{fill:color-mix(in srgb,var(--s1) 14%,var(--card));stroke:color-mix(in srgb,var(--s1) 45%,var(--line));stroke-width:1.2;}.d2-web{fill:color-mix(in srgb,var(--s3) 14%,var(--card));stroke:var(--line);stroke-width:1.2;}
 .d2-t{font:700 17px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--ink);}.d2-hero-t{font:700 19px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#fff;}.d2-m{font:italic 11px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}.d2-hero-m{font:italic 11px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#ffe3d6;}.d2-b{font:12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--sec);}.d2-hero-b{font:12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#fff;}.d2-lbl{font:italic 11.5px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}.d2-prog{font:11px ui-monospace,Menlo,'PingFang SC','Hiragino Sans GB',monospace;fill:var(--muted);}.d2-cap{font:italic 12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}
@@ -10,158 +10,119 @@ svg{background:#faf7f2}</style>
 <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="var(--ink)"/></marker>
 <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="var(--muted)"/></marker>
 </defs>
-<rect class="d2-canvas" x="0" y="0" width="960" height="1252" rx="12"/>
+<rect class="d2-canvas" x="0" y="0" width="960" height="840" rx="12"/>
 
-<!-- FLOW 1: A build; 4c is a single bounded return before publication. -->
-<rect class="d2-band" x="16" y="16" width="928" height="470" rx="10"/>
-<text class="d2-bandlbl" x="32" y="40">FLOW 1 · A 批构建 — 默认 36 份；抽取、补缺、整编分别使用新 codex exec 会话</text>
-<text class="d2-b" x="32" y="61">全量目标 A+B 为 37 份、1,643 页、约 487 万字符；B 暂不放入首批构建。</text>
+<!-- FLOW 1: three objects share one note pool; consolidation writes company and industry pages. -->
+<rect class="d2-band" x="16" y="16" width="928" height="384" rx="10"/>
+<text class="d2-bandlbl" x="32" y="40">FLOW 1 · 构建 wiki-v1（截点 10/15）— 三个对象共用一个笔记池；每个阶段使用新的 codex exec 会话</text>
 
-<path class="d2-db" d="M40,112 v90 a70,12 0 0 0 140,0 v-90"/><ellipse class="d2-db" cx="110" cy="112" rx="70" ry="12"/>
-<text class="d2-t" x="110" y="140" text-anchor="middle" style="font-size:14px">A 批原文</text>
-<text class="d2-b" x="110" y="160" text-anchor="middle">invest-sources 只读</text>
-<text class="d2-b" x="110" y="178" text-anchor="middle">36 份 · 不含 002309</text>
-<text class="d2-m" x="110" y="195" text-anchor="middle">manifest 固定来源与截点</text>
+<rect class="d2-web" x="40" y="80" width="180" height="56" rx="12"/>
+<text class="d2-t" x="130" y="103" text-anchor="middle" style="font-size:14px">俊知 1300.HK</text>
+<text class="d2-b" x="130" y="123" text-anchor="middle">36 份 · 约 486 万字符</text>
+<rect class="d2-web" x="40" y="146" width="180" height="56" rx="12"/>
+<text class="d2-t" x="130" y="169" text-anchor="middle" style="font-size:14px">长飞 601869 / 6869</text>
+<text class="d2-b" x="130" y="189" text-anchor="middle">13 份 · 约 247 万字符</text>
+<rect class="d2-web" x="40" y="212" width="180" height="56" rx="12"/>
+<text class="d2-t" x="130" y="235" text-anchor="middle" style="font-size:14px">光纤行业</text>
+<text class="d2-b" x="130" y="255" text-anchor="middle">美银研报 · 四家同行中报</text>
 
-<rect class="d2-box" x="230" y="88" width="210" height="140" rx="14"/>
-<circle class="d2-step" cx="230" cy="88" r="11"/><text class="d2-stepn" x="230" y="92" text-anchor="middle">1</text>
-<text class="d2-t" x="335" y="116" text-anchor="middle">按块独立抽取</text>
-<text class="d2-m" x="335" y="134" text-anchor="middle">每块约 10 万字符，一块一个会话</text>
-<text class="d2-b" x="335" y="157" text-anchor="middle">来源笔记 · 主体 mentions</text>
-<text class="d2-b" x="335" y="175" text-anchor="middle">保留定义、条件与覆盖状态</text>
-<text class="d2-b" x="335" y="193" text-anchor="middle">开放问题带 ID 和优先级</text>
-<text class="d2-m" x="335" y="215" text-anchor="middle">prompts/extract.md</text>
+<rect class="d2-box" x="260" y="80" width="210" height="188" rx="14"/>
+<circle class="d2-step" cx="260" cy="80" r="11"/>
+<text class="d2-stepn" x="260" y="84" text-anchor="middle">1</text>
+<text class="d2-t" x="365" y="110" text-anchor="middle">按块独立抽取</text>
+<text class="d2-m" x="365" y="128" text-anchor="middle">约 80 块，一块一个会话</text>
+<text class="d2-b" x="365" y="156" text-anchor="middle">笔记带页码和层级标签</text>
+<text class="d2-b" x="365" y="176" text-anchor="middle">公司 · 行业 · 宏观 · 市场</text>
+<text class="d2-b" x="365" y="196" text-anchor="middle">提到的主体</text>
+<text class="d2-b" x="365" y="216" text-anchor="middle">这份资料没说清的事</text>
+<text class="d2-m" x="365" y="252" text-anchor="middle">prompts/extract.md</text>
 
-<rect class="d2-box" x="470" y="88" width="210" height="140" rx="14"/>
-<circle class="d2-step" cx="470" cy="88" r="11"/><text class="d2-stepn" x="470" y="92" text-anchor="middle">3</text>
-<text class="d2-t" x="575" y="116" text-anchor="middle">分批处置全部问题</text>
-<text class="d2-m" x="575" y="134" text-anchor="middle">每题在当前版一条有效处置</text>
-<text class="d2-b" x="575" y="157" text-anchor="middle">high 题按待回查页码查原文</text>
-<text class="d2-b" x="575" y="175" text-anchor="middle">未回查：NOT_FOUND_IN_NOTES</text>
-<text class="d2-b" x="575" y="193" text-anchor="middle">每批回查有页数上限</text>
-<text class="d2-m" x="575" y="215" text-anchor="middle">prompts/resolve.md</text>
+<rect class="d2-hero" x="510" y="80" width="220" height="188" rx="14"/>
+<circle cx="510" cy="80" r="11" fill="#fff" stroke="var(--ink)" stroke-width="1"/>
+<text x="510" y="84" text-anchor="middle" style="font:700 12px ui-monospace,Menlo,monospace;fill:#eb6834">3</text>
+<text class="d2-hero-t" x="620" y="110" text-anchor="middle" style="font-size:18px">整编</text>
+<text class="d2-hero-m" x="620" y="128" text-anchor="middle">几个会话，在副本上工作</text>
+<text class="d2-hero-b" x="620" y="156" text-anchor="middle">实体：别名、关系、有效期</text>
+<text class="d2-hero-b" x="620" y="176" text-anchor="middle">公司页 ×2：业务、时间线、指标</text>
+<text class="d2-hero-b" x="620" y="196" text-anchor="middle">行业页：产品、价格、产能、参与者</text>
+<text class="d2-hero-b" x="620" y="216" text-anchor="middle">缺口合并 · 入口页</text>
+<text class="d2-hero-m" x="620" y="252" text-anchor="middle">prompts/consolidate-*.md</text>
 
-<rect class="d2-hero" x="710" y="88" width="220" height="140" rx="14"/>
-<circle cx="710" cy="88" r="11" fill="#fff" stroke="var(--ink)" stroke-width="1"/><text x="710" y="92" text-anchor="middle" style="font:700 12px ui-monospace,Menlo,monospace;fill:#eb6834">4</text>
-<text class="d2-hero-t" x="820" y="118" text-anchor="middle" style="font-size:17px">4a 实体 + 4b 视图</text>
-<text class="d2-hero-m" x="820" y="136" text-anchor="middle">两个会话，在 A-v1 副本上工作</text>
-<text class="d2-hero-b" x="820" y="160" text-anchor="middle">别名、关系、有效期</text>
-<text class="d2-hero-b" x="820" y="178" text-anchor="middle">时间线 · 指标 · 风险 · 索引</text>
-<text class="d2-hero-b" x="820" y="196" text-anchor="middle">时间线空白 → 新问题</text>
-<text class="d2-hero-m" x="820" y="216" text-anchor="middle">prompts/consolidate-*.md</text>
+<rect class="d2-box" x="770" y="80" width="160" height="100" rx="14"/>
+<circle class="d2-step" cx="770" cy="80" r="11"/>
+<text class="d2-stepn" x="770" y="84" text-anchor="middle">4</text>
+<text class="d2-t" x="850" y="108" text-anchor="middle" style="font-size:15px">补缺一次</text>
+<text class="d2-b" x="850" y="130" text-anchor="middle">先搜笔记</text>
+<text class="d2-b" x="850" y="148" text-anchor="middle">重要的回查原文</text>
+<text class="d2-m" x="850" y="168" text-anchor="middle">已解决 / 没有 / 没查完</text>
 
-<path class="d2-db" d="M265,282 v62 a70,10 0 0 0 140,0 v-62"/><ellipse class="d2-db" cx="335" cy="282" rx="70" ry="10"/>
-<text class="d2-t" x="335" y="309" text-anchor="middle" style="font-size:14px">wiki-A-v0</text>
-<text class="d2-b" x="335" y="328" text-anchor="middle">笔记 + 问题 + 名字索引</text>
-<text class="d2-m" x="335" y="344" text-anchor="middle">阶段 2：程序原样汇集</text>
+<path class="d2-db-kg" d="M780,212 v46 a70,10 0 0 0 140,0 v-46"/>
+<ellipse class="d2-db-kg" cx="850" cy="212" rx="70" ry="10"/>
+<text class="d2-t" x="850" y="238" text-anchor="middle" style="font-size:14px">wiki-v1</text>
+<text class="d2-b" x="850" y="256" text-anchor="middle">首次构建 · 冻结</text>
 
-<path class="d2-db" d="M505,282 v62 a70,10 0 0 0 140,0 v-62"/><ellipse class="d2-db" cx="575" cy="282" rx="70" ry="10"/>
-<text class="d2-t" x="575" y="309" text-anchor="middle" style="font-size:14px">wiki-A-v1</text>
-<text class="d2-b" x="575" y="328" text-anchor="middle">A-v0 + dispositions/</text>
-<text class="d2-m" x="575" y="344" text-anchor="middle">有处置 ≠ 已解决</text>
+<line class="d2-fl2" x1="220" y1="108" x2="252" y2="108" marker-end="url(#ah2)"/>
+<line class="d2-fl2" x1="220" y1="174" x2="252" y2="174" marker-end="url(#ah2)"/>
+<line class="d2-fl2" x1="220" y1="240" x2="252" y2="240" marker-end="url(#ah2)"/>
+<text class="d2-prog" x="236" y="290" text-anchor="middle">切块</text>
+<line class="d2-fl" x1="470" y1="174" x2="502" y2="174" marker-end="url(#ah)"/>
+<line class="d2-fl" x1="730" y1="130" x2="762" y2="130" marker-end="url(#ah)"/>
+<line class="d2-fl" x1="850" y1="180" x2="850" y2="198" marker-end="url(#ah)"/>
+<line class="d2-fl2" x1="850" y1="270" x2="850" y2="294" marker-end="url(#ah2)"/>
 
-<rect class="d2-box" x="710" y="258" width="220" height="110" rx="14"/>
-<text class="d2-t" x="820" y="284" text-anchor="middle" style="font-size:15px">4c 空白问题补缺</text>
-<text class="d2-b" x="820" y="306" text-anchor="middle">仅处置 4b 新问题，回流一次</text>
-<text class="d2-b" x="820" y="324" text-anchor="middle">更新相关视图，再发布</text>
-<text class="d2-b" x="820" y="342" text-anchor="middle">再次发现的新题仅记 DEFERRED</text>
-<text class="d2-m" x="820" y="358" text-anchor="middle">没有新问题则直接发布</text>
+<rect class="d2-bubble" x="40" y="300" width="890" height="58" rx="12"/>
+<text class="d2-b" x="60" y="323">wiki-v1 的内容：entities/ · companies/trigiant/ · companies/yofc/ · industries/optical-fiber/ · 各对象 gaps · _index.md</text>
+<text class="d2-m" x="60" y="344">market/ 单独存放行情、目标价、评级和估值倍数，其他页面不引用；每条事实带原文页码和披露日</text>
+<text class="d2-prog" x="32" y="384">程序校验：来源笔记不变 · 别名不重复 · 链接可达 · 页码存在 · 缺口有状态 · 市场词只在 market/</text>
 
-<path class="d2-db-kg" d="M750,410 v50 a70,10 0 0 0 140,0 v-50"/><ellipse class="d2-db-kg" cx="820" cy="410" rx="70" ry="10"/>
-<text class="d2-t" x="820" y="435" text-anchor="middle" style="font-size:14px">冻结 wiki-A-v2</text>
-<text class="d2-b" x="820" y="454" text-anchor="middle">A 批 36 份完成</text>
+<!-- FLOW 2: one increment with three held-back documents. -->
+<rect class="d2-band" x="16" y="416" width="928" height="150" rx="10"/>
+<text class="d2-bandlbl" x="32" y="440">FLOW 2 · 增量 — wiki-v1 → wiki-v2；只抽新块，旧笔记不改</text>
+<rect class="d2-web" x="40" y="456" width="250" height="90" rx="14"/>
+<text class="d2-t" x="165" y="482" text-anchor="middle" style="font-size:14px">留作增量的三份资料</text>
+<text class="d2-b" x="165" y="504" text-anchor="middle">002309 公告（俊知）</text>
+<text class="d2-b" x="165" y="524" text-anchor="middle">瑞银 9/23 行业报告、长飞首次覆盖</text>
+<rect class="d2-box" x="330" y="456" width="380" height="90" rx="14"/>
+<circle class="d2-step" cx="330" cy="456" r="11"/>
+<text class="d2-stepn" x="330" y="460" text-anchor="middle">5</text>
+<text class="d2-t" x="520" y="480" text-anchor="middle" style="font-size:15px">增量</text>
+<text class="d2-b" x="520" y="500" text-anchor="middle">只抽新块；按名字找可能受影响的页面和缺口</text>
+<text class="d2-b" x="520" y="518" text-anchor="middle">整编会话确认、更新，写 changes.md</text>
+<text class="d2-m" x="520" y="536" text-anchor="middle">中利集团是出售方，不是别名；机构判断标为机构判断</text>
+<path class="d2-db-kg" d="M780,474 v46 a70,10 0 0 0 140,0 v-46"/>
+<ellipse class="d2-db-kg" cx="850" cy="474" rx="70" ry="10"/>
+<text class="d2-t" x="850" y="500" text-anchor="middle" style="font-size:14px">wiki-v2</text>
+<text class="d2-b" x="850" y="518" text-anchor="middle">看 changes.md</text>
+<line class="d2-fl" x1="290" y1="501" x2="322" y2="501" marker-end="url(#ah)"/>
+<line class="d2-fl" x1="710" y1="501" x2="772" y2="501" marker-end="url(#ah)"/>
 
-<line class="d2-fl2" x1="180" y1="158" x2="222" y2="158" marker-end="url(#ah2)"/>
-<text class="d2-prog" x="206" y="148" text-anchor="middle">切块</text>
-<line class="d2-fl2" x1="335" y1="228" x2="335" y2="268" marker-end="url(#ah2)"/>
-<text class="d2-prog" x="343" y="252">程序汇集</text>
-<line class="d2-fl" x1="575" y1="228" x2="575" y2="268" marker-end="url(#ah)"/>
-<text class="d2-lbl" x="583" y="252">写处置</text>
-<path class="d2-fl2" d="M405 314H451V158H462" marker-end="url(#ah2)"/>
-<text class="d2-prog" x="428" y="304" text-anchor="middle">复制</text>
-<path class="d2-fl2" d="M645 314H694V158H702" marker-end="url(#ah2)"/>
-<text class="d2-prog" x="667" y="304" text-anchor="middle">复制</text>
-<line class="d2-fl" x1="820" y1="228" x2="820" y2="250" marker-end="url(#ah)"/>
-<line class="d2-fl" x1="820" y1="368" x2="820" y2="396" marker-end="url(#ah)"/>
-<text class="d2-prog" x="32" y="399">程序校验：来源笔记不变 · 当前处置唯一 · 别名与链接 · 页码存在</text>
-<text class="d2-b" x="32" y="421">MISSING 只用于回查后仍缺证据；程序检查不替代语义正确性。</text>
-<text class="d2-b" x="32" y="443">关键事实与限定条件需读回验收；压缩比例只作观察目标。</text>
+<!-- FLOW 3: direct inspection, no comparison groups. -->
+<rect class="d2-band" x="16" y="582" width="928" height="190" rx="10"/>
+<text class="d2-bandlbl" x="32" y="606">FLOW 3 · 怎么看结果 — 不设对照组；你读、问、复核，我准备抽查材料</text>
+<rect class="d2-box" x="40" y="620" width="170" height="80" rx="12"/>
+<text class="d2-t" x="125" y="644" text-anchor="middle" style="font-size:14px">1 读得懂吗</text>
+<text class="d2-b" x="125" y="664" text-anchor="middle">从入口页读起</text>
+<text class="d2-m" x="125" y="684" text-anchor="middle">业务、事件、风险、缺口</text>
+<rect class="d2-box" x="220" y="620" width="170" height="80" rx="12"/>
+<text class="d2-t" x="305" y="644" text-anchor="middle" style="font-size:14px">2 准不准</text>
+<text class="d2-b" x="305" y="664" text-anchor="middle">每个对象抽约 20 条</text>
+<text class="d2-m" x="305" y="684" text-anchor="middle">回原文页核对</text>
+<rect class="d2-box" x="400" y="620" width="170" height="80" rx="12"/>
+<text class="d2-t" x="485" y="644" text-anchor="middle" style="font-size:14px">3 关系和口径</text>
+<text class="d2-b" x="485" y="664" text-anchor="middle">按查看清单逐项看</text>
+<text class="d2-m" x="485" y="684" text-anchor="middle">主体、价格、产能口径</text>
+<rect class="d2-box" x="580" y="620" width="170" height="80" rx="12"/>
+<text class="d2-t" x="665" y="644" text-anchor="middle" style="font-size:14px">4 随手问</text>
+<text class="d2-b" x="665" y="664" text-anchor="middle">ask.py 问平时会问的</text>
+<text class="d2-m" x="665" y="684" text-anchor="middle">引用对不对、缺什么</text>
+<rect class="d2-box" x="760" y="620" width="170" height="80" rx="12"/>
+<text class="d2-t" x="845" y="644" text-anchor="middle" style="font-size:14px">5 接得上新资料吗</text>
+<text class="d2-b" x="845" y="664" text-anchor="middle">看 changes.md</text>
+<text class="d2-m" x="845" y="684" text-anchor="middle">改对、改全、没误改</text>
+<rect class="d2-hero" x="40" y="712" width="890" height="48" rx="12"/>
+<text class="d2-hero-t" x="485" y="732" text-anchor="middle" style="font-size:15px">结论：能用 · 改了格式或流程后能用 · 不适合</text>
+<text class="d2-hero-m" x="485" y="750" text-anchor="middle">能用再考虑接入 invest-lab：研究轮回写、看价前视图、研究里的效果</text>
 
-<!-- FLOW 2: increment from frozen v2; no completion-date answer is presupposed. -->
-<rect class="d2-band" x="16" y="502" width="928" height="180" rx="10"/>
-<text class="d2-bandlbl" x="32" y="526">FLOW 2 · 增量分支 — wiki-A-v2 → wiki-AB-v3；只抽新块，重查旧处置</text>
-<rect class="d2-web" x="40" y="548" width="200" height="104" rx="14"/>
-<text class="d2-t" x="140" y="576" text-anchor="middle" style="font-size:14px">B 批：002309 公告</text>
-<text class="d2-b" x="140" y="598" text-anchor="middle">后补 2025-12-15 历史资料</text>
-<text class="d2-b" x="140" y="618" text-anchor="middle">S 编号、原有块身份冻结</text>
-<text class="d2-m" x="140" y="638" text-anchor="middle">日期排序不重新分配身份</text>
-<rect class="d2-box" x="300" y="548" width="380" height="104" rx="14"/>
-<text class="d2-t" x="490" y="572" text-anchor="middle">增量构建</text>
-<text class="d2-b" x="490" y="592" text-anchor="middle">MISSING / NOT_FOUND / DEFERRED 全部重新排队</text>
-<text class="d2-b" x="490" y="610" text-anchor="middle">受影响的 RESOLVED / CONFLICT：程序出候选，模型确认</text>
-<text class="d2-b" x="490" y="628" text-anchor="middle">重查、处置、更新实体与视图</text>
-<text class="d2-m" x="490" y="645" text-anchor="middle">旧处置保留；新处置用 supersedes 指向旧记录</text>
-<path class="d2-db-kg" d="M750,568 v68 a70,10 0 0 0 140,0 v-68"/><ellipse class="d2-db-kg" cx="820" cy="568" rx="70" ry="10"/>
-<text class="d2-t" x="820" y="595" text-anchor="middle" style="font-size:14px">wiki-AB-v3</text>
-<text class="d2-b" x="820" y="615" text-anchor="middle">A+B · 37 份</text>
-<text class="d2-m" x="820" y="634" text-anchor="middle">增量结果单独验收</text>
-<line class="d2-fl" x1="240" y1="600" x2="292" y2="600" marker-end="url(#ah)"/>
-<line class="d2-fl" x1="680" y1="600" x2="742" y2="600" marker-end="url(#ah)"/>
-<path class="d2-fl2" d="M750 438H660V540" marker-end="url(#ah2)"/>
-<text class="d2-prog" x="668" y="496">A-v2 副本</text>
-<text class="d2-b" x="32" y="670">B 文支持批准、出售方与协议条款；实际交割日期可仍未知，不强制标为 RESOLVED。</text>
-
-<!-- FLOW 3: paired read-only query and raw comparisons on one evidence set. -->
-<rect class="d2-band" x="16" y="698" width="928" height="205" rx="10"/>
-<text class="d2-bandlbl" x="32" y="722">FLOW 3 · 查询与原文对照 — 每题一个新会话，只读；固定同一 manifest、cutoff 和模型配置</text>
-<path class="d2-bubble" d="M50,762 h200 a10,10 0 0 1 10,10 v92 a10,10 0 0 1 -10,10 h-136 l-14,16 -2,-16 h-48 a10,10 0 0 1 -10,-10 v-92 a10,10 0 0 1 10,-10 z"/>
-<text class="d2-m" x="150" y="790" text-anchor="middle">questions/eval.json</text>
-<text class="d2-b" x="150" y="812" text-anchor="middle">train / test 与答案要点隔离</text>
-<text class="d2-b" x="150" y="834" text-anchor="middle">构建 prompt 看不到评估题</text>
-<text class="d2-m" x="150" y="856" text-anchor="middle">ask.py 可随时提问</text>
-<rect class="d2-box" x="310" y="762" width="250" height="52" rx="14"/>
-<text class="d2-t" x="435" y="786" text-anchor="middle">查询 · 读指定 wiki 副本</text>
-<text class="d2-m" x="435" y="805" text-anchor="middle">先读 _index.md，再按需读页面</text>
-<rect class="d2-box" x="310" y="827" width="250" height="52" rx="14"/>
-<text class="d2-t" x="435" y="851" text-anchor="middle">原文对照 · 搜 corpus/</text>
-<text class="d2-m" x="435" y="870" text-anchor="middle">同一题、同一来源集合</text>
-<rect class="d2-web" x="620" y="762" width="310" height="117" rx="14"/>
-<text class="d2-t" x="775" y="789" text-anchor="middle" style="font-size:14px">答案、轨迹与人工质量评分</text>
-<text class="d2-b" x="775" y="811" text-anchor="middle">token（含缓存）· 耗时 · 工具调用</text>
-<text class="d2-b" x="775" y="831" text-anchor="middle">命中 / 遗漏 / 错误 / 拒答；质量不得退化</text>
-<text class="d2-b" x="775" y="851" text-anchor="middle">构建、增量、整编开销分别计入</text>
-<text class="d2-m" x="775" y="869" text-anchor="middle">完整对照日志留档；原文组不流入用量整编</text>
-<line class="d2-fl" x1="260" y1="788" x2="302" y2="788" marker-end="url(#ah)"/>
-<path class="d2-fl" d="M260 846H284V853H302" marker-end="url(#ah)"/>
-<line class="d2-fl" x1="560" y1="788" x2="612" y2="788" marker-end="url(#ah)"/>
-<line class="d2-fl" x1="560" y1="853" x2="612" y2="853" marker-end="url(#ah)"/>
-
-<!-- FLOW 4: an independent A-only branch; the selector is the sole log input. -->
-<rect class="d2-band" x="16" y="919" width="928" height="270" rx="10"/>
-<text class="d2-bandlbl" x="32" y="943">FLOW 4 · 用量整编分支 — wiki-A-v2 → wiki-A-usage-v3，固定 A 批语料；不接入 wiki-AB-v3</text>
-<rect class="d2-bubble" x="40" y="970" width="230" height="104" rx="14"/>
-<text class="d2-t" x="155" y="998" text-anchor="middle" style="font-size:15px">P2 限定日志 → usage_digest</text>
-<text class="d2-b" x="155" y="1020" text-anchor="middle">只取 train + wiki + A-v2</text>
-<text class="d2-b" x="155" y="1040" text-anchor="middle">排除 raw / test / gold</text>
-<text class="d2-m" x="155" y="1060" text-anchor="middle">仅这一支日志交给整编模型</text>
-<rect class="d2-hero" x="330" y="970" width="300" height="104" rx="14"/>
-<text class="d2-hero-t" x="480" y="999" text-anchor="middle" style="font-size:18px">用量整编 · 在 A-v2 副本上</text>
-<text class="d2-hero-b" x="480" y="1021" text-anchor="middle">按实际使用重排索引、组织与交叉引用</text>
-<text class="d2-hero-b" x="480" y="1041" text-anchor="middle">不改来源事实，不引入对照答案</text>
-<text class="d2-hero-m" x="480" y="1061" text-anchor="middle">新发现的未知只登记，本轮不补采</text>
-<path class="d2-db-kg" d="M750,984 v78 a70,10 0 0 0 140,0 v-78"/><ellipse class="d2-db-kg" cx="820" cy="984" rx="70" ry="10"/>
-<text class="d2-t" x="820" y="1012" text-anchor="middle" style="font-size:14px">wiki-A-usage-v3</text>
-<text class="d2-b" x="820" y="1034" text-anchor="middle">冻结 · 与 A-v2 同源</text>
-<text class="d2-m" x="820" y="1055" text-anchor="middle">不含 B 批</text>
-<line class="d2-fl" x1="270" y1="1022" x2="322" y2="1022" marker-end="url(#ah)"/>
-<line class="d2-fl" x1="630" y1="1022" x2="742" y2="1022" marker-end="url(#ah)"/>
-<text class="d2-lbl" x="686" y="1012" text-anchor="middle">发布</text>
-<rect class="d2-box" x="40" y="1098" width="890" height="70" rx="12"/>
-<text class="d2-b" x="60" y="1122">成对比较：train 在 A-v2、A-usage-v3 各问一次；test 等 A-usage-v3 冻结后，两版各问一次。</text>
-<text class="d2-b" x="60" y="1143">test 两侧日志始终不交整编；固定 A 批 manifest、cutoff、模型与评分规则，单独观察未见题收益。</text>
-<text class="d2-m" x="60" y="1160">P3 只验证增量能力；不拿加入 B 后的变化归因于用量整编。</text>
-<line class="d2-fl" x1="820" y1="1072" x2="820" y2="1090" marker-end="url(#ah)"/>
-
-<text class="d2-cap" x="480" y="1214" text-anchor="middle">黑色实线 = 模型读取或生成 · 灰色线 / 等宽字 = 程序动作 · 蓝色圆柱 = 发布后冻结的 wiki 版本</text>
-<text class="d2-cap" x="480" y="1236" text-anchor="middle">本实验验证检索、实体关联、缺口处置与增量，不验证 invest-lab 的研究判断和交接流程。</text>
+<text class="d2-cap" x="480" y="800" text-anchor="middle">黑色实线 = 模型读取或生成 · 灰色线 / 等宽字 = 程序动作 · 蓝色圆柱 = 发布后冻结的 wiki 版本</text>
+<text class="d2-cap" x="480" y="822" text-anchor="middle">程序检查只证明结构对；内容靠阅读和回原文抽查。wiki 内容不自动成为 invest-lab 的证据或研究判断。</text>
 </svg>
