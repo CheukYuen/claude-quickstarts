@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1004" font-family="Charter, Georgia, 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', serif" role="img" aria-labelledby="title description">
+<title id="title">Wiki Lab v2：以记录为底座的投研底账</title>
+<desc id="description">披露原文和研报按章节切块，每块一次模型调用抽成 JSON 记录；Choice 存档返回由代码按字段对照表转换。所有记录都过代码核验：摘录在所引页文字中、数值在摘录中、字段合法、Choice 值逐个回原文对数、必抽项覆盖、记录间一致；不通过的进人工队列或补抽。通过的记录组成 L1 记录层。代码在记录上组装研究底账 L2（主体登记表、时间线、指标序列、计算层、问题清单和缺口、截点视图），生成给人看的阅读页面，并把缺口按处理方式分流。研究 agent 经查询接口读取 L2、产出研究结果，结束后把判断回写 L2。库外公开可得的缺口生成 requests.json，由独立的取数阶段调用 Choice，保存原样返回和哈希、只追加登记，取回的文件进入资料库；建库只读冻结文件。新资料走同一条线增量，只重算受影响的视图。用问答评测比较直接读原文、P1 wiki 和新记录层三种底座，决定去留。</desc>
+<style>:root{--acc:#2a78d6;--bg:#fcfcfb;--card:#ffffff;--ink:#0b0b0b;--line:#dedcd5;--muted:#73726c;--s1:#2a78d6;--s3:#eda100;--sec:#52514e;}
+.d2-canvas{fill:color-mix(in srgb,var(--s3) 6%,var(--bg));}.d2-box{fill:var(--card);stroke:var(--ink);stroke-width:1.3;}.d2-hero{fill:#eb6834;stroke:var(--ink);stroke-width:1.6;stroke-dasharray:6 4;}.d2-bubble{fill:color-mix(in srgb,var(--s1) 14%,var(--card));stroke:color-mix(in srgb,var(--s1) 45%,var(--line));stroke-width:1.2;}.d2-web{fill:color-mix(in srgb,var(--s3) 14%,var(--card));stroke:var(--line);stroke-width:1.2;}
+.d2-t{font:700 17px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--ink);}.d2-hero-t{font:700 19px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#fff;}.d2-m{font:italic 11px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}.d2-hero-m{font:italic 11px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#ffe3d6;}.d2-b{font:12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--sec);}.d2-hero-b{font:12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#fff;}.d2-lbl{font:italic 11.5px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}.d2-prog{font:11px ui-monospace,Menlo,'PingFang SC','Hiragino Sans GB',monospace;fill:var(--muted);}.d2-cap{font:italic 12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}
+.d2-fl{stroke:var(--ink);stroke-width:1.6;fill:none;}.d2-fl2{stroke:var(--muted);stroke-width:1.4;opacity:.75;fill:none;}.d2-db{fill:var(--card);stroke:var(--ink);stroke-width:1.3;}.d2-db-kg{fill:color-mix(in srgb,var(--s1) 10%,var(--card));stroke:var(--acc);stroke-width:2;}.d2-band{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:3 5;opacity:.6;}.d2-bandlbl{font:700 12px ui-monospace,Menlo,'PingFang SC','Hiragino Sans GB',monospace;letter-spacing:.04em;fill:var(--muted);}.d2-step{fill:var(--ink);}.d2-stepn{font:700 12px ui-monospace,Menlo,monospace;fill:var(--bg);}
+svg{background:#faf7f2}</style>
+<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="var(--ink)"/></marker>
+<marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="var(--muted)"/></marker>
+</defs>
+<rect class="d2-canvas" x="0" y="0" width="960" height="1004" rx="12"/>
+
+<!-- FLOW 1: sources become records; the model only extracts, code verifies every record. -->
+<rect class="d2-band" x="16" y="16" width="928" height="340" rx="10"/>
+<text class="d2-bandlbl" x="32" y="40">FLOW 1 · 建库：原件 → 记录 — 模型只抽记录，代码逐条核验，不通过不入库</text>
+
+<rect class="d2-web" x="40" y="64" width="180" height="56" rx="12"/>
+<text class="d2-t" x="130" y="87" text-anchor="middle" style="font-size:14px">披露原文</text>
+<text class="d2-b" x="130" y="107" text-anchor="middle">PDF · 逐页文字</text>
+<rect class="d2-web" x="40" y="130" width="180" height="56" rx="12"/>
+<text class="d2-t" x="130" y="153" text-anchor="middle" style="font-size:14px">研报</text>
+<text class="d2-b" x="130" y="173" text-anchor="middle">机构预测 · 转引出处</text>
+<rect class="d2-web" x="40" y="196" width="180" height="56" rx="12"/>
+<text class="d2-t" x="130" y="219" text-anchor="middle" style="font-size:14px">Choice 存档返回</text>
+<text class="d2-b" x="130" y="239" text-anchor="middle">取数阶段写入 · 建库只读</text>
+
+<rect class="d2-box" x="260" y="64" width="220" height="122" rx="14"/>
+<circle class="d2-step" cx="260" cy="64" r="11"/>
+<text class="d2-stepn" x="260" y="68" text-anchor="middle">1</text>
+<text class="d2-t" x="370" y="93" text-anchor="middle">抽取</text>
+<text class="d2-m" x="370" y="111" text-anchor="middle">每块一次模型调用，无工具循环</text>
+<text class="d2-b" x="370" y="137" text-anchor="middle">按章节切块 · 带必抽清单</text>
+<text class="d2-b" x="370" y="157" text-anchor="middle">输出 JSON 记录 + 覆盖清单</text>
+<text class="d2-m" x="370" y="176" text-anchor="middle">可走批量接口</text>
+
+<rect class="d2-box" x="260" y="196" width="220" height="56" rx="14"/>
+<circle class="d2-step" cx="260" cy="196" r="11"/>
+<text class="d2-stepn" x="260" y="200" text-anchor="middle">2</text>
+<text class="d2-t" x="370" y="219" text-anchor="middle" style="font-size:14px">Choice 转换</text>
+<text class="d2-prog" x="370" y="239" text-anchor="middle">字段对照表：原表科目 / 派生</text>
+
+<rect class="d2-bubble" x="520" y="64" width="220" height="188" rx="14"/>
+<circle class="d2-step" cx="520" cy="64" r="11"/>
+<text class="d2-stepn" x="520" y="68" text-anchor="middle">3</text>
+<text class="d2-t" x="630" y="93" text-anchor="middle">代码核验</text>
+<text class="d2-m" x="630" y="111" text-anchor="middle">每条记录都过，不靠抽查</text>
+<text class="d2-prog" x="630" y="137" text-anchor="middle">摘录在所引页文字中</text>
+<text class="d2-prog" x="630" y="155" text-anchor="middle">数值在摘录中</text>
+<text class="d2-prog" x="630" y="173" text-anchor="middle">字段取值合法</text>
+<text class="d2-prog" x="630" y="191" text-anchor="middle">Choice 值逐个回原文对数</text>
+<text class="d2-prog" x="630" y="209" text-anchor="middle">必抽项：已抽或「本文档无」</text>
+<text class="d2-prog" x="630" y="227" text-anchor="middle">记录间一致 · 表格列数对齐</text>
+
+<rect class="d2-box" x="780" y="64" width="150" height="188" rx="14"/>
+<text class="d2-t" x="855" y="93" text-anchor="middle" style="font-size:15px">人工队列</text>
+<text class="d2-m" x="855" y="111" text-anchor="middle">代码验不了的才看</text>
+<text class="d2-b" x="855" y="137" text-anchor="middle">对数不一致</text>
+<text class="d2-b" x="855" y="157" text-anchor="middle">记录间冲突</text>
+<text class="d2-b" x="855" y="177" text-anchor="middle">主体同一性</text>
+<text class="d2-b" x="855" y="197" text-anchor="middle">性质分类 · 漏抽</text>
+<text class="d2-m" x="855" y="229" text-anchor="middle">拒收的记录：补抽章节</text>
+
+<line class="d2-fl" x1="220" y1="92" x2="252" y2="92" marker-end="url(#ah)"/>
+<line class="d2-fl" x1="220" y1="158" x2="252" y2="158" marker-end="url(#ah)"/>
+<line class="d2-fl2" x1="220" y1="224" x2="252" y2="224" marker-end="url(#ah2)"/>
+<line class="d2-fl" x1="480" y1="125" x2="512" y2="125" marker-end="url(#ah)"/>
+<line class="d2-fl2" x1="480" y1="224" x2="512" y2="224" marker-end="url(#ah2)"/>
+<line class="d2-fl2" x1="740" y1="158" x2="772" y2="158" marker-end="url(#ah2)"/>
+<line class="d2-fl2" x1="630" y1="252" x2="630" y2="268" marker-end="url(#ah2)"/>
+
+<rect class="d2-hero" x="40" y="276" width="890" height="64" rx="12"/>
+<text class="d2-hero-t" x="485" y="302" text-anchor="middle" style="font-size:15px">L1 记录：指标数值 · 事件 · 条款与义务 · 主体关系 · 陈述</text>
+<text class="d2-hero-m" x="485" y="324" text-anchor="middle">每条带逐字摘录、PDF 页码、披露日和基准日；金额组成、性质、市场内容都是字段，不写成限定句</text>
+
+<line class="d2-fl2" x1="480" y1="340" x2="480" y2="404" marker-end="url(#ah2)"/>
+<text class="d2-prog" x="490" y="368">代码组装</text>
+
+<!-- FLOW 2: code assembles the ledger; the research agent reads through the query interface and writes back. -->
+<rect class="d2-band" x="16" y="372" width="928" height="284" rx="10"/>
+<text class="d2-bandlbl" x="32" y="396">FLOW 2 · 底账与使用 — 代码组装和计算，模型只写判断</text>
+
+<rect class="d2-db-kg" x="40" y="412" width="520" height="112" rx="14"/>
+<circle class="d2-step" cx="40" cy="412" r="11"/>
+<text class="d2-stepn" x="40" y="416" text-anchor="middle">4</text>
+<text class="d2-t" x="300" y="440" text-anchor="middle" style="font-size:16px">研究底账 L2（即 wiki）</text>
+<text class="d2-m" x="300" y="458" text-anchor="middle">代码组装和计算；模型只写综合判断段落</text>
+<text class="d2-b" x="64" y="484">主体登记表 · 时间线 · 指标序列</text>
+<text class="d2-b" x="64" y="506">计算层：公式 + 输入记录编号</text>
+<text class="d2-b" x="316" y="484">问题清单 → 缺口，按权重排序</text>
+<text class="d2-b" x="316" y="506">截点视图：按披露日过滤</text>
+
+<rect class="d2-box" x="640" y="412" width="290" height="112" rx="14"/>
+<circle class="d2-step" cx="640" cy="412" r="11"/>
+<text class="d2-stepn" x="640" y="416" text-anchor="middle">5</text>
+<text class="d2-t" x="785" y="440" text-anchor="middle" style="font-size:15px">研究 agent（L3）</text>
+<text class="d2-b" x="785" y="462" text-anchor="middle">经接口读：records · timeline</text>
+<text class="d2-b" x="785" y="480" text-anchor="middle">derived · gaps · page，都带截点</text>
+<text class="d2-m" x="785" y="500" text-anchor="middle">判断引用记录编号</text>
+<text class="d2-m" x="785" y="516" text-anchor="middle">依据 · 反证 · 失效条件</text>
+
+<line class="d2-fl" x1="560" y1="446" x2="632" y2="446" marker-end="url(#ah)"/>
+<text class="d2-lbl" x="600" y="440" text-anchor="middle">读取</text>
+<line class="d2-fl" x1="640" y1="496" x2="568" y2="496" marker-end="url(#ah)"/>
+<text class="d2-lbl" x="600" y="514" text-anchor="middle">回写</text>
+
+<rect class="d2-box" x="40" y="548" width="240" height="92" rx="12"/>
+<text class="d2-t" x="160" y="572" text-anchor="middle" style="font-size:14px">阅读页面（给人看）</text>
+<text class="d2-b" x="160" y="594" text-anchor="middle">概览先写结论 · 关键数字</text>
+<text class="d2-b" x="160" y="612" text-anchor="middle">引用直链原文页</text>
+<text class="d2-m" x="160" y="630" text-anchor="middle">从记录生成，可随时重建</text>
+
+<rect class="d2-bubble" x="300" y="548" width="260" height="92" rx="12"/>
+<text class="d2-t" x="430" y="572" text-anchor="middle" style="font-size:14px">缺口按处理方式分流</text>
+<text class="d2-prog" x="430" y="594" text-anchor="middle">库内可解 → 自动检索</text>
+<text class="d2-prog" x="430" y="612" text-anchor="middle">库外公开 → 取数阶段</text>
+<text class="d2-prog" x="430" y="630" text-anchor="middle">不公开 → 停查 · 质检 → 队列</text>
+
+<rect class="d2-box" x="640" y="548" width="290" height="92" rx="12"/>
+<text class="d2-t" x="785" y="572" text-anchor="middle" style="font-size:14px">研究结果</text>
+<text class="d2-b" x="785" y="594" text-anchor="middle">交接包 · 驱动 · 报告</text>
+<text class="d2-m" x="785" y="612" text-anchor="middle">依赖的记录被覆盖或修正</text>
+<text class="d2-m" x="785" y="630" text-anchor="middle">→ 相关判断标为「待复核」</text>
+
+<line class="d2-fl2" x1="160" y1="524" x2="160" y2="540" marker-end="url(#ah2)"/>
+<line class="d2-fl2" x1="430" y1="524" x2="430" y2="540" marker-end="url(#ah2)"/>
+<line class="d2-fl" x1="785" y1="524" x2="785" y2="540" marker-end="url(#ah)"/>
+
+<line class="d2-fl2" x1="400" y1="640" x2="400" y2="704" marker-end="url(#ah2)"/>
+<text class="d2-prog" x="410" y="668">requests.json</text>
+
+<!-- FLOW 3: acquisition is its own stage; fetched files re-enter FLOW 1; increments and the QA evaluation. -->
+<rect class="d2-band" x="16" y="672" width="928" height="272" rx="10"/>
+<text class="d2-bandlbl" x="32" y="696">FLOW 3 · 取数、增量与验收 — 建库只读冻结文件</text>
+
+<rect class="d2-bubble" x="40" y="712" width="400" height="112" rx="14"/>
+<circle class="d2-step" cx="40" cy="712" r="11"/>
+<text class="d2-stepn" x="40" y="716" text-anchor="middle">6</text>
+<text class="d2-t" x="240" y="738" text-anchor="middle" style="font-size:15px">取数阶段</text>
+<text class="d2-m" x="240" y="756" text-anchor="middle">与建库分开；只按缺口取，每轮有调用预算</text>
+<text class="d2-prog" x="240" y="778" text-anchor="middle">读 requests.json → 调用 Choice</text>
+<text class="d2-prog" x="240" y="796" text-anchor="middle">存原样返回、查询参数、取数时间和哈希</text>
+<text class="d2-prog" x="240" y="814" text-anchor="middle">登记只追加 · 取不到记原因，不反复重试</text>
+
+<path class="d2-fl2" d="M40,768 H24 V224 H32" marker-end="url(#ah2)"/>
+
+<rect class="d2-box" x="480" y="712" width="450" height="112" rx="14"/>
+<circle class="d2-step" cx="480" cy="712" r="11"/>
+<text class="d2-stepn" x="480" y="716" text-anchor="middle">7</text>
+<text class="d2-t" x="705" y="738" text-anchor="middle" style="font-size:15px">增量</text>
+<text class="d2-m" x="705" y="756" text-anchor="middle">新资料（含取数阶段取回的）走 FLOW 1 同一条线</text>
+<text class="d2-b" x="705" y="780" text-anchor="middle">抽取 → 核验 → 新记录</text>
+<text class="d2-b" x="705" y="800" text-anchor="middle">按（主体, 指标, 期间）只重算受影响的视图</text>
+<text class="d2-m" x="705" y="816" text-anchor="middle">changes.md 由代码按记录增减生成</text>
+
+<rect class="d2-hero" x="40" y="840" width="890" height="88" rx="14"/>
+<text class="d2-hero-t" x="485" y="866" text-anchor="middle" style="font-size:15px">问答评测：30–50 题，带标准答案和原文页码</text>
+<text class="d2-hero-b" x="485" y="888" text-anchor="middle">三种底座：直接读原文 · P1 wiki · 新记录层　｜　指标：答对率 · 引用正确率 · 成本 · 耗时</text>
+<text class="d2-hero-m" x="485" y="910" text-anchor="middle">S1 格式 → S2 同输入对照（P1 的 5 份资料）→ S3 底账与评估 → S4 全量与增量</text>
+
+<text class="d2-cap" x="480" y="968" text-anchor="middle">黑色实线 = 模型读取或生成 · 灰色线 / 等宽字 = 代码动作 · 蓝框 = wiki 底账 · 橙色 = 本版核心（记录层、评测）</text>
+<text class="d2-cap" x="480" y="988" text-anchor="middle">取数和建库分开，建库只读冻结、带哈希的文件；人只看代码验不了的：主体同一性、性质分类、漏抽。</text>
+</svg>
