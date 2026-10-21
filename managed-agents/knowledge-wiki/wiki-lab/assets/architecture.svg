@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 840" font-family="Charter, Georgia, 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', serif" role="img" aria-labelledby="title description">
 <title id="title">Wiki Lab：俊知、长飞公司 wiki 与光纤行业 wiki 的构建、增量和查看</title>
-<desc id="description">俊知、长飞和光纤行业资料共用一个笔记池：按块抽取后整编出实体页、两份公司页和行业页，补缺一次，发布 wiki-v1。补入 002309 公告和瑞银 9/23 两份研报做一次增量，得到 wiki-v2。不设对照组，由人阅读、抽查、提问和查看 changes.md 来判断这种形态能否用于 AI 投研。</desc>
+<desc id="description">俊知、长飞和光纤行业资料共用一个笔记池：按块抽取后整编出实体页、两份公司页和行业页，补缺一次，发布 wiki-v1。补入 002309 公告和瑞银 9/23 两份研报做一次增量，发布 wiki-v2。wiki 只有一个目录，是独立的 git 仓库：每个阶段在临时工作区里改，检查通过才提交，wiki-v1 和 wiki-v2 是提交上的 tag。不设对照组，由人阅读、抽查、提问和查看 changes.md 来判断这种形态能否用于 AI 投研。</desc>
 <style>:root{--acc:#2a78d6;--bg:#fcfcfb;--card:#ffffff;--ink:#0b0b0b;--line:#dedcd5;--muted:#73726c;--s1:#2a78d6;--s3:#eda100;--sec:#52514e;}
 .d2-canvas{fill:color-mix(in srgb,var(--s3) 6%,var(--bg));}.d2-box{fill:var(--card);stroke:var(--ink);stroke-width:1.3;}.d2-hero{fill:#eb6834;stroke:var(--ink);stroke-width:1.6;stroke-dasharray:6 4;}.d2-bubble{fill:color-mix(in srgb,var(--s1) 14%,var(--card));stroke:color-mix(in srgb,var(--s1) 45%,var(--line));stroke-width:1.2;}.d2-web{fill:color-mix(in srgb,var(--s3) 14%,var(--card));stroke:var(--line);stroke-width:1.2;}
 .d2-t{font:700 17px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--ink);}.d2-hero-t{font:700 19px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#fff;}.d2-m{font:italic 11px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}.d2-hero-m{font:italic 11px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#ffe3d6;}.d2-b{font:12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--sec);}.d2-hero-b{font:12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:#fff;}.d2-lbl{font:italic 11.5px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}.d2-prog{font:11px ui-monospace,Menlo,'PingFang SC','Hiragino Sans GB',monospace;fill:var(--muted);}.d2-cap{font:italic 12px Charter,Georgia,'PingFang SC','Hiragino Sans GB',serif;fill:var(--muted);}
@@ -14,7 +14,7 @@ svg{background:#faf7f2}</style>
 
 <!-- FLOW 1: three objects share one note pool; consolidation writes company and industry pages. -->
 <rect class="d2-band" x="16" y="16" width="928" height="384" rx="10"/>
-<text class="d2-bandlbl" x="32" y="40">FLOW 1 · 构建 wiki-v1（截点 10/15）— 三个对象共用一个笔记池；每个阶段使用新的 codex exec 会话</text>
+<text class="d2-bandlbl" x="32" y="40">FLOW 1 · 构建 wiki-v1（截点 10/15）— 三个对象共用一个笔记池；每个阶段一个新会话，检查通过才提交</text>
 
 <rect class="d2-web" x="40" y="80" width="180" height="56" rx="12"/>
 <text class="d2-t" x="130" y="103" text-anchor="middle" style="font-size:14px">俊知 1300.HK</text>
@@ -41,7 +41,7 @@ svg{background:#faf7f2}</style>
 <circle cx="510" cy="80" r="11" fill="#fff" stroke="var(--ink)" stroke-width="1"/>
 <text x="510" y="84" text-anchor="middle" style="font:700 12px ui-monospace,Menlo,monospace;fill:#eb6834">3</text>
 <text class="d2-hero-t" x="620" y="110" text-anchor="middle" style="font-size:18px">整编</text>
-<text class="d2-hero-m" x="620" y="128" text-anchor="middle">几个会话，在副本上工作</text>
+<text class="d2-hero-m" x="620" y="128" text-anchor="middle">几个会话，各在临时工作区里改</text>
 <text class="d2-hero-b" x="620" y="156" text-anchor="middle">实体：别名、关系、有效期</text>
 <text class="d2-hero-b" x="620" y="176" text-anchor="middle">公司页 ×2：业务、时间线、指标</text>
 <text class="d2-hero-b" x="620" y="196" text-anchor="middle">行业页：产品、价格、产能、参与者</text>
@@ -59,7 +59,7 @@ svg{background:#faf7f2}</style>
 <path class="d2-db-kg" d="M780,212 v46 a70,10 0 0 0 140,0 v-46"/>
 <ellipse class="d2-db-kg" cx="850" cy="212" rx="70" ry="10"/>
 <text class="d2-t" x="850" y="238" text-anchor="middle" style="font-size:14px">wiki-v1</text>
-<text class="d2-b" x="850" y="256" text-anchor="middle">首次构建 · 冻结</text>
+<text class="d2-b" x="850" y="256" text-anchor="middle">首次构建 · tag</text>
 
 <line class="d2-fl2" x1="220" y1="108" x2="252" y2="108" marker-end="url(#ah2)"/>
 <line class="d2-fl2" x1="220" y1="174" x2="252" y2="174" marker-end="url(#ah2)"/>
@@ -73,11 +73,11 @@ svg{background:#faf7f2}</style>
 <rect class="d2-bubble" x="40" y="300" width="890" height="58" rx="12"/>
 <text class="d2-b" x="60" y="323">wiki-v1 的内容：entities/ · companies/trigiant/ · companies/yofc/ · industries/optical-fiber/ · 各对象 gaps · _index.md</text>
 <text class="d2-m" x="60" y="344">market/ 单独存放行情、目标价、评级和估值倍数，其他页面不引用；每条事实带原文页码和披露日</text>
-<text class="d2-prog" x="32" y="384">程序校验：来源笔记不变 · 别名不重复 · 链接可达 · 页码存在 · 缺口有状态 · 市场词只在 market/</text>
+<text class="d2-prog" x="32" y="384">程序检查（不通过不提交）：已有笔记不改 · 只改本阶段路径 · 别名不重复 · 链接可达 · 页码存在 · 缺口有状态 · 市场词只在 market/</text>
 
 <!-- FLOW 2: one increment with three held-back documents. -->
 <rect class="d2-band" x="16" y="416" width="928" height="150" rx="10"/>
-<text class="d2-bandlbl" x="32" y="440">FLOW 2 · 增量 — wiki-v1 → wiki-v2；只抽新块，旧笔记不改</text>
+<text class="d2-bandlbl" x="32" y="440">FLOW 2 · 增量 — 三份一批，在同一个仓库上提交，打 wiki-v2 tag；只抽新块，旧笔记不改</text>
 <rect class="d2-web" x="40" y="456" width="250" height="90" rx="14"/>
 <text class="d2-t" x="165" y="482" text-anchor="middle" style="font-size:14px">留作增量的三份资料</text>
 <text class="d2-b" x="165" y="504" text-anchor="middle">002309 公告（俊知）</text>
@@ -86,13 +86,13 @@ svg{background:#faf7f2}</style>
 <circle class="d2-step" cx="330" cy="456" r="11"/>
 <text class="d2-stepn" x="330" y="460" text-anchor="middle">5</text>
 <text class="d2-t" x="520" y="480" text-anchor="middle" style="font-size:15px">增量</text>
-<text class="d2-b" x="520" y="500" text-anchor="middle">只抽新块；按名字找可能受影响的页面和缺口</text>
-<text class="d2-b" x="520" y="518" text-anchor="middle">整编会话确认、更新，写 changes.md</text>
+<text class="d2-b" x="520" y="500" text-anchor="middle">只抽新块；按名字、标签、链接和引用列候选页面</text>
+<text class="d2-b" x="520" y="518" text-anchor="middle">整编会话逐个确认，合并改写，写 changes.md</text>
 <text class="d2-m" x="520" y="536" text-anchor="middle">中利集团是出售方，不是别名；机构判断标为机构判断</text>
 <path class="d2-db-kg" d="M780,474 v46 a70,10 0 0 0 140,0 v-46"/>
 <ellipse class="d2-db-kg" cx="850" cy="474" rx="70" ry="10"/>
 <text class="d2-t" x="850" y="500" text-anchor="middle" style="font-size:14px">wiki-v2</text>
-<text class="d2-b" x="850" y="518" text-anchor="middle">看 changes.md</text>
+<text class="d2-b" x="850" y="518" text-anchor="middle">tag · 看 diff</text>
 <line class="d2-fl" x1="290" y1="501" x2="322" y2="501" marker-end="url(#ah)"/>
 <line class="d2-fl" x1="710" y1="501" x2="772" y2="501" marker-end="url(#ah)"/>
 
@@ -114,15 +114,15 @@ svg{background:#faf7f2}</style>
 <rect class="d2-box" x="580" y="620" width="170" height="80" rx="12"/>
 <text class="d2-t" x="665" y="644" text-anchor="middle" style="font-size:14px">4 随手问</text>
 <text class="d2-b" x="665" y="664" text-anchor="middle">ask.py 问平时会问的</text>
-<text class="d2-m" x="665" y="684" text-anchor="middle">引用对不对、缺什么</text>
+<text class="d2-m" x="665" y="684" text-anchor="middle">读最新 tag · 引用和缺口</text>
 <rect class="d2-box" x="760" y="620" width="170" height="80" rx="12"/>
 <text class="d2-t" x="845" y="644" text-anchor="middle" style="font-size:14px">5 接得上新资料吗</text>
-<text class="d2-b" x="845" y="664" text-anchor="middle">看 changes.md</text>
+<text class="d2-b" x="845" y="664" text-anchor="middle">changes.md + git diff</text>
 <text class="d2-m" x="845" y="684" text-anchor="middle">改对、改全、没误改</text>
 <rect class="d2-hero" x="40" y="712" width="890" height="48" rx="12"/>
 <text class="d2-hero-t" x="485" y="732" text-anchor="middle" style="font-size:15px">结论：能用 · 改了格式或流程后能用 · 不适合</text>
 <text class="d2-hero-m" x="485" y="750" text-anchor="middle">能用再考虑接入 invest-lab：研究轮回写、看价前视图、研究里的效果</text>
 
-<text class="d2-cap" x="480" y="800" text-anchor="middle">黑色实线 = 模型读取或生成 · 灰色线 / 等宽字 = 程序动作 · 蓝色圆柱 = 发布后冻结的 wiki 版本</text>
+<text class="d2-cap" x="480" y="800" text-anchor="middle">黑色实线 = 模型读取或生成 · 灰色线 / 等宽字 = 程序动作 · 蓝色圆柱 = 同一个 wiki 仓库里的发布 tag</text>
 <text class="d2-cap" x="480" y="822" text-anchor="middle">程序检查只证明结构对；内容靠阅读和回原文抽查。wiki 内容不自动成为 invest-lab 的证据或研究判断。</text>
 </svg>
