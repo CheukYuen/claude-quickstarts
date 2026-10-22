@@ -15,6 +15,7 @@ from pathlib import Path
 import re
 
 VERSION = 'wiki-records/1.0'
+MAX_EXCERPT_CHARS = 500  # Count non-whitespace characters, not JSON string length.
 UNITS = ('元', '千元', '万元', '百万元', '十亿元', '亿元', '元/股',
          '元/芯公里', '股', '千股', '万股', '百万股', '%', '百分点', '基点', '倍', '吨',
          '吨/年', '公里', '芯公里', '万芯公里', '亿芯公里', '个', '家', '席', '轮',
@@ -75,7 +76,7 @@ DETAILS = {
                                              unit=enum(('business_days', 'calendar_days', 'months', 'years', 'none')),
                                              from_event=string(), from_date=DATE, deadline_on=DATE)),
                            conditions=array(TEXT), consequences=array(TEXT),
-                           payment_status=enum(('unpaid', 'paid', 'part_paid', 'due', 'unspecified')))),
+                           payment_status=enum(('unpaid', 'paid', 'part_paid', 'due', 'unspecified', 'not_applicable')))),
     'relationship': obj(dict(subject=TEXT, object=TEXT,
                              relationship_type=enum(('ownership', 'subsidiary', 'renamed_to', 'director',
                                                      'identity_candidate', 'independent_party', 'other')),
@@ -175,8 +176,15 @@ def _fields(value, schema, path='record'):
 
 
 def normalize_whitespace(value):
-    """Ignore page-layout whitespace, without changing characters or punctuation."""
-    return re.sub(r'\s+', '', value)
+    """Ignore layout gaps except those separating numeric characters/tokens."""
+    def numeric(index):
+        char = value[index]
+        return char.isdigit() or (char in '.,%' and
+            ((index > 0 and value[index - 1].isdigit()) or
+             (index + 1 < len(value) and value[index + 1].isdigit())))
+
+    return re.sub(r'\s+', lambda m: ' ' if m.start() > 0 and m.end() < len(value)
+                  and numeric(m.start() - 1) and numeric(m.end()) else '', value)
 
 
 SCALES = {'元': ('money', Decimal(1)), '千元': ('money', Decimal(1000)),
@@ -223,10 +231,10 @@ def number_in_excerpt(item, excerpt):
     alternatives = [token, grouped]
     escaped = '(?:' + '|'.join(re.escape(x) for x in dict.fromkeys(alternatives)) + ')'
     if negative:
-        escaped = '(?:[-−]\\s*' + escaped + r'|\(\s*' + escaped + r'\s*\)|（\s*' + escaped + r'\s*）)'
+        escaped = '(?:[-−－]\\s*' + escaped + r'|\(\s*' + escaped + r'\s*\)|（\s*' + escaped + r'\s*）)'
     # A positive value must not match inside a negative, a larger integer or decimal.
-    for match in re.finditer(r'(?<![\d.,\-−(（])' + escaped + r'(?!\d|[.,]\d)', excerpt):
-        if not negative and excerpt[:match.start()].rstrip().endswith(('-', '−', '(', '（')):
+    for match in re.finditer(r'(?<![\d.,\-−－(（])' + escaped + r'(?!\d|[.,]\d)', excerpt):
+        if not negative and excerpt[:match.start()].rstrip().endswith(('-', '−', '－', '(', '（')):
             continue
         return True
     return False
@@ -336,6 +344,8 @@ def validate_record(record, pages=None):
                 if (record['source']['source_id'], page) not in pages:
                     errors.append(f'locator.pdf_pages: frozen page missing: {page}')
         for index, quote in enumerate(record['excerpts']):
+            if len(re.sub(r'\s+', '', quote['text'])) > MAX_EXCERPT_CHARS:
+                errors.append(f'excerpts[{index}]: exceeds {MAX_EXCERPT_CHARS} non-whitespace characters')
             page = quote['page']
             if page not in record['locator']['pdf_pages']:
                 errors.append(f'excerpts[{index}]: page is outside locator')

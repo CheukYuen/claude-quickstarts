@@ -41,22 +41,37 @@ DERIVED = {
                                          ['TOTAL_OTHER_PAYABLE', 'INTERESTPAY', 'DIVIDENDPAY']),
     ('IncomeStatementSHSZ', 'OTHERCINCOME'): ('PARENTOTHERCINCOME + MINORITYOTHERCINCOME',
                                            ['PARENTOTHERCINCOME', 'MINORITYOTHERCINCOME']),
+    ('CashFlowStatementSHSZ', 'DEFERTAX'): ('DEFERTAXASSETREDUCE + DEFERTAXLIABADD',
+                                         ['DEFERTAXASSETREDUCE', 'DEFERTAXLIABADD']),
 }
 # Only naming equivalents confirmed by reading the report's table headings.
 # No numeric page/row/period-column location is emitted or used for acceptance.
 LABEL_ALIASES = {
+    ('BalanceStatementSHSZ', 'SHARECAPITAL'): '实收资本（或股本）',
     ('BalanceStatementSHSZ', 'TOTAL_OTHER_RECE'): '其他应收款',
     ('BalanceStatementSHSZ', 'TOTAL_OTHER_PAYABLE'): '其他应付款',
     ('BalanceStatementSHSZ', 'SUMPARENTEQUITY'): '归属于母公司所有者权益（或股东权益）合计',
+    # 2026H1合并表第38页：总权益等于归母权益加少数股东权益；括号为同科目别称。
+    ('BalanceStatementSHSZ', 'SUMSHEQUITY'): '所有者权益（或股东权益）合计',
     ('BalanceStatementSHSZ', 'SUMLIABSHEQUITY'): '负债和所有者权益（或股东权益）总计',
     ('IncomeStatementSHSZ', 'OPERATETAX'): '税金及附加',
     ('IncomeStatementSHSZ', 'PARENTOTHERCINCOME'): '归属母公司所有者的其他综合收益的税后净额',
+    # 2026H1第42页：Choice值与少数股东其他综合收益税后净额行相等，行名跨三物理行。
+    ('IncomeStatementSHSZ', 'MINORITYOTHERCINCOME'): '归属于少数股东的其他综合收益的税后净额',
     ('CashFlowStatementSHSZ', 'EMPLOYEEPAY'): '支付给职工及为职工支付的现金',
     ('CashFlowStatementSHSZ', 'DEC_XJJXJDJWJZJ'): '现金及现金等价物净增加额',
 }
 PERIOD_LIMITS = {
     ('BalanceStatementSHSZ', 'OTHERPAY'): '2026H1附注存在分项；2024返回值为其他应付款合计扣股利的重组。字段级保守排除，不把空值当零参与计算。',
     ('IncomeStatementSHSZ', 'OTHERCINCOME'): '2026H1原表列示合计；2025、2024原表合计行未填值，Choice合计可由归母和少数股东分项相加。字段级保守排除。',
+    ('CashFlowStatementSHSZ', 'DEFERTAX'): '三期DEFERTAX均等于DEFERTAXASSETREDUCE，DEFERTAXLIABADD为空；原表只有递延所得税资产减少等分项，没有递延所得税合计行。合计为Choice派生；空分项不作零核算。',
+}
+ROW_REVIEW_LIMITS = {
+    ('BalanceStatementSHSZ', 'AMORCOSTFASSET'): '名称出现在金融资产分类/会计政策文字中；未确认同名完整表行，不能以政策中的子串作原表依据。',
+    ('BalanceStatementSHSZ', 'FVALUECOMPFASSET'): '名称见金融资产分类/会计政策文字；未确认同名完整表行，暂不认定与其他债权投资等科目等价。',
+    ('BalanceStatementSHSZ', 'AMORCOSTFLIAB'): '名称见会计政策的分类说明；不是已确认的财务表行。',
+    ('BalanceStatementSHSZ', 'DIFFCONVERSIONFC'): '原匹配来自汇率风险说明中的文字；没有确认同名完整科目行或命名等价。',
+    ('IncomeStatementSHSZ', 'OTHERREVE'): '其他业务收入：在附注中是分类标题，其下按材料等分项和小计列示；不是已确认的同名完整科目行，不能删冒号后将标题当原表项目。',
 }
 
 
@@ -172,9 +187,11 @@ def integer_text_index(text: str) -> set:
     the A-share audit compares Choice yuan against report yuan verbatim values.
     """
     found = set()
-    pattern = r'(?<![\d.,])(?:\(\s*|（\s*)?[+\-−]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:\s*[)）])?(?!\d|[.,]\d)'
+    amount = r'(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?'
+    pattern = (r'(?<![\d.,])(?:\(\s*' + amount + r'\s*\)|（\s*' + amount +
+               r'\s*）|[+\-−－]\s*' + amount + '|' + amount + r')(?!\d|[.,]\d)')
     for match in re.finditer(pattern, text):
-        token = re.sub(r'\s+', '', match.group()).replace(',', '').replace('−', '-')
+        token = re.sub(r'\s+', '', match.group()).replace(',', '').replace('−', '-').replace('－', '-')
         if token.startswith(('(', '（')) and token.endswith((')', '）')):
             token = '-' + token[1:-1]
         value = numeric_value(token)
@@ -232,20 +249,85 @@ def field_definitions(path: Path) -> dict:
 
 
 def clean_label(label: str) -> str:
-    label = re.sub(r'\((?:元|新)\)|（(?:元|新)）', '', label)
-    label = re.sub(r'^(?:[一二三四五六七八九十]+、|\([一二三四五六七八九十]+\)|其中[:：]|减[:：]|加[:：])', '', label)
-    return label
+    label = re.sub(r'[（(](?:元(?:[/／]股)?|新)[）)]', '', label)
+    label = re.sub(r'[（(][^（）()]*以[^（）()]*号填列[^（）()]*[）)]', '', label)
+    prefix = r'^(?:[一二三四五六七八九十百\d]+[、．.]|[（(][一二三四五六七八九十\d]+[）)]|其中\s*[:：]|减\s*[:：]|加\s*[:：])\s*'
+    while True:
+        cleaned = re.sub(prefix, '', label.strip())
+        if cleaned == label:
+            return cleaned
+        label = cleaned
 
 
 def label_key(text: str) -> str:
-    return re.sub(r'[\s:：,，、()（）]', '', text)
+    # Only layout whitespace is ignored after the explicit clean_label rules.
+    # Remaining punctuation and substantive parentheses are part of the name.
+    return re.sub(r'\s+', '', text)
+
+
+def report_row_labels(text: str, candidates: set) -> set:
+    """Match complete left-column names, never a substring of the full report.
+
+    A wrapped name may span two name lines, with at most one intervening
+    numeric-only line (three physical lines in total). Keep the longest matching
+    candidate, joining the next name only if the preceding name line has no
+    numeric values. Never cross blank/page boundaries or another complete subject.
+    Remove prefixes/annotations after joining, including wrapped annotations.
+    This emits no numeric cell locator.
+    """
+    rows = []
+    for line in text.splitlines():
+        raw = line.strip()
+        if not raw or '\f' in line:
+            rows.append(None)
+            continue
+        if re.fullmatch(r'[\d.,+\-−－%()（）\s]+', raw):
+            rows.append(('', False))  # A value column can sit between two name lines.
+            continue
+        if len(line) - len(line.lstrip()) > 16:
+            rows.append(None)
+            continue
+        # Multiple layout spaces start another column; a single gap before a
+        # numeric cell or a Chinese note reference also ends the label column.
+        name = re.split(r'\s{2,}|\t+|\s+(?=[+\-−－]?\s*\d|[一二三四五六七八九十]+、\d)', raw, maxsplit=1)[0]
+        rows.append((name, bool(integer_text_index(raw[len(name):]))))
+    found = set()
+    for index, first in enumerate(rows):
+        if not first or not first[0]:
+            continue
+        joined = ''
+        fragments = 0
+        longest = None
+        for offset in range(3):
+            if index + offset >= len(rows) or rows[index + offset] is None:
+                break
+            part, has_values = rows[index + offset]
+            if offset and label_key(clean_label(part)) in candidates:
+                break  # Never consume another independently complete row name.
+            fragments += bool(part)
+            if fragments > 2:
+                break
+            joined += part
+            key = label_key(clean_label(joined))
+            if key in candidates:
+                if longest is None or len(key) > len(longest):
+                    longest = key
+            if part and has_values:
+                break  # A name line with values already completes a table row.
+        if longest is not None:
+            found.add(longest)
+    return found
 
 
 def build_field_map(payload: dict, docs_root: Path, report_text: str) -> dict:
     """Match labels as well as values; unseen or ambiguous definitions stay pending."""
-    # Table extraction can place a value between two lines of a wrapped label.
-    # Remove numeric tokens for this heading-only check; no cell locator results.
-    text_key = label_key(re.sub(r'[+\-−]?\d[\d,.]*', '', report_text))
+    definitions_by_table = {table: field_definitions(docs_root / TABLE_DOCS[table])
+                            for table in TABLE_DOCS if any(
+                                q['query']['function'] == 'ctr' and q['query']['args'][0] == table
+                                for q in payload['queries'])}
+    candidates = {label_key(clean_label(label)) for definitions in definitions_by_table.values()
+                  for label in definitions.values()} | {label_key(clean_label(x)) for x in LABEL_ALIASES.values()}
+    row_labels = report_row_labels(report_text, candidates)
     fields = []
     seen = set()
     for query in payload['queries']:
@@ -255,7 +337,7 @@ def build_field_map(payload: dict, docs_root: Path, report_text: str) -> dict:
         if table not in TABLE_DOCS or table in seen:
             continue
         seen.add(table)
-        definitions = field_definitions(docs_root / TABLE_DOCS[table])
+        definitions = definitions_by_table[table]
         indicators = unpack(query['result']['Indicators'])
         if set(definitions) - set(indicators):
             raise ValueError(f'Documented fields missing from return: {table}')
@@ -265,20 +347,22 @@ def build_field_map(payload: dict, docs_root: Path, report_text: str) -> dict:
             name = clean_label(label)
             derived = DERIVED.get((table, field))
             alias = LABEL_ALIASES.get((table, field))
-            matched_label = (name if label_key(name) in text_key else
-                             alias if alias and label_key(alias) in text_key else None)
+            matched_label = (name if label_key(name) in row_labels else
+                             alias if alias and label_key(alias) in row_labels else None)
             if not documented:
                 category, reason = '待定', '返回字段未见于对应文档；保留原样字段名（含尾空白），不猜测定义和单位'
             elif field in METADATA:
                 category, reason = '待定', '返回元数据；不生成财务指标记录'
             elif derived:
                 category, reason = 'Choice 派生', '字段说明结合报表科目及分项算式核对；非因查不到值而判派生'
+                if (table, field) in PERIOD_LIMITS:
+                    reason += '；' + PERIOD_LIMITS[(table, field)]
             elif '平衡项目' in label or '其他项目' in label:
                 category, reason = '待定', '文档仅列字段名，未说明平衡/其他项目计算；暂不直接采用'
             elif matched_label:
-                category, reason = '原表科目', '字段说明的科目名在长飞报告中存在；查值独立进行'
+                category, reason = '原表科目', '去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行'
             else:
-                category, reason = '待定', '字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表'
+                category, reason = '待定', ROW_REVIEW_LIMITS.get((table, field), '字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表')
             is_eps = field in ('BASICEPS', 'DILUTEDEPS')
             fields.append({'table': table, 'choice_field': field,
                            'choice_label': label, 'original_table_item': matched_label,
@@ -295,7 +379,7 @@ def build_field_map(payload: dict, docs_root: Path, report_text: str) -> dict:
                            'period_limits': PERIOD_LIMITS.get((table, field)),
                            'documentation_path': str(docs_root / TABLE_DOCS[table])})
     return {'format_version': 'choice-fields/1', 'scope': '长飞一般企业A股ctr；不推广至港股或金融企业',
-            'classification_limits': '原表科目名称匹配不作逐值定位；待定字段须人工确认后再使用。元数据不属于原表财务科目。',
+            'classification_limits': '原表科目须清理行序号、其中/加/减前缀和填列说明后，与完整表行名称相等；跨行规则见S1_NOTES。名称匹配不作逐值定位；待定字段须人工确认后再使用。元数据不属于原表财务科目。',
             'fields': fields}
 
 
@@ -656,6 +740,15 @@ def main():
     parser.add_argument('--hk-decisions', type=Path, help='Report-specific review notes under this S1 run')
     args = parser.parse_args()
     args.run_dir.mkdir(parents=True, exist_ok=True)
+    from s1 import snapshot
+    for filename in ('choice-a-share-audit.json', 'choice-a-share-audit.md',
+                     'choice-hk-interface-audit.json', 'choice-hk-interface-audit.md'):
+        snapshot(args.run_dir, filename)
+    if not args.hk_capture and args.field_map.exists():
+        saved = args.run_dir / 'history/ctr-a-share' / (corpus.sha256(args.field_map) + '.json')
+        if not saved.exists():
+            saved.parent.mkdir(parents=True, exist_ok=True)
+            saved.write_bytes(args.field_map.read_bytes())
     if args.hk_capture:
         result = review_hk_capture(args.hk_capture, args.source_root, args.hk_report,
                                    args.docs_root, args.run_dir, args.hk_decisions)

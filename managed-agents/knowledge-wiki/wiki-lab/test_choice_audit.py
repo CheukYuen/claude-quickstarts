@@ -10,6 +10,15 @@ import corpus
 
 
 class ValueAlarmTests(unittest.TestCase):
+    def test_spaced_and_fullwidth_negative_tokens(self):
+        for text in ('- 123', '− 123', '－123', '－ 123', '(123)', '（123）'):
+            with self.subTest(text=text):
+                tokens = audit.integer_text_index(text)
+                self.assertEqual(tokens, {audit.Decimal('-123')})
+                result = audit.check_values('000001.SZ', '2025-01-01',
+                                            {'negative': -123, 'positive': 123}, text_override=text)
+                self.assertEqual([x['status'] for x in result['checks']], ['查到', '查不到'])
+
     def test_complete_numbers_sign_and_decimals(self):
         tokens = audit.integer_text_index('合成：1,234.00；(2,345)；−67；12345；3.50。')
         self.assertIn(audit.Decimal('1234'), tokens)
@@ -65,6 +74,43 @@ class ValueAlarmTests(unittest.TestCase):
 
 
 class ChoiceReturnTests(unittest.TestCase):
+    def test_row_labels_require_complete_name_and_bounded_wrapping(self):
+        keys = {audit.label_key(x) for x in ('合成资产', '合成负债', '递延税', '归属于合成股东权益合计')}
+        text = ('其中：合成资产（增加以“－”号填列）  123  99\n'
+                '一、加：合成负债  456\n递延税资产减少  20\n'
+                '归属于合成股东权\n益合计  100\n'
+                '本文提到合成资产以及递延税，不是科目。')
+        found = audit.report_row_labels(text, keys)
+        self.assertEqual(found, keys - {'递延税'})
+        self.assertNotIn('归属于合成股东权益合计', audit.report_row_labels(
+            '归属于合成股东权\n\n益合计', keys))
+        self.assertIn('归属于合成股东权益合计', audit.report_row_labels(
+            '归属于合成股东权\n                           123  99\n益合计', keys))
+        self.assertIn('合成资产', audit.report_row_labels(
+            '合成资产（增加以\n                         123  99\n“－”号填列）', keys))
+        self.assertNotIn('合成资产分类甲', audit.report_row_labels(
+            '合成资产（分类甲）  123', {'合成资产分类甲'}))
+
+    def test_wrapped_label_keeps_only_longest_candidate(self):
+        keys = {'合成资产', '合成资产减少'}
+        self.assertEqual(audit.report_row_labels('合成资产\n减少 123', keys),
+                         {'合成资产减少'})
+
+    def test_name_line_with_values_cannot_join_next_name(self):
+        keys = {'合成资产', '合成资产合计'}
+        self.assertEqual(audit.report_row_labels('合成资产 100\n合计 200', keys),
+                         {'合成资产'})
+        self.assertNotIn('合成股东权益合计', audit.report_row_labels(
+            '合成股东权 100\n益合计', {'合成股东权益合计'}))
+
+    def test_longest_wrapped_label_allows_intervening_value_line(self):
+        keys = {'合成资产', '合成资产减少'}
+        self.assertEqual(audit.report_row_labels('合成资产\n    100 200\n减少 123', keys),
+                         {'合成资产减少'})
+        self.assertEqual(audit.report_row_labels(
+            '合成资产\n合计 200', {'合成资产', '合计', '合成资产合计'}),
+                         {'合成资产', '合计'})
+
     @staticmethod
     def query(report_type='1', return_type='合并报表'):
         return {'query': {'function': 'ctr', 'args': ['BalanceStatementSHSZ', '',
@@ -112,6 +158,8 @@ class ChoiceReturnTests(unittest.TestCase):
             result = audit.build_field_map({'queries': [q]}, root, '合成科目')
             self.assertEqual(len(result['fields']), 2)
             self.assertEqual(result['fields'][0]['category'], '原表科目')
+            substring = audit.build_field_map({'queries': [q]}, root, '合成科目资产减少  123')
+            self.assertEqual(substring['fields'][0]['category'], '待定')
             unknown = result['fields'][1]
             self.assertEqual(unknown['choice_field'], 'UNKNOWN ')
             self.assertEqual(unknown['category'], '待定')

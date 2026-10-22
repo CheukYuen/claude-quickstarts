@@ -38,11 +38,15 @@ python3 records.py validate OUTPUT.json --pages PAGES.json --checklist checklist
 | --- | --- |
 | `metric` | `scope`、`scope_note`、`value_status`、`value_note`。范围枚举为 `consolidated/parent/segment/subsidiary/company_model/unspecified`。值状态为 `reported/not_available/not_meaningful`；NA、NM 不改成零，非 reported 的 numbers 必须为空，value_note 必须有非空白说明（保留原始 NA/NM/空白标记及含义） |
 | `event` | `event_type`、`occurred_on`、`stage`、`description`。事件类型为 `auction/signing/payment/transfer/completion/incorporation/production_start/disclosure/other`；阶段为 `bidding/proposed/signed/paid/transferred/completed/operating/planned/unspecified` |
-| `obligation` | `obligor`、`beneficiary`、`action`、`deadline`、`conditions`、`consequences`、`payment_status`。deadline 包含 amount、unit、from_event、from_date、deadline_on；期限单位为 business_days/calendar_days/months/years/none。付款状态为 unpaid/paid/part_paid/due/unspecified |
+| `obligation` | `obligor`、`beneficiary`、`action`、`deadline`、`conditions`、`consequences`、`payment_status`。deadline 包含 amount、unit、from_event、from_date、deadline_on；期限单位为 business_days/calendar_days/months/years/none。付款状态为 unpaid/paid/part_paid/due/unspecified/not_applicable；not_applicable 用于非付款义务（例如开产、披露、过户、账户共管），unspecified 表示付款状态未知，不能用已付保证金推断其他义务履行 |
 | `relationship` | `subject`、`object`、`relationship_type`、`starts_on`、`ends_on`、`status`、`description`。关系为 ownership/subsidiary/renamed_to/director/identity_candidate/independent_party/other；状态为 current/prospective/historical/unspecified。董事名单、改名前后名称、股权链都可以表达 |
 | `statement` | `speaker`、`content`、`statement_type`、`attribution_note`。类型为 explanation/forecast/guidance/judgment/definition/risk/attribution/market_rating/market_target/other；评级和目标价类型强制 is_market=true |
 
 数值、摘录与两种出处
+
+摘录须取支持该记录的最短连续原文。正文取数值、日期或条款所在的一句；主语在前一句时可带紧邻的那半句。表格只取科目所在行，期间、单位和币种列头另取一段，续表列头可在另一页。多要素义务分散在几句时，每句各取一段，不合成大段。通用责任声明、页眉页脚、目录不作摘录；不取整页、整段或整张表。多条记录可以共用同一表行，不能共用整页。
+
+每段去掉全部空白后最多 `records.MAX_EXCERPT_CHARS = 500` 字符，超过即拒收；不提供记录级豁免。JSON Schema 不另设按原始字符计数的 maxLength，避免拒绝排版空白较多而正文合规的片段；去空白长度由运行校验执行。摘录存在和数值在摘录中两项检查仍分别保留。
 
 每个 `numbers` 项包含 `value`、`unit`、`currency`、`source_unit`、`decimals`、`qualifier` 和 `label`。`value` 按 `unit` 计量；校验时按 `source_unit` 换算，再用摘录的小数位 `decimals` 格式化。`label` 说明是哪项数值、某个上下界或某币种的说明性折算。区间写两条 number，并用相同组名的上下界标签及维度保留关系，不把区间中点当实绩。
 
@@ -50,7 +54,7 @@ PDF 义务的 `detail.deadline.amount` 即使没有重复放进 numbers，也必
 
 单位枚举由 `records.UNITS` 导出，覆盖元、千元、万元、百万元、十亿元、亿元、每股/每芯公里金额、股及百万股、百分比和百分点、倍、吨及吨/年、长度、数量和期限。P1 全文复核另补衰减 dB/km、流量 GB/亿GB、员工平台份额/万份额、人数单位人、股东户数单位户，以及亿芯公里；GB、份额、芯公里各自只在同族单位间换算，不把平台份额自动当股票股数。币种由 `records.CURRENCIES` 导出，包括 CNY、HKD、USD 及 P1 外币注册资本涉及的其他币种，本轮复核补 KRW 韩元和 THB 泰铢。确实没有印单位时用 `未知`，附限制且不换算；不同单位间仅在同一量纲内作明确换算。允许的数值限定是 exact/approximate/more_than/less_than/at_least/at_most。exact 不允许因为小数位不足静默舍入。
 
-- PDF 记录必须有页序及逐字摘录。传入冻结页映射时，locator.pdf_pages 的每一页都必须存在，包括没有单独摘录的表头或续表定位页。空白规范化只移除排版空白，不改字符、标点、繁简或大小写。数值检查支持千分位、小数位和括号负数，匹配完整数值 token，不能将 50 匹配成 150、-50 或 50.5，也不把表格相邻列的数字拼起来。跨页续表分别保存表头、正文摘录和页码。
+- PDF 记录必须有页序及逐字摘录。传入冻结页映射时，locator.pdf_pages 的每一页都必须存在，包括没有单独摘录的表头或续表定位页。空白规范化不改字符、标点、繁简或大小写；两个数字字符之间的空白保留一个分隔空格，其余排版空白移除。数字字符包括数字本身，以及紧挨数字的点、逗号、百分号。摘录和冻结页使用同一规则，汉字之间及汉字与数字间的空格仍可忽略。数值检查支持千分位、小数位、半角/全角括号负数及 -、−、－ 三种负号（负号和数字之间可有空白），匹配完整数值 token，不能将 50 匹配成 150、-50 或 50.5，也不把表格相邻列的数字拼起来。跨页续表分别保存表头、正文摘录和页码。
 - Choice 转换记录必须没有 PDF 页序、没有摘录，出处写返回文件资料编号、字段名和报告期；披露日填 `FIRSTNOTICEDATE`。记录不虚构报表页定位，走 Choice 查值报警。查不到的标待复核；对应报告缺失的标未查值。代码通过仅指声明的检查通过，不代表出处、主体、口径或研究接受。
 
 覆盖与增量

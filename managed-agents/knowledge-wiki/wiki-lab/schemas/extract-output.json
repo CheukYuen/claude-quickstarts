@@ -1765,7 +1765,8 @@
                       "paid",
                       "part_paid",
                       "due",
-                      "unspecified"
+                      "unspecified",
+                      "not_applicable"
                     ]
                   }
                 },

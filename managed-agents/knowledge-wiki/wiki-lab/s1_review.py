@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 import re
+import shutil
 
 from corpus import dump, normalized_sha256, sha256
 
@@ -32,7 +33,8 @@ def fields_for_types(kinds, extra=()):
 def note_items(text):
     """Inventory one bullet, prose paragraph or table data row as one P1 item.
 
-    Headings, headers, separators and captions are retained as context. A data
+    Headings, headers and separators are retained as context. Captions are also
+    independent inventory items, since they can contain substantive facts. A data
     row is deliberately NOT counted once per numeric cell. This denominator is
     appropriate for auditing an already-written narrative note.
     """
@@ -47,12 +49,11 @@ def note_items(text):
             return
         body = '\n'.join(paragraph)
         is_caption = bool(re.search(r'(下表|以下两表|下列三张|下列两表|以下按年度|下列为|以下五行)', body))
+        rows.append({'line': first, 'form': 'paragraph', 'text': body,
+                     'headings': list(headings), 'context': deepcopy(context[-2:]),
+                     'columns': []})
         if is_caption:
             context.append({'line': first, 'text': body})
-        else:
-            rows.append({'line': first, 'form': 'paragraph', 'text': body,
-                         'headings': list(headings), 'context': deepcopy(context[-2:]),
-                         'columns': []})
         paragraph = []
 
     for i, line in enumerate(lines, 1):
@@ -199,6 +200,9 @@ def apply_manual_review(payload, manual_path):
         item['manual_review'] = dict(status='reviewed', decision=decision['decision'],
                                      reviewer=manual['reviewer'], review_id=manual['review_id'],
                                      group=item['review_group'], reason=decision['reason'])
+        for key in ('caption_review', 'previous_group'):
+            if key in decision:
+                item['manual_review'][key] = deepcopy(decision[key])
         if 'record_types' in decision:
             item['mapping']['record_types'] = decision['record_types']
         item['mapping']['fields'] = fields_for_types(item['mapping']['record_types'],
@@ -276,7 +280,7 @@ def inventory(p1, output, manual_path=None):
                       'lines': len(path.read_text(encoding='utf-8').splitlines()),
                       'items': len(items), 'counts': dict(Counter(x['mapping']['fit'] for x in items))})
     payload = {'schema': 'wiki-lab-s1-fit/1',
-               'method': 'bullet_or_paragraph_or_table_row; captions/header inherited; not scalar-cell count',
+               'method': 'bullet_or_paragraph_or_table_row; captions counted and inherited; not scalar-cell count',
                'limitation': '字段可表示性审阅；并非全量转录，也不证明P1论断正确或抽取完整',
                'files': files, 'counts': dict(Counter(x['mapping']['fit'] for x in result)),
                'items': result}
@@ -317,8 +321,8 @@ def inventory(p1, output, manual_path=None):
 
 def select_excerpt(text, selector):
     """Select by exact anchors, preserving every original byte inside a span."""
-    if selector.get('whole_page'):
-        return text.rstrip('\f\n')
+    if 'whole_page' in selector:
+        raise ValueError('whole_page excerpts are not accepted; use start/end/line anchors')
     start = selector['start']
     begin = text.index(start)
     if selector.get('end'):
@@ -332,16 +336,35 @@ def select_excerpt(text, selector):
     return text[begin:finish]
 
 
+def archive_sample_rejection(output, clear=False, record_attempt=False):
+    """Keep diagnostic bytes and their rejection time; clear only after success."""
+    diagnostic = output / 'sample-validation-errors.json'
+    if not diagnostic.exists():
+        return None
+    digest = sha256(diagnostic)
+    archived = output / 'sample-rejections' / (digest + '.json')
+    if not archived.exists():
+        archived.parent.mkdir(parents=True, exist_ok=True)
+        # Old diagnostics have no embedded timestamp. Preserve their file time
+        # when archiving, rather than dating an old rejection to this rebuild.
+        shutil.copy2(diagnostic, archived)
+    elif sha256(archived) != digest:
+        raise ValueError(f'Archived sample diagnostic changed: {archived}')
+    if record_attempt:
+        # Identical diagnostics share one content file, but a later failed
+        # attempt still has its own time and must remain the latest rejection.
+        from fetch import append
+        append(output / 'sample-rejections' / 'attempts.jsonl', {
+            'rejected_at': datetime.fromtimestamp(diagnostic.stat().st_mtime, timezone.utc).isoformat(),
+            'diagnostic': archived.name, 'sha256': digest})
+    if clear:
+        diagnostic.unlink()
+    return archived
+
+
 def build_samples(p1, output, recipe_path):
     import records
-    # Keep each existing diagnostic byte snapshot before a later failure can
-    # replace the convenient latest-error file. Source-bearing data stays in runs.
-    prior_error = output / 'sample-validation-errors.json'
-    if prior_error.exists():
-        archived_error = output / 'sample-rejections' / (sha256(prior_error) + '.json')
-        if not archived_error.exists():
-            archived_error.parent.mkdir(parents=True, exist_ok=True)
-            archived_error.write_bytes(prior_error.read_bytes())
+    archive_sample_rejection(output)
     manifest = json.loads((p1 / 'corpus-manifest.json').read_text(encoding='utf-8'))
     sources = {x['id']: x for x in manifest['sources']}
     pages = {}
@@ -363,7 +386,7 @@ def build_samples(p1, output, recipe_path):
         short = spec.pop('short')
         source = sources[short]
         if 'page' in spec:
-            spec['selectors'] = [{'page': spec.pop('page'), 'whole_page': True}]
+            raise ValueError('Page-only recipes are not accepted; use anchored selectors')
         selectors = spec.pop('selectors')
         excerpts = [{'page': s['page'],
                      'text': select_excerpt(pages[(source['source_id'], s['page'])], s)}
@@ -394,11 +417,7 @@ def build_samples(p1, output, recipe_path):
         batches.setdefault(short, []).append(rec)
     if errors:
         dump(output / 'sample-validation-errors.json', errors)
-        rejected = output / 'sample-validation-errors.json'
-        archive = output / 'sample-rejections' / (sha256(rejected) + '.json')
-        if not archive.exists():
-            archive.parent.mkdir(parents=True, exist_ok=True)
-            archive.write_bytes(rejected.read_bytes())
+        archive_sample_rejection(output, record_attempt=True)
         raise ValueError(f'{len(errors)} samples rejected; see sample-validation-errors.json')
     for short, rows in batches.items():
         dump(output / 'records' / f'{short}.json', rows)
@@ -431,14 +450,16 @@ def build_samples(p1, output, recipe_path):
                                          paragraph=index, text=paragraph, **decision))
     dump(output / 'page-review.json', page_reviews)
     dump(output / 'sample-overrides.json', relations)
-    summary = {'records': len(all_records), 'by_source': {k: len(v) for k, v in batches.items()},
+    summary = {'validated_at': datetime.now(timezone.utc).isoformat(),
+               'records': len(all_records), 'by_source': {k: len(v) for k, v in batches.items()},
                'record_types': dict(Counter(x['record_type'] for x in all_records)),
                'recipe_sha256': sha256(recipe_path), 'frozen_page_sha256': input_hashes,
                'errors': 0, 'overrides': relations,
                'page_review_paragraphs': len(page_reviews),
-               'historical_rejections': 'sample-validation-errors.json' if (output / 'sample-validation-errors.json').exists() else None,
+               'historical_rejections': 'sample-rejections/' if any((output / 'sample-rejections').glob('*.json')) else None,
                'limits': ['摘录/数值/枚举通过不证明语义、主体同一性或全报告抽取完整']}
     dump(output / 'sample-validation.json', summary)
+    archive_sample_rejection(output, clear=True)
     return summary
 
 
@@ -447,7 +468,7 @@ def coverage_report(output, payload, sample_summary=None):
     review = payload['manual_review']
     manual_counts = review['counts']
     lines = ['# S1：P1 逐条字段覆盖审阅', '',
-             '计数单位：一条列表项、一个非列表正文段落或一张表的数据行算一条；一行中的多个期间/指标单元格不重复计数。标题、表头和引表说明保留为上下文，不计独立事实。', '',
+             '计数单位：一条列表项、一个正文段落（含引表说明）或一张表的数据行算一条；一行中的多个期间/指标单元格不重复计数。标题、表头保留为上下文；引表说明另计独立条目并逐条裁决，也向后续表行传递上下文。', '',
              f"P1 八份来源笔记共 **{len(payload['items'])} 条**：直接能放下 {counts.get('direct', 0)}；补足格式后能放下 {counts.get('revised', 0)}；仍放不下 {counts.get('unfit', 0)}；覆盖/质检/范围说明 {counts.get('non_l1', 0)}（不制造L1事实）。", '',
              f"人工审阅 {len(payload['items']) - manual_counts.get('unreviewed', 0)} 条，未审 {manual_counts.get('unreviewed', 0)} 条；{len(payload['review_groups'])} 个表格布局/正文组的裁决见 [manual-review.json](manual-review.json)，每条均保留人工审阅标志、组编号和具体理由。结论：{review['conclusion']}。", '',
              '先读八份笔记全文，再按连续同表同口径的行及独立段落检查字段可表示性。规则只作预分类；人工裁决会纠正类型（例如会计门槛由实绩 metric 改为 definition statement），最终字段按裁决类型从 records 定义重新路由。未提供裁决文件时所有条目默认未审，不能由规则的零 unfit 推出覆盖通过。裁决绑定八份笔记 SHA-256、每组成员/内容哈希及全组规范化 SHA-256；分组或内容改变会拒绝套用旧裁决。', '',
@@ -465,14 +486,15 @@ def coverage_report(output, payload, sample_summary=None):
               '- relationships 用 null 日期加 date_notes 保留未知起止日、未来持股与更名；不倒填完成日。',
               '- origin 保留转引陈述方、原始出处和共同出处；市场评级/目标价用 is_market 过滤。', '',
               '## 实质问题的人工裁决', '',
-              '| 条目组 | 实质问题 | 处理 |', '|---|---|---|',
+              '下表G编号为返工前的问题索引；本轮组编号及继承关系见manual-review.json的previous_group。', '',
+              '| 返工前条目组 | 实质问题 | 处理 |', '|---|---|---|',
               '| G013/G025/G027–G028等 | 一行同时有本期、上期、同比；期末存量与期间流量不同 | 每个期间单独metric；存量用期末日期键，同比另指标/维度；S34样例已拆开 |',
               '| G010/G012 | CRU预测被报告多处转引 | secondary、陈述方/原始出处/common_origin_id分开，保留共同出处 |',
               '| G070/G092/G097/G399/G407–G408 | 会计门槛、寿命区间、假设敏感性不是披露实绩/经营指引 | statement definition/judgment；区间端点有label，假设写dimensions |',
               '| G146/G149/G194/G490/G493等 | 一元差、原文0.07%、负数列位、未知币种/单位 | 保留原值或statement numbers及疑点，不改错、不补零；NA/NM和未知单位要说明 |',
               '| G358–G372/G435/G437等 | 多币种注册资本、低持股控制、担保到期未解除 | 补实际单位/币种枚举；持股量与控制关系/判断拆开，合同维度及义务状态独立 |',
               '| G524/G527–G531/G525/G540–G545 | 研报实际/预测年度和Previous/Current等版本混合 | 历史转引metric与机构预测statement分开；逐年度/版本键，不套实绩覆盖 |',
-              '| G555–G575 | S46全文的交易、期限、关系、定义、董事名单及折算声明 | 39条typed记录，37段全文审阅索引列明所对应record IDs及每段数字处置 |',
+              '| S46全文 | 交易、期限、关系、定义、董事名单及折算声明 | 38条typed记录，37段全文审阅索引列明record IDs及数字处置；通用责任声明省略，不建L1记录 |',
               '| G583/G595/G608–G629 | 455对价组成、259.4偿付支持、付款基准日、条件履约保证金、更名、400吨到吨/年 | 拆独立指标，components/additivity/as_of和义务条件；未知日期null；S48到S50同键覆盖保留旧值 |', '',
               '## 清单对照', '',
               'A股14项和港股9项必抽项目提供到P1条目编号的关键词索引候选（p1-field-fit.json 的 checklist_review）；候选命中本身不证明完整性，格式支持依据逐项人工裁决。清单是最低必抽项目；董事名单、定义和详细会计政策等附加内容仍由五类记录承载。S46未载付款安排、偿付支持或标的财务摘要等，应按全文四页已查范围写本文档无；不得补零或倒填S48/S50事实。', '',
@@ -486,6 +508,14 @@ def coverage_report(output, payload, sample_summary=None):
                   f"records/ 共 {sample_summary['records']} 条；逐页冻结哈希、摘录、数值和字段校验错误为 0。逐来源数量：{json.dumps(sample_summary['by_source'], ensure_ascii=False)}。", '',
                   f"S46 全文四页的 {sample_summary['page_review_paragraphs']} 段（含定义与通用责任声明）在 [page-review.json](page-review.json) 逐段指向结构化交易、关系、期限、定义等记录，并说明数字、日期、标识及重复主张的处置。没有用空numbers的整段转贴充当全文抽取。S48/S50、S34、S42 按本轮要求选难点，不声称长报告已全量转录。S42评级/目标价另回读P1 market笔记和冻结页；不计入八份sources笔记分母。", '',
                   'S34跨块续表同时引用p168与p169，700/624.6/75.4万股和31.24/21.40元/股均来自p169续表页并进入numbers。样例核验仍为待复核：程序通过不等于语义审定或用户验收。', '']
+    added = [x for x in payload['items'] if 'caption_review' in x['manual_review']]
+    if added:
+        lines += ['## S1返工新增引表条目', '',
+                  f'本轮新增{len(added)}条；每段独立裁决，表格说明也计入分母。字段去向、对应表行条目和独立事实拆分保存在manual-review.json / p1-field-fit.json的caption_review。', '',
+                  '| 本轮条目 | 笔记行 | 裁决 | 字段去向及事实处理 |', '|---|---|---|---|']
+        for item in added:
+            decision = item['manual_review']['caption_review']
+            lines.append(f"| {item['item_id']} | {item['note']}:{item['line']} | {decision['kind']} | {item['manual_review']['reason'].replace('|', '/')} |")
     (output / 'COVERAGE.md').write_text('\n'.join(lines), encoding='utf-8')
 
 
@@ -507,6 +537,12 @@ def main():
     if args.output.resolve() == args.p1.resolve() or args.p1.resolve() in args.output.resolve().parents:
         raise ValueError('P1 input is read-only')
     args.output.mkdir(parents=True, exist_ok=True)
+    from s1 import snapshot
+    for filename in ('p1-field-fit.json', 'COVERAGE.md', 'sample-validation.json',
+                     'page-review.json', 'sample-overrides.json'):
+        snapshot(args.output, filename)
+    for path in sorted((args.output / 'records').glob('*.json')):
+        snapshot(args.output, str(path.relative_to(args.output)))
     audit = dict(at=datetime.now(timezone.utc).isoformat(), program_sha256=sha256(Path(__file__)),
                  p1=str(args.p1), recipe=str(args.recipe) if args.recipe else None,
                  manual_review_sha256=sha256(args.manual_review) if args.manual_review else None)

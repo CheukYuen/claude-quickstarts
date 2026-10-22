@@ -1,7 +1,7 @@
 {
   "format_version": "choice-fields/1",
   "scope": "长飞一般企业A股ctr；不推广至港股或金融企业",
-  "classification_limits": "原表科目名称匹配不作逐值定位；待定字段须人工确认后再使用。元数据不属于原表财务科目。",
+  "classification_limits": "原表科目须清理行序号、其中/加/减前缀和填列说明后，与完整表行名称相等；跨行规则见S1_NOTES。名称匹配不作逐值定位；待定字段须人工确认后再使用。元数据不属于原表财务科目。",
   "fields": [
     {
       "table": "BalanceStatementSHSZ",
@@ -70,7 +70,7 @@
       "table": "BalanceStatementSHSZ",
       "choice_field": "STR_COMBINETYPE",
       "choice_label": "公司类型",
-      "original_table_item": "公司类型",
+      "original_table_item": null,
       "candidate_original_item": "公司类型",
       "category": "待定",
       "role": "metadata",
@@ -102,7 +102,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -123,7 +123,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -144,7 +144,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -165,7 +165,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -186,7 +186,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -207,7 +207,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -252,7 +252,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -273,7 +273,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -294,7 +294,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -315,7 +315,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -336,7 +336,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -357,7 +357,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -378,7 +378,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -388,7 +388,7 @@
       "table": "BalanceStatementSHSZ",
       "choice_field": "TOTAL_OTHER_RECE",
       "choice_label": "其他应收款合计",
-      "original_table_item": "其他应收款合计",
+      "original_table_item": "其他应收款",
       "candidate_original_item": "其他应收款合计",
       "category": "原表科目",
       "role": "metric",
@@ -399,7 +399,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -420,7 +420,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -441,7 +441,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -462,7 +462,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -483,7 +483,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -504,7 +504,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -525,7 +525,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -546,7 +546,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -556,9 +556,9 @@
       "table": "BalanceStatementSHSZ",
       "choice_field": "AMORCOSTFASSET",
       "choice_label": "以摊余成本计量的金融资产(元)",
-      "original_table_item": "以摊余成本计量的金融资产",
+      "original_table_item": null,
       "candidate_original_item": "以摊余成本计量的金融资产",
-      "category": "原表科目",
+      "category": "待定",
       "role": "metric",
       "record_metric": "BalanceStatementSHSZ.AMORCOSTFASSET",
       "unit_rule": {
@@ -567,7 +567,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "名称出现在金融资产分类/会计政策文字中；未确认同名完整表行，不能以政策中的子串作原表依据。",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -577,9 +577,9 @@
       "table": "BalanceStatementSHSZ",
       "choice_field": "FVALUECOMPFASSET",
       "choice_label": "以公允价值计量且其变动计入其他综合收益的金融资产(元)",
-      "original_table_item": "以公允价值计量且其变动计入其他综合收益的金融资产",
+      "original_table_item": null,
       "candidate_original_item": "以公允价值计量且其变动计入其他综合收益的金融资产",
-      "category": "原表科目",
+      "category": "待定",
       "role": "metric",
       "record_metric": "BalanceStatementSHSZ.FVALUECOMPFASSET",
       "unit_rule": {
@@ -588,7 +588,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "名称见金融资产分类/会计政策文字；未确认同名完整表行，暂不认定与其他债权投资等科目等价。",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -609,7 +609,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -630,7 +630,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -651,7 +651,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -672,7 +672,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -693,7 +693,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -756,7 +756,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -777,7 +777,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -798,7 +798,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -819,7 +819,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -840,7 +840,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -861,7 +861,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -882,7 +882,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -903,7 +903,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -924,7 +924,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -945,7 +945,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -966,7 +966,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -987,7 +987,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1008,7 +1008,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1029,7 +1029,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1050,7 +1050,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1071,7 +1071,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1092,7 +1092,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1113,7 +1113,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1134,7 +1134,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1155,7 +1155,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1176,7 +1176,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1197,7 +1197,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1218,7 +1218,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1239,7 +1239,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1260,7 +1260,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1281,7 +1281,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1344,7 +1344,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1407,7 +1407,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1428,7 +1428,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1449,7 +1449,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1470,7 +1470,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1491,7 +1491,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1512,7 +1512,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1533,7 +1533,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1578,7 +1578,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1599,7 +1599,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1620,7 +1620,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1641,7 +1641,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1662,7 +1662,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1683,7 +1683,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1704,7 +1704,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1725,7 +1725,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1735,7 +1735,7 @@
       "table": "BalanceStatementSHSZ",
       "choice_field": "TOTAL_OTHER_PAYABLE",
       "choice_label": "其他应付款合计",
-      "original_table_item": "其他应付款合计",
+      "original_table_item": "其他应付款",
       "candidate_original_item": "其他应付款合计",
       "category": "原表科目",
       "role": "metric",
@@ -1746,7 +1746,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1767,7 +1767,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1788,7 +1788,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1809,7 +1809,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1830,7 +1830,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1851,7 +1851,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明结合报表科目及分项算式核对；非因查不到值而判派生",
+      "classification_basis": "字段说明结合报表科目及分项算式核对；非因查不到值而判派生；2026H1附注存在分项；2024返回值为其他应付款合计扣股利的重组。字段级保守排除，不把空值当零参与计算。",
       "derived_formula": "TOTAL_OTHER_PAYABLE - INTERESTPAY - DIVIDENDPAY",
       "derived_inputs": [
         "TOTAL_OTHER_PAYABLE",
@@ -1876,7 +1876,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1897,7 +1897,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1918,7 +1918,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1939,7 +1939,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1960,7 +1960,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -1970,9 +1970,9 @@
       "table": "BalanceStatementSHSZ",
       "choice_field": "AMORCOSTFLIAB",
       "choice_label": "以摊余成本计量的金融负债(元)",
-      "original_table_item": "以摊余成本计量的金融负债",
+      "original_table_item": null,
       "candidate_original_item": "以摊余成本计量的金融负债",
-      "category": "原表科目",
+      "category": "待定",
       "role": "metric",
       "record_metric": "BalanceStatementSHSZ.AMORCOSTFLIAB",
       "unit_rule": {
@@ -1981,7 +1981,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "名称见会计政策的分类说明；不是已确认的财务表行。",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2002,7 +2002,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2023,7 +2023,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2044,7 +2044,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2065,7 +2065,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2128,7 +2128,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2149,7 +2149,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2170,7 +2170,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2191,7 +2191,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2212,7 +2212,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2233,7 +2233,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2254,7 +2254,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2275,7 +2275,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2296,7 +2296,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2317,7 +2317,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2338,7 +2338,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2359,7 +2359,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2380,7 +2380,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2443,7 +2443,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2506,7 +2506,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2516,7 +2516,7 @@
       "table": "BalanceStatementSHSZ",
       "choice_field": "SHARECAPITAL",
       "choice_label": "实收资本(或股本)(元)",
-      "original_table_item": "实收资本(或股本)",
+      "original_table_item": "实收资本（或股本）",
       "candidate_original_item": "实收资本(或股本)",
       "category": "原表科目",
       "role": "metric",
@@ -2527,7 +2527,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2548,7 +2548,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2569,7 +2569,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2590,7 +2590,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2611,7 +2611,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2632,7 +2632,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2653,7 +2653,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2674,7 +2674,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2695,7 +2695,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2716,7 +2716,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2737,7 +2737,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2758,7 +2758,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2779,7 +2779,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2800,7 +2800,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2810,9 +2810,9 @@
       "table": "BalanceStatementSHSZ",
       "choice_field": "DIFFCONVERSIONFC",
       "choice_label": "外币报表折算差额(元)",
-      "original_table_item": "外币报表折算差额",
+      "original_table_item": null,
       "candidate_original_item": "外币报表折算差额",
-      "category": "原表科目",
+      "category": "待定",
       "role": "metric",
       "record_metric": "BalanceStatementSHSZ.DIFFCONVERSIONFC",
       "unit_rule": {
@@ -2821,7 +2821,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "原匹配来自汇率风险说明中的文字；没有确认同名完整科目行或命名等价。",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2884,7 +2884,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2905,7 +2905,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -2957,7 +2957,7 @@
       "table": "BalanceStatementSHSZ",
       "choice_field": "SUMSHEQUITY",
       "choice_label": "股东权益合计(元)",
-      "original_table_item": "股东权益合计",
+      "original_table_item": "所有者权益（或股东权益）合计",
       "candidate_original_item": "股东权益合计",
       "category": "原表科目",
       "role": "metric",
@@ -2968,7 +2968,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3031,7 +3031,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3052,7 +3052,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3063,7 +3063,7 @@
       "choice_field": "AGENCYASSETS ",
       "choice_label": "AGENCYASSETS ",
       "original_table_item": null,
-      "candidate_original_item": "AGENCYASSETS ",
+      "candidate_original_item": "AGENCYASSETS",
       "category": "待定",
       "role": "metric",
       "record_metric": "BalanceStatementSHSZ.AGENCYASSETS ",
@@ -3094,7 +3094,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3115,7 +3115,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3251,7 +3251,7 @@
       "table": "IncomeStatementSHSZ",
       "choice_field": "STR_COMBINETYPE",
       "choice_label": "公司类型",
-      "original_table_item": "公司类型",
+      "original_table_item": null,
       "candidate_original_item": "公司类型",
       "category": "待定",
       "role": "metadata",
@@ -3283,7 +3283,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3304,7 +3304,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3325,7 +3325,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3346,7 +3346,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3367,7 +3367,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3377,9 +3377,9 @@
       "table": "IncomeStatementSHSZ",
       "choice_field": "OTHERREVE",
       "choice_label": "其他业务收入(元)",
-      "original_table_item": "其他业务收入",
+      "original_table_item": null,
       "candidate_original_item": "其他业务收入",
-      "category": "原表科目",
+      "category": "待定",
       "role": "metric",
       "record_metric": "IncomeStatementSHSZ.OTHERREVE",
       "unit_rule": {
@@ -3388,7 +3388,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "其他业务收入：在附注中是分类标题，其下按材料等分项和小计列示；不是已确认的同名完整科目行，不能删冒号后将标题当原表项目。",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3430,7 +3430,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3451,7 +3451,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3472,7 +3472,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3493,7 +3493,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3514,7 +3514,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3535,7 +3535,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3556,7 +3556,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3577,7 +3577,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3598,7 +3598,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3619,7 +3619,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3640,7 +3640,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3661,7 +3661,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3682,7 +3682,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3703,7 +3703,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3724,7 +3724,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3745,7 +3745,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3766,7 +3766,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3787,7 +3787,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3808,7 +3808,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3850,7 +3850,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3871,7 +3871,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3892,7 +3892,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3913,7 +3913,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3934,7 +3934,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3955,7 +3955,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3976,7 +3976,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -3997,7 +3997,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4018,7 +4018,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4081,7 +4081,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4102,7 +4102,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4123,7 +4123,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4144,7 +4144,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4165,7 +4165,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4228,7 +4228,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4249,7 +4249,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4291,7 +4291,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4333,7 +4333,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4354,7 +4354,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4375,7 +4375,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4396,7 +4396,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4417,7 +4417,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4438,7 +4438,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4501,7 +4501,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4522,7 +4522,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4543,7 +4543,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明结合报表科目及分项算式核对；非因查不到值而判派生",
+      "classification_basis": "字段说明结合报表科目及分项算式核对；非因查不到值而判派生；2026H1原表列示合计；2025、2024原表合计行未填值，Choice合计可由归母和少数股东分项相加。字段级保守排除。",
       "derived_formula": "PARENTOTHERCINCOME + MINORITYOTHERCINCOME",
       "derived_inputs": [
         "PARENTOTHERCINCOME",
@@ -4567,7 +4567,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4577,7 +4577,7 @@
       "table": "IncomeStatementSHSZ",
       "choice_field": "MINORITYOTHERCINCOME",
       "choice_label": "归属于少数股东的其他综合收益(元)",
-      "original_table_item": "归属于少数股东的其他综合收益",
+      "original_table_item": "归属于少数股东的其他综合收益的税后净额",
       "candidate_original_item": "归属于少数股东的其他综合收益",
       "category": "原表科目",
       "role": "metric",
@@ -4588,7 +4588,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4609,7 +4609,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4630,7 +4630,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4651,7 +4651,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4787,7 +4787,7 @@
       "table": "CashFlowStatementSHSZ",
       "choice_field": "STR_COMBINETYPE",
       "choice_label": "公司类型",
-      "original_table_item": "公司类型",
+      "original_table_item": null,
       "candidate_original_item": "公司类型",
       "category": "待定",
       "role": "metadata",
@@ -4819,7 +4819,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4840,7 +4840,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4861,7 +4861,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4882,7 +4882,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4903,7 +4903,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4924,7 +4924,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4945,7 +4945,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4966,7 +4966,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -4987,7 +4987,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5008,7 +5008,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5029,7 +5029,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5050,7 +5050,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5071,7 +5071,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5092,7 +5092,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5155,7 +5155,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5176,7 +5176,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5197,7 +5197,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5218,7 +5218,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5239,7 +5239,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5260,7 +5260,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5281,7 +5281,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5302,7 +5302,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5323,7 +5323,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5344,7 +5344,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5407,7 +5407,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5470,7 +5470,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5491,7 +5491,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5512,7 +5512,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5533,7 +5533,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5554,7 +5554,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5575,7 +5575,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5596,7 +5596,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5659,7 +5659,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5680,7 +5680,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5701,7 +5701,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5722,7 +5722,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5743,7 +5743,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5764,7 +5764,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5785,7 +5785,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5848,7 +5848,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5911,7 +5911,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5932,7 +5932,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5953,7 +5953,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5974,7 +5974,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -5995,7 +5995,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6016,7 +6016,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6079,7 +6079,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6100,7 +6100,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6121,7 +6121,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6142,7 +6142,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6163,7 +6163,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6184,7 +6184,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6205,7 +6205,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6268,7 +6268,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6331,7 +6331,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6352,7 +6352,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6415,7 +6415,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6436,7 +6436,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6499,7 +6499,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6520,7 +6520,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6541,7 +6541,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6562,7 +6562,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6583,7 +6583,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6604,7 +6604,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6625,7 +6625,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6646,7 +6646,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6667,7 +6667,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6688,7 +6688,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6709,7 +6709,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6730,7 +6730,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6751,7 +6751,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6772,7 +6772,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6793,7 +6793,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6814,7 +6814,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6824,9 +6824,9 @@
       "table": "CashFlowStatementSHSZ",
       "choice_field": "DEFERTAX",
       "choice_label": "递延所得税(元)",
-      "original_table_item": "递延所得税",
+      "original_table_item": null,
       "candidate_original_item": "递延所得税",
-      "category": "原表科目",
+      "category": "Choice 派生",
       "role": "metric",
       "record_metric": "CashFlowStatementSHSZ.DEFERTAX",
       "unit_rule": {
@@ -6835,10 +6835,13 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
-      "derived_formula": null,
-      "derived_inputs": [],
-      "period_limits": null,
+      "classification_basis": "字段说明结合报表科目及分项算式核对；非因查不到值而判派生；三期DEFERTAX均等于DEFERTAXASSETREDUCE，DEFERTAXLIABADD为空；原表只有递延所得税资产减少等分项，没有递延所得税合计行。合计为Choice派生；空分项不作零核算。",
+      "derived_formula": "DEFERTAXASSETREDUCE + DEFERTAXLIABADD",
+      "derived_inputs": [
+        "DEFERTAXASSETREDUCE",
+        "DEFERTAXLIABADD"
+      ],
+      "period_limits": "三期DEFERTAX均等于DEFERTAXASSETREDUCE，DEFERTAXLIABADD为空；原表只有递延所得税资产减少等分项，没有递延所得税合计行。合计为Choice派生；空分项不作零核算。",
       "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md"
     },
     {
@@ -6856,7 +6859,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6877,7 +6880,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6898,7 +6901,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明有名称，但未确认对应长飞原表科目名；不得仅因值相等判原表",
+      "classification_basis": "字段说明有名称，但未确认对应长飞完整表行科目名；不得仅因值相等判原表",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6919,7 +6922,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6940,7 +6943,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6961,7 +6964,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -6982,7 +6985,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -7045,7 +7048,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -7066,7 +7069,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -7087,7 +7090,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -7108,7 +7111,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -7150,7 +7153,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -7171,7 +7174,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -7192,7 +7195,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -7213,7 +7216,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
@@ -7276,7 +7279,7 @@
         "multiplier_to_record": "1",
         "null_means": "未返回，不补零"
       },
-      "classification_basis": "字段说明的科目名在长飞报告中存在；查值独立进行",
+      "classification_basis": "去序号、其中/加/减前缀及填列说明后，与原表行科目名完全相等；查值独立进行",
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,

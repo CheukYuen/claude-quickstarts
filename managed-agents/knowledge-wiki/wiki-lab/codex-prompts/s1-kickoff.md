@@ -1,6 +1,6 @@
 # wiki-lab v2 S1 启动 prompt
 
-在 `/Users/leon/Developer/claude-quickstarts/managed-agents/knowledge-wiki/wiki-lab` 工作，分支 `codex/knowledge-wiki-codex-spike`。按 [DESIGN-v2.md](DESIGN-v2.md) 第 14 节做 **S1（格式）**。S1 做完就停，不进入 S2，不跑全量抽取。
+在 `/Users/leon/Developer/claude-quickstarts/managed-agents/knowledge-wiki/wiki-lab` 工作，分支 `codex/knowledge-wiki-codex-spike`。按 [DESIGN-v2.md](../DESIGN-v2.md) 第 14 节做 **S1（格式）**。S1 做完就停，不进入 S2，不跑全量抽取。
 
 ## 先读
 

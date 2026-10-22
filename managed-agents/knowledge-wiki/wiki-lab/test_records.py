@@ -17,6 +17,41 @@ def sample():
 
 
 class RecordTests(unittest.TestCase):
+    def test_excerpt_limit_and_short_separate_spans(self):
+        item = sample()
+        long_text = 'Revenue 1,250.50 ' + 'x' * records.MAX_EXCERPT_CHARS
+        item['excerpts'] = [dict(page=2, text=long_text)]
+        errors = records.validate_record(item, {('synthetic-report', 2): long_text})
+        self.assertTrue(any('exceeds' in error for error in errors))
+        # Separately quoted sentences and a separate table header/row are valid.
+        item['excerpts'] = [dict(page=2, text='Unit: thousands. Period: 2025.'),
+                            dict(page=2, text='Revenue 1,250.50')]
+        page = 'Unit: thousands. Period: 2025.\nUnrelated sentence.\nRevenue 1,250.50'
+        self.assertEqual(records.validate_record(item, {('synthetic-report', 2): page}), [])
+        item['excerpts'][0]['text'] = 'x ' * records.MAX_EXCERPT_CHARS
+        self.assertFalse(any('exceeds' in error for error in records.validate_record(item)))
+
+    def test_layout_whitespace_never_joins_adjacent_numbers(self):
+        item = sample()
+        item['numbers'] = [records.number('5050', '元')]
+        item['excerpts'] = [dict(page=2, text='Revenue 5050')]
+        pages = {('synthetic-report', 2): 'Revenue 50 50'}
+        self.assertTrue(any('absent from frozen' in e for e in records.validate_record(item, pages)))
+        item['numbers'] = [records.number('50', '元')]
+        item['excerpts'][0]['text'] = 'Revenue 50 50'
+        self.assertEqual(records.validate_record(item, pages), [])
+        for text in ('50% 50%', '1.5 2.5', '1,234 5,678', '50 .5', '50, 50'):
+            self.assertIn(' ', records.normalize_whitespace(text), text)
+        item['excerpts'][0]['text'] = '营业收入50'
+        pages[('synthetic-report', 2)] = '营 业 收 入 50'
+        self.assertEqual(records.validate_record(item, pages), [])
+
+    def test_spaced_and_fullwidth_negatives(self):
+        for text in ('- 123', '− 123', '－123', '－ 123', '(123)', '（123）'):
+            with self.subTest(text=text):
+                self.assertTrue(records.number_in_excerpt(records.number('-123', '元'), text))
+                self.assertFalse(records.number_in_excerpt(records.number('123', '元'), text))
+
     def test_schema_is_generated_from_runtime_definition(self):
         actual = json.loads((Path(__file__).parent / 'schemas/extract-output.json').read_text())
         self.assertEqual(actual, records.extract_output_schema())
@@ -110,7 +145,7 @@ class RecordTests(unittest.TestCase):
             [dict(page=1, text='Buyer shall begin production within six months after transfer.')],
             dict(obligor='ExampleBuyer', beneficiary=None, action='Cause production to begin',
                  deadline=dict(amount=6, unit='months', from_event='transfer', from_date=None, deadline_on=None),
-                 conditions=['Transfer occurs'], consequences=[], payment_status='unspecified'))
+                 conditions=['Transfer occurs'], consequences=[], payment_status='not_applicable'))
         errors = records.validate_record(item)
         self.assertTrue(any('detail.deadline.from_date' in x for x in errors))
         self.assertTrue(any('detail.deadline.deadline_on' in x for x in errors))
