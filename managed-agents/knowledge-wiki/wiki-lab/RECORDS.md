@@ -1,6 +1,6 @@
 # S1 记录格式
 
-格式版本为 `wiki-records/1.0`。本轮只定义和验证格式，不启动新抽取。字段定义在 [records.py](records.py)，JSON Schema 由同一份定义生成；不手改 [schemas/extract-output.json](schemas/extract-output.json)。所有公开测试使用合成文字。
+格式版本为 `wiki-records/1.0`，始于S1的格式定义与验证；S2已加入单轮抽取及模型输出到存储记录的转换，见下文。字段定义在 [records.py](records.py)，JSON Schema 由同一份定义生成；不手改 [schemas/extract-output.json](schemas/extract-output.json)。所有公开测试使用合成文字。
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 records.py schema schemas/extract-output.json
@@ -65,4 +65,16 @@ PDF 义务的 `detail.deadline.amount` 即使没有重复放进 numbers，也必
 
 必抽覆盖项为 `item_id/status/record_ids/checked_pages/basis`。状态为已抽、本文档无、本块未覆盖；已抽必须引用存在的记录，本文档无必须有已查页及依据。分块不等于全文，因此为本块未覆盖保留状态，S2 合并各块时再判断全文缺项。传入清单时校验编号集合恰好相同。三份清单覆盖 A 股定期报告、港股交易公告及 v2 4.3 要求在 S1 补齐的机构研报。
 
-本轮不会验证 `codex exec --output-schema` 是否接受此 Schema；该兼容性留给 S2 的第一次调用。代码校验不推断主体同一性、数字所处行列的语义、单位是否与原文一致、金额是否应相加、重要性或是否漏抽，仍须有界人工复核。
+S1没有调用模型验证Schema；S2已经实测，结果与差异见下文。代码校验不推断主体同一性、数字所处行列的语义、单位是否与原文一致、金额是否应相加、重要性或是否漏抽，仍须有界人工复核。
+
+S2调用与存储
+
+`records.model_output_schema()`从上述合同投影出模型输出，不含由代码补齐的`source/disclosed_on/extraction_version/verification`。`extract_output_schema()`仍生成完整存储合同，S1接口和生成文件不变。模型局部记录编号由代码加调用块前缀，coverage引用同步改写；未提供旧记录时supersedes必须为空。prompt只放`field_guide()`生成的简明字段说明，不重复完整Schema。
+
+期间写法统一：年度`2025`，半年`2026H1`，时点`2026-06-30`，机构预测`2026E`。`object_key.period == period.label`；主体使用文档法定全称；指标采用原表科目名，合并范围和分部、产品、地区等口径另放scope/dimensions。Choice资产负债表用时点标签，利润表和现金流量表用年度或半年标签，披露日取各期FIRSTNOTICEDATE。
+
+完整模型输出Schema在CLI strict模式下被`uniqueItems`关键字拒绝。`model_output_schema(transport=True)`从同一定义移除可能不受支持的约束和注释，供传输；代码仍按完整定义检查日期、格式、枚举、重复、摘录与数值。实测原样错误及两份Schema只存在run目录，不能将传输兼容当作放宽记录合同。
+
+`accept_model_output()`将顶层/覆盖结构失败与单条记录失败分开：后者只拒收该条，核验状态为拒收，并保留原输出和错误。引用被拒收记录或仅落只读上下文的“已抽”降为“未通过核验”。摘录同时必须存在于冻结页及真正送入该块的字符区间；全落只读上下文的合格记录被丢弃。文档级覆盖按任一块已抽、否则有带页码依据的本文档无、否则未覆盖合并。
+
+`s2_qa.py`使用同一对象键和Decimal生成质检队列，包括同日冲突、跨日覆盖、合计/分部等式、A01与Choice严格键对齐及公告覆盖链。查值报警、约数/舍入差额和无法比较分别保存，均不自动提升为研究缺口或内容接受。

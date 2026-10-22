@@ -147,6 +147,101 @@ def resolve_records(rows: list, manifest_relative: str = 'manifests/sources.json
     return chosen
 
 
+
+def prepare_vendor(run_dir: Path, company_code: str = '601869.SH',
+                   report_periods: list[str] | None = None,
+                   vendor_filename: str = 'choice-20261004-yofc-financials-market.json',
+                   source_root: Path = SOURCE_ROOT) -> dict:
+    """Bind an existing vendor capture by manifest chain and financial periods.
+
+    No API or filesystem write occurs outside runs/. Unlike PDF selection, null
+    published_date is permitted: every accepted CTR row must have FIRSTNOTICEDATE.
+    The raw capture remains in the shared library, as do PDF originals.
+    """
+    from datetime import date as calendar_date
+    # Local import avoids the choice_audit -> corpus module dependency at import.
+    import choice_audit
+
+    run_dir, source_root = Path(run_dir).resolve(), Path(source_root).resolve()
+    if not run_dir.is_relative_to(HERE / 'runs'):
+        raise ValueError('Vendor outputs must stay inside wiki-lab/runs/')
+    if Path(vendor_filename).name != vendor_filename:
+        raise ValueError('vendor_filename must be a filename, not a path')
+    manifest_path = source_root / 'manifests/sources.jsonl'
+    manifest_hash = sha256(manifest_path)
+    grouped = read_manifest(manifest_path)
+    candidates = []
+    for rows in grouped.values():
+        # Resolve only candidates, while preserving the same strict chain rules.
+        if not any(row['record'].get('kind') == 'vendor'
+                   and (row['record'].get('company_code') or '').upper() == company_code.upper()
+                   and Path(row['record'].get('path', '')).name == vendor_filename
+                   for row in rows):
+            continue
+        binding = resolve_records(rows)
+        record = binding['record']
+        if record.get('kind') == 'vendor' and (record.get('company_code') or '').upper() == company_code.upper():
+            candidates.append(binding)
+    if len(candidates) != 1:
+        raise ValueError(f'Expected one bound vendor capture, found {len(candidates)}')
+    binding = candidates[0]
+    record = binding['record']
+    path = source_path(record['path'], source_root)
+    if path.suffix.lower() != '.json' or not str(record['path']).startswith('vendor/'):
+        raise ValueError('Vendor capture must be JSON under vendor/')
+    actual_hash = sha256(path)
+    if actual_hash != record['sha256']:
+        raise ValueError(f'Vendor hash mismatch: {record["source_id"]}')
+    payload = json.loads(path.read_text(encoding='utf-8'))
+    expected = set(report_periods or [])
+    queries, found_periods = [], set()
+    for query_index, query in enumerate(payload.get('queries', [])):
+        definition = query.get('query', {})
+        args = definition.get('args', [])
+        if definition.get('function') != 'ctr' or not args or args[0] not in choice_audit.TABLE_DOCS:
+            continue
+        options = choice_audit.options_dict(args[2])
+        if options.get('secucode', '').upper() != company_code.upper():
+            continue
+        if options.get('reporttype') != '1':
+            raise ValueError('STOP: vendor CTR does not use ReportType=1')
+        period = options.get('reportdate')
+        rows = choice_audit.ctr_rows(query)
+        if len(rows) != 1:
+            raise ValueError('STOP: expected exactly one company/period CTR row')
+        for row in rows:
+            if row.get('reportType') != '合并报表':
+                raise ValueError('STOP: vendor returned type is not original consolidated report')
+            if row.get('REPORTDATE') != period:
+                raise ValueError('STOP: requested and returned report periods differ')
+            notice = row.get('FIRSTNOTICEDATE')
+            try:
+                if calendar_date.fromisoformat(notice).isoformat() != notice:
+                    raise ValueError(notice)
+            except (ValueError, TypeError):
+                raise ValueError('STOP: vendor row lacks valid FIRSTNOTICEDATE')
+            if notice > CUTOFF:
+                raise ValueError('STOP: vendor FIRSTNOTICEDATE is after cutoff')
+        if not expected or period in expected:
+            queries.append({'index': query_index, 'table': args[0], 'report_period': period,
+                            'report_type': options['reporttype']})
+            found_periods.add(period)
+    if not queries or (expected and found_periods != expected):
+        raise ValueError('Missing requested vendor financial period')
+    if sha256(manifest_path) != manifest_hash or sha256(path) != actual_hash:
+        raise ValueError('Vendor input changed while binding')
+    result = {'schema': 'wiki-lab-vendor-binding/1', 'source_id': record['source_id'],
+              'company_code': company_code, 'vendor_path': str(path), 'vendor_sha256': actual_hash,
+              'manifest_path': str(manifest_path), 'manifest_sha256': manifest_hash,
+              'record_binding': {key: binding[key] for key in
+                  ('version', 'version_inferred', 'line', 'raw_line_sha256', 'normalized_sha256', 'chain')},
+              'metadata_record': record, 'queries': queries,
+              'report_periods': sorted(found_periods),
+              'published_date_basis': 'FIRSTNOTICEDATE per financial period; manifest published_date may be null'}
+    dump(run_dir / 'choice/binding.json', result)
+    return result
+
+
 def classify(record: dict) -> str | None:
     sid = record['source_id']
     code = record.get('company_code')

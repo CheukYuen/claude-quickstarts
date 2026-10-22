@@ -124,6 +124,133 @@ def extract_output_schema():
                  'title': 'wiki-lab single-turn extraction output'}, **deepcopy(OUTPUT_SCHEMA))
 
 
+CODE_FIELDS = frozenset(('source', 'disclosed_on', 'extraction_version', 'verification'))
+
+
+def model_output_schema(transport=False):
+    """S2 projection from the SAME contract; S1's full schema stays unchanged.
+
+    Transport relaxation is used only after the real CLI rejects a keyword.
+    Full field and evidence validation always runs against RECORD_SCHEMA.
+    """
+    schema = extract_output_schema()
+    for variant in schema['properties']['records']['items']['anyOf']:
+        for key in CODE_FIELDS:
+            variant['properties'].pop(key)
+            variant['required'].remove(key)
+    if transport:
+        unsupported = {'$schema', 'title', 'format', 'pattern', 'minLength',
+                       'minimum', 'maximum', 'uniqueItems', 'minItems', 'maxItems'}
+        def strip(value):
+            if isinstance(value, dict):
+                return {key: strip(item) for key, item in value.items() if key not in unsupported}
+            if isinstance(value, list):
+                return [strip(item) for item in value]
+            return value
+        schema = strip(schema)
+    return schema
+
+
+def field_guide():
+    """Compact field/enum guide generated from the canonical definitions."""
+    def describe(schema):
+        if 'anyOf' in schema:
+            return ' OR '.join(describe(x) for x in schema['anyOf'])
+        if schema.get('type') == 'object':
+            return '{' + ', '.join(key + ':' + describe(value)
+                                  for key, value in schema['properties'].items()) + '}'
+        if schema.get('type') == 'array':
+            return '[' + describe(schema['items']) + ']'
+        if 'enum' in schema:
+            return '|'.join('null' if x is None else str(x) for x in schema['enum'])
+        return '/'.join(schema['type']) if isinstance(schema.get('type'), list) else schema.get('type', '')
+    fields = {key: value for key, value in COMMON.items() if key not in CODE_FIELDS}
+    return ('共有字段（全部必填，未知用格式允许的null、空数组或空串）：\n' +
+            '\n'.join(key + ': ' + describe(value) for key, value in fields.items()) +
+            '\n类型专属detail：\n' + '\n'.join(key + ': ' + describe(value) for key, value in DETAILS.items()) +
+            '\ncoverage：' + describe(COVERAGE_SCHEMA) + '\nschema_version=' + VERSION +
+            '\n格式约束：numbers.value必须匹配' + NUMBER['properties']['value']['pattern'] +
+            '；只写普通十进制字符串，不含千分位逗号、单位、括号或科学计数法。千分位和括号只在excerpts保留；负数value用半角负号。' +
+            '\nmetric每条只对应一个指标、期间及范围维度；reported时numbers只放一个数值，多列指标、同比、比例及分项分别拆记录。' +
+            'NA/NM时numbers为空且detail.value_note非空。事件、义务和陈述可含多个已明确label的数值。' +
+            '\n所有日期是YYYY-MM-DD或null；未知日期的date_notes.field用完整路径（as_of、detail.starts_on等），reason逐项说明。' +
+            '\ncoverage仅status=已抽时record_ids非空；本文档无和本块未覆盖的record_ids必须为空。部分相关事实可抽成记录，但不能挂在未覆盖项下。' +
+            '\n定义、释义和脚注中有实质含义的术语、交易程序、法定名称、注册地及名称标记也须用相应类型记录，不因位置而省略。')
+
+
+def accept_model_output(output, *, source_id, disclosed_on, extraction_version,
+                        prefix, pages, checklist, context_pages=(), supplied_spans=None):
+    """Validate envelope once, then accept/reject records independently.
+
+    Top-level/coverage schema errors invalidate the block; per-record field and
+    evidence failures never discard the other records in a parseable block.
+    """
+    projected = model_output_schema()
+    model_record_schema = projected['properties']['records']['items']
+    envelope = deepcopy(projected)
+    envelope['properties']['records']['items'] = {'type': 'object'}
+    errors = _fields(output, envelope, 'output')
+    if errors:
+        raise ValueError('Overall schema: ' + '; '.join(errors))
+    expected = {item['id'] for item in checklist['items']}
+    coverage_ids = [item['item_id'] for item in output['coverage']]
+    if set(coverage_ids) != expected or len(set(coverage_ids)) != len(coverage_ids):
+        raise ValueError('Overall schema: coverage must exactly match checklist')
+    raw_ids = [record.get('record_id') for record in output['records']]
+    valid_ids = [key for key in raw_ids if isinstance(key, str)]
+    if len(set(valid_ids)) != len(valid_ids):
+        raise ValueError('Overall schema: duplicate record ids make coverage ambiguous')
+    rename = {key: prefix + '-' + key for key in valid_ids}
+    accepted, rejected, discarded = [], [], []
+    for index, raw in enumerate(output['records']):
+        record = deepcopy(raw)
+        record['record_id'] = (rename[raw['record_id']] if isinstance(raw.get('record_id'), str)
+                               else prefix + '-invalid-id-' + str(index))
+        if isinstance(raw.get('supersedes'), list) and all(isinstance(key, str) for key in raw['supersedes']):
+            record['supersedes'] = [rename.get(key, key) for key in raw['supersedes']]
+        # Source metadata is code owned; extra model fields are refused first.
+        record_errors = _fields(raw, model_record_schema)
+        record.update(source=dict(kind='pdf', source_id=source_id, choice_field=None, report_period=None),
+                      disclosed_on=disclosed_on, extraction_version=extraction_version,
+                      verification=dict(status='代码通过', note='S2字段、冻结页摘录与数值检查；未经语义验收'))
+        record_errors += validate_record(record, pages)
+        if raw.get('supersedes'):
+            record_errors.append('supersedes: no prior records supplied; must be empty')
+        if supplied_spans is not None and not record_errors:
+            for index, quote in enumerate(record['excerpts']):
+                if not any(normalize_whitespace(quote['text']) in normalize_whitespace(span)
+                           for span in supplied_spans.get(quote['page'], [])):
+                    record_errors.append(f'excerpts[{index}]: outside supplied source spans')
+        record_errors = list(dict.fromkeys(record_errors))
+        if record_errors:
+            record['verification'] = dict(status='拒收', note='；'.join(record_errors))
+            rejected.append(dict(record=record, errors=record_errors))
+        elif record['excerpts'] and all(q['page'] in context_pages for q in record['excerpts']):
+            discarded.append(dict(record=record, reason='all excerpts lie on read-only context pages'))
+        else:
+            accepted.append(record)
+    good_ids = {r['record_id'] for r in accepted}
+    all_ids = set(rename.values())
+    coverage = deepcopy(output['coverage'])
+    for item in coverage:
+        item['record_ids'] = [rename.get(key, prefix + '-' + key) for key in item['record_ids']]
+        if set(item['record_ids']) - all_ids:
+            raise ValueError('Overall schema: coverage references nonexistent records')
+        if item['status'] == '已抽' and (not item['record_ids'] or any(key not in good_ids for key in item['record_ids'])):
+            item['status'] = '未通过核验'
+            item['basis'] += '；引用的记录被代码拒收或仅落在只读上下文。'
+        if item['status'] == '已抽' and not item['checked_pages']:
+            raise ValueError('Overall schema: extracted coverage requires page evidence')
+        if item['status'] != '已抽' and item['status'] != '未通过核验' and item['record_ids']:
+            raise ValueError('Overall schema: absence/uncovered coverage cites records')
+        if item['status'] == '本文档无' and (not item['checked_pages'] or not item['basis'].strip()):
+            raise ValueError('Overall schema: absence requires page evidence')
+        if set(item['checked_pages']) - {p for sid, p in pages if sid == source_id}:
+            raise ValueError('Overall schema: coverage cites an unread page')
+    return dict(records=accepted, rejected=rejected, discarded=discarded, coverage=coverage,
+                output_records=len(output['records']), rejection_rate=len(rejected)/len(raw_ids) if raw_ids else 0)
+
+
 def _fields(value, schema, path='record'):
     errors = []
     if 'anyOf' in schema:

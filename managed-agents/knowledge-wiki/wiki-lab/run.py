@@ -12,6 +12,7 @@ import shutil
 import signal
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 
@@ -26,7 +27,13 @@ from checks import check_changes, check_extraction, check_resolutions, check_wik
 
 def write_json(path: Path, value) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+    # S2 workers read shared usage/schema/state files while peers finish calls.
+    # Atomic replacement prevents a valid reader from seeing a truncated JSON.
+    with tempfile.NamedTemporaryFile(mode='w', dir=path.parent, prefix='.' + path.name + '-',
+                                     delete=False, encoding='utf-8') as stream:
+        stream.write(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+        temporary = Path(stream.name)
+    os.replace(temporary, path)
 
 
 def load(path: Path):
@@ -89,7 +96,9 @@ class Pipeline:
         self.lock = threading.Lock()
         self.link_roots = [root / 'corpus', Path('/Users/leon/Stock/invest-sources')]
 
-    def call(self, stage: str, workspace: Path, task: str, allowed: list[str]) -> dict:
+    def call(self, stage: str, workspace: Path, task: str, allowed: list[str], *,
+             output_schema: Path | None = None, read_only: bool = False,
+             metadata: dict | None = None) -> dict:
         # Make CLI/git discovery stop at the disposable workspace, not the outer repo.
         if not (workspace / '.git').exists():
             git(workspace, 'init', '-b', 'stage-workspace')
@@ -100,21 +109,36 @@ class Pipeline:
         log.mkdir()
         (log / 'prompt.md').write_text(task)
         before = hashes(workspace)
+        final_name = 'final.json' if output_schema else 'final.md'
         command = [self.args.codex, 'exec', '--ephemeral', '--json', '--color', 'never',
-                   '--sandbox', 'workspace-write', '--disable', 'memories', '--disable', 'apps',
+                   '--sandbox', 'read-only' if read_only else 'workspace-write', '--disable', 'memories', '--disable', 'apps',
                    '--disable', 'plugins', '--disable', 'multi_agent',
                    '--config', 'approval_policy="never"', '-C', str(workspace),
-                   '--output-last-message', str(log / 'final.md'), '-']
+                   '--output-last-message', str(log / final_name)]
+        if output_schema:
+            command.extend(['--output-schema', str(output_schema)])
+        command.append('-')
         record = {'stage': stage, 'attempt': attempt, 'workspace': str(workspace), 'command': command,
                   'prompt_sha256': sha(log / 'prompt.md'), 'input_hashes': before, 'status': 'running',
                   'amount': None, 'billing_information': None, 'model': 'existing CLI configuration',
                   'allowed_paths': allowed, 'started_at': time.time()}
+        record.update(metadata or {})
+        record['prompt_chars'] = len(task)
         write_json(log / 'record.json', record)
         print(f'START {stage} attempt {attempt}', flush=True)
         started = time.monotonic()
         with (log / 'events.jsonl').open('w') as out, (log / 'stderr.log').open('w') as err:
-            proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=out, stderr=err,
-                                    text=True, start_new_session=True)
+            try:
+                proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=out, stderr=err,
+                                        text=True, start_new_session=True)
+            except OSError as error:
+                record.update(status='failed', launch_error=str(error), seconds=round(time.monotonic()-started,2),
+                              exit_code=None, completed=False, usage={}, tools=[])
+                write_json(log / 'record.json', record)
+                raise RuntimeError(f'{stage}: launch failed; {log}') from error
+            record['process_id'] = proc.pid
+            record['process_group_id'] = proc.pid
+            write_json(log / 'record.json', record)
             try:
                 proc.communicate(task, timeout=self.args.stage_timeout)
             except subprocess.TimeoutExpired:
@@ -130,6 +154,18 @@ class Pipeline:
         except (ValueError, OSError) as error:
             record.update(completed=False, usage={}, tools=[], event_parse_error=str(error))
         record.update(seconds=round(time.monotonic()-started, 2), exit_code=proc.returncode)
+        # Count unique command ids from started AND completed events (including
+        # commands still active when the process is timed out).
+        events = []
+        for line in (log / 'events.jsonl').read_text().splitlines():
+            try:
+                events.append(json.loads(line))
+            except ValueError:
+                pass
+        commands = {event['item'].get('id', str(index)) for index, event in enumerate(events)
+                    if event.get('type') in ('item.started', 'item.completed') and
+                    event.get('item', {}).get('type') == 'command_execution'}
+        record['command_count'] = len(commands)
         try:
             after = hashes(workspace)
         except ValueError as error:
