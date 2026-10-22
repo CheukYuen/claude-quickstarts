@@ -1,0 +1,3012 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "wiki-lab single-turn extraction output",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": [
+        "wiki-records/1.0"
+      ]
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "record_type": {
+                "type": "string",
+                "enum": [
+                  "metric"
+                ]
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "pdf",
+                      "choice"
+                    ]
+                  },
+                  "source_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "choice_field": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "report_period": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "source_id",
+                  "choice_field",
+                  "report_period"
+                ],
+                "additionalProperties": false
+              },
+              "locator": {
+                "type": "object",
+                "properties": {
+                  "pdf_pages": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "uniqueItems": true
+                  },
+                  "table": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "section": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "pdf_pages",
+                  "table",
+                  "section"
+                ],
+                "additionalProperties": false
+              },
+              "excerpts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "page",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "disclosed_on": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "as_of": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "date_notes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "is_market": {
+                "type": "boolean"
+              },
+              "extraction_version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "verification": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "待核验",
+                      "代码通过",
+                      "人工复核通过",
+                      "待复核",
+                      "未查值",
+                      "拒收"
+                    ]
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "status",
+                  "note"
+                ],
+                "additionalProperties": false
+              },
+              "object_key": {
+                "type": "object",
+                "properties": {
+                  "subject": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "indicator": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "period": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "subject",
+                  "indicator",
+                  "period"
+                ],
+                "additionalProperties": false
+              },
+              "period": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "instant",
+                      "annual",
+                      "half_year",
+                      "quarter",
+                      "range",
+                      "event",
+                      "unspecified"
+                    ]
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "label"
+                ],
+                "additionalProperties": false
+              },
+              "nature": {
+                "type": "string",
+                "enum": [
+                  "actual",
+                  "guidance",
+                  "institution_forecast",
+                  "judgment",
+                  "secondary"
+                ]
+              },
+              "numbers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "元",
+                        "千元",
+                        "万元",
+                        "百万元",
+                        "十亿元",
+                        "亿元",
+                        "元/股",
+                        "元/芯公里",
+                        "股",
+                        "千股",
+                        "万股",
+                        "百万股",
+                        "%",
+                        "百分点",
+                        "基点",
+                        "倍",
+                        "吨",
+                        "吨/年",
+                        "公里",
+                        "芯公里",
+                        "万芯公里",
+                        "亿芯公里",
+                        "个",
+                        "家",
+                        "席",
+                        "轮",
+                        "dB/km",
+                        "GB",
+                        "亿GB",
+                        "份额",
+                        "万份额",
+                        "人",
+                        "户",
+                        "天",
+                        "工作日",
+                        "月",
+                        "年",
+                        "HKD/CNY",
+                        "CNY/HKD",
+                        "无单位",
+                        "未知"
+                      ]
+                    },
+                    "currency": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "CNY",
+                        "HKD",
+                        "USD",
+                        "EUR",
+                        "GBP",
+                        "JPY",
+                        "IDR",
+                        "MYR",
+                        "PLN",
+                        "COP",
+                        "MXN",
+                        "EGP",
+                        "AED",
+                        "BRL",
+                        "ZAR",
+                        "PEN",
+                        "VND",
+                        "INR",
+                        "RUB",
+                        "AUD",
+                        "CHF",
+                        "SGD",
+                        "CAD",
+                        "TRY",
+                        "KRW",
+                        "THB",
+                        null
+                      ]
+                    },
+                    "source_unit": {
+                      "type": "string",
+                      "enum": [
+                        "元",
+                        "千元",
+                        "万元",
+                        "百万元",
+                        "十亿元",
+                        "亿元",
+                        "元/股",
+                        "元/芯公里",
+                        "股",
+                        "千股",
+                        "万股",
+                        "百万股",
+                        "%",
+                        "百分点",
+                        "基点",
+                        "倍",
+                        "吨",
+                        "吨/年",
+                        "公里",
+                        "芯公里",
+                        "万芯公里",
+                        "亿芯公里",
+                        "个",
+                        "家",
+                        "席",
+                        "轮",
+                        "dB/km",
+                        "GB",
+                        "亿GB",
+                        "份额",
+                        "万份额",
+                        "人",
+                        "户",
+                        "天",
+                        "工作日",
+                        "月",
+                        "年",
+                        "HKD/CNY",
+                        "CNY/HKD",
+                        "无单位",
+                        "未知"
+                      ]
+                    },
+                    "decimals": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 12
+                    },
+                    "qualifier": {
+                      "type": "string",
+                      "enum": [
+                        "exact",
+                        "approximate",
+                        "more_than",
+                        "less_than",
+                        "at_least",
+                        "at_most"
+                      ]
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit",
+                    "currency",
+                    "source_unit",
+                    "decimals",
+                    "qualifier",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "components": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "additivity": {
+                "type": "object",
+                "properties": {
+                  "group": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "standalone",
+                      "total",
+                      "component",
+                      "non_additive"
+                    ]
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "group",
+                  "role",
+                  "reason"
+                ],
+                "additionalProperties": false
+              },
+              "dimensions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "origin": {
+                "type": "object",
+                "properties": {
+                  "speaker": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "original_source": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "common_origin_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "speaker",
+                  "original_source",
+                  "common_origin_id"
+                ],
+                "additionalProperties": false
+              },
+              "limitations": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "supersedes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "detail": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "scope": {
+                        "type": "string",
+                        "enum": [
+                          "consolidated",
+                          "parent",
+                          "segment",
+                          "subsidiary",
+                          "company_model",
+                          "unspecified"
+                        ]
+                      },
+                      "scope_note": {
+                        "type": "string"
+                      },
+                      "value_status": {
+                        "type": "string",
+                        "enum": [
+                          "reported"
+                        ]
+                      },
+                      "value_note": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "scope",
+                      "scope_note",
+                      "value_status",
+                      "value_note"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "scope": {
+                        "type": "string",
+                        "enum": [
+                          "consolidated",
+                          "parent",
+                          "segment",
+                          "subsidiary",
+                          "company_model",
+                          "unspecified"
+                        ]
+                      },
+                      "scope_note": {
+                        "type": "string"
+                      },
+                      "value_status": {
+                        "type": "string",
+                        "enum": [
+                          "not_available",
+                          "not_meaningful"
+                        ]
+                      },
+                      "value_note": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "[\\s\\S]*\\S[\\s\\S]*"
+                      }
+                    },
+                    "required": [
+                      "scope",
+                      "scope_note",
+                      "value_status",
+                      "value_note"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "required": [
+              "record_id",
+              "record_type",
+              "source",
+              "locator",
+              "excerpts",
+              "disclosed_on",
+              "as_of",
+              "date_notes",
+              "is_market",
+              "extraction_version",
+              "verification",
+              "object_key",
+              "period",
+              "nature",
+              "numbers",
+              "components",
+              "additivity",
+              "dimensions",
+              "origin",
+              "limitations",
+              "supersedes",
+              "detail"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "record_type": {
+                "type": "string",
+                "enum": [
+                  "event"
+                ]
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "pdf",
+                      "choice"
+                    ]
+                  },
+                  "source_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "choice_field": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "report_period": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "source_id",
+                  "choice_field",
+                  "report_period"
+                ],
+                "additionalProperties": false
+              },
+              "locator": {
+                "type": "object",
+                "properties": {
+                  "pdf_pages": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "uniqueItems": true
+                  },
+                  "table": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "section": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "pdf_pages",
+                  "table",
+                  "section"
+                ],
+                "additionalProperties": false
+              },
+              "excerpts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "page",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "disclosed_on": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "as_of": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "date_notes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "is_market": {
+                "type": "boolean"
+              },
+              "extraction_version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "verification": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "待核验",
+                      "代码通过",
+                      "人工复核通过",
+                      "待复核",
+                      "未查值",
+                      "拒收"
+                    ]
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "status",
+                  "note"
+                ],
+                "additionalProperties": false
+              },
+              "object_key": {
+                "type": "object",
+                "properties": {
+                  "subject": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "indicator": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "period": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "subject",
+                  "indicator",
+                  "period"
+                ],
+                "additionalProperties": false
+              },
+              "period": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "instant",
+                      "annual",
+                      "half_year",
+                      "quarter",
+                      "range",
+                      "event",
+                      "unspecified"
+                    ]
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "label"
+                ],
+                "additionalProperties": false
+              },
+              "nature": {
+                "type": "string",
+                "enum": [
+                  "actual",
+                  "guidance",
+                  "institution_forecast",
+                  "judgment",
+                  "secondary"
+                ]
+              },
+              "numbers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "元",
+                        "千元",
+                        "万元",
+                        "百万元",
+                        "十亿元",
+                        "亿元",
+                        "元/股",
+                        "元/芯公里",
+                        "股",
+                        "千股",
+                        "万股",
+                        "百万股",
+                        "%",
+                        "百分点",
+                        "基点",
+                        "倍",
+                        "吨",
+                        "吨/年",
+                        "公里",
+                        "芯公里",
+                        "万芯公里",
+                        "亿芯公里",
+                        "个",
+                        "家",
+                        "席",
+                        "轮",
+                        "dB/km",
+                        "GB",
+                        "亿GB",
+                        "份额",
+                        "万份额",
+                        "人",
+                        "户",
+                        "天",
+                        "工作日",
+                        "月",
+                        "年",
+                        "HKD/CNY",
+                        "CNY/HKD",
+                        "无单位",
+                        "未知"
+                      ]
+                    },
+                    "currency": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "CNY",
+                        "HKD",
+                        "USD",
+                        "EUR",
+                        "GBP",
+                        "JPY",
+                        "IDR",
+                        "MYR",
+                        "PLN",
+                        "COP",
+                        "MXN",
+                        "EGP",
+                        "AED",
+                        "BRL",
+                        "ZAR",
+                        "PEN",
+                        "VND",
+                        "INR",
+                        "RUB",
+                        "AUD",
+                        "CHF",
+                        "SGD",
+                        "CAD",
+                        "TRY",
+                        "KRW",
+                        "THB",
+                        null
+                      ]
+                    },
+                    "source_unit": {
+                      "type": "string",
+                      "enum": [
+                        "元",
+                        "千元",
+                        "万元",
+                        "百万元",
+                        "十亿元",
+                        "亿元",
+                        "元/股",
+                        "元/芯公里",
+                        "股",
+                        "千股",
+                        "万股",
+                        "百万股",
+                        "%",
+                        "百分点",
+                        "基点",
+                        "倍",
+                        "吨",
+                        "吨/年",
+                        "公里",
+                        "芯公里",
+                        "万芯公里",
+                        "亿芯公里",
+                        "个",
+                        "家",
+                        "席",
+                        "轮",
+                        "dB/km",
+                        "GB",
+                        "亿GB",
+                        "份额",
+                        "万份额",
+                        "人",
+                        "户",
+                        "天",
+                        "工作日",
+                        "月",
+                        "年",
+                        "HKD/CNY",
+                        "CNY/HKD",
+                        "无单位",
+                        "未知"
+                      ]
+                    },
+                    "decimals": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 12
+                    },
+                    "qualifier": {
+                      "type": "string",
+                      "enum": [
+                        "exact",
+                        "approximate",
+                        "more_than",
+                        "less_than",
+                        "at_least",
+                        "at_most"
+                      ]
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit",
+                    "currency",
+                    "source_unit",
+                    "decimals",
+                    "qualifier",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "components": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "additivity": {
+                "type": "object",
+                "properties": {
+                  "group": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "standalone",
+                      "total",
+                      "component",
+                      "non_additive"
+                    ]
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "group",
+                  "role",
+                  "reason"
+                ],
+                "additionalProperties": false
+              },
+              "dimensions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "origin": {
+                "type": "object",
+                "properties": {
+                  "speaker": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "original_source": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "common_origin_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "speaker",
+                  "original_source",
+                  "common_origin_id"
+                ],
+                "additionalProperties": false
+              },
+              "limitations": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "supersedes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "detail": {
+                "type": "object",
+                "properties": {
+                  "event_type": {
+                    "type": "string",
+                    "enum": [
+                      "auction",
+                      "signing",
+                      "payment",
+                      "transfer",
+                      "completion",
+                      "incorporation",
+                      "production_start",
+                      "disclosure",
+                      "other"
+                    ]
+                  },
+                  "occurred_on": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date"
+                  },
+                  "stage": {
+                    "type": "string",
+                    "enum": [
+                      "bidding",
+                      "proposed",
+                      "signed",
+                      "paid",
+                      "transferred",
+                      "completed",
+                      "operating",
+                      "planned",
+                      "unspecified"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "event_type",
+                  "occurred_on",
+                  "stage",
+                  "description"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "record_id",
+              "record_type",
+              "source",
+              "locator",
+              "excerpts",
+              "disclosed_on",
+              "as_of",
+              "date_notes",
+              "is_market",
+              "extraction_version",
+              "verification",
+              "object_key",
+              "period",
+              "nature",
+              "numbers",
+              "components",
+              "additivity",
+              "dimensions",
+              "origin",
+              "limitations",
+              "supersedes",
+              "detail"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "record_type": {
+                "type": "string",
+                "enum": [
+                  "obligation"
+                ]
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "pdf",
+                      "choice"
+                    ]
+                  },
+                  "source_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "choice_field": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "report_period": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "source_id",
+                  "choice_field",
+                  "report_period"
+                ],
+                "additionalProperties": false
+              },
+              "locator": {
+                "type": "object",
+                "properties": {
+                  "pdf_pages": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "uniqueItems": true
+                  },
+                  "table": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "section": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "pdf_pages",
+                  "table",
+                  "section"
+                ],
+                "additionalProperties": false
+              },
+              "excerpts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "page",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "disclosed_on": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "as_of": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "date_notes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "is_market": {
+                "type": "boolean"
+              },
+              "extraction_version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "verification": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "待核验",
+                      "代码通过",
+                      "人工复核通过",
+                      "待复核",
+                      "未查值",
+                      "拒收"
+                    ]
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "status",
+                  "note"
+                ],
+                "additionalProperties": false
+              },
+              "object_key": {
+                "type": "object",
+                "properties": {
+                  "subject": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "indicator": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "period": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "subject",
+                  "indicator",
+                  "period"
+                ],
+                "additionalProperties": false
+              },
+              "period": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "instant",
+                      "annual",
+                      "half_year",
+                      "quarter",
+                      "range",
+                      "event",
+                      "unspecified"
+                    ]
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "label"
+                ],
+                "additionalProperties": false
+              },
+              "nature": {
+                "type": "string",
+                "enum": [
+                  "actual",
+                  "guidance",
+                  "institution_forecast",
+                  "judgment",
+                  "secondary"
+                ]
+              },
+              "numbers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "元",
+                        "千元",
+                        "万元",
+                        "百万元",
+                        "十亿元",
+                        "亿元",
+                        "元/股",
+                        "元/芯公里",
+                        "股",
+                        "千股",
+                        "万股",
+                        "百万股",
+                        "%",
+                        "百分点",
+                        "基点",
+                        "倍",
+                        "吨",
+                        "吨/年",
+                        "公里",
+                        "芯公里",
+                        "万芯公里",
+                        "亿芯公里",
+                        "个",
+                        "家",
+                        "席",
+                        "轮",
+                        "dB/km",
+                        "GB",
+                        "亿GB",
+                        "份额",
+                        "万份额",
+                        "人",
+                        "户",
+                        "天",
+                        "工作日",
+                        "月",
+                        "年",
+                        "HKD/CNY",
+                        "CNY/HKD",
+                        "无单位",
+                        "未知"
+                      ]
+                    },
+                    "currency": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "CNY",
+                        "HKD",
+                        "USD",
+                        "EUR",
+                        "GBP",
+                        "JPY",
+                        "IDR",
+                        "MYR",
+                        "PLN",
+                        "COP",
+                        "MXN",
+                        "EGP",
+                        "AED",
+                        "BRL",
+                        "ZAR",
+                        "PEN",
+                        "VND",
+                        "INR",
+                        "RUB",
+                        "AUD",
+                        "CHF",
+                        "SGD",
+                        "CAD",
+                        "TRY",
+                        "KRW",
+                        "THB",
+                        null
+                      ]
+                    },
+                    "source_unit": {
+                      "type": "string",
+                      "enum": [
+                        "元",
+                        "千元",
+                        "万元",
+                        "百万元",
+                        "十亿元",
+                        "亿元",
+                        "元/股",
+                        "元/芯公里",
+                        "股",
+                        "千股",
+                        "万股",
+                        "百万股",
+                        "%",
+                        "百分点",
+                        "基点",
+                        "倍",
+                        "吨",
+                        "吨/年",
+                        "公里",
+                        "芯公里",
+                        "万芯公里",
+                        "亿芯公里",
+                        "个",
+                        "家",
+                        "席",
+                        "轮",
+                        "dB/km",
+                        "GB",
+                        "亿GB",
+                        "份额",
+                        "万份额",
+                        "人",
+                        "户",
+                        "天",
+                        "工作日",
+                        "月",
+                        "年",
+                        "HKD/CNY",
+                        "CNY/HKD",
+                        "无单位",
+                        "未知"
+                      ]
+                    },
+                    "decimals": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 12
+                    },
+                    "qualifier": {
+                      "type": "string",
+                      "enum": [
+                        "exact",
+                        "approximate",
+                        "more_than",
+                        "less_than",
+                        "at_least",
+                        "at_most"
+                      ]
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit",
+                    "currency",
+                    "source_unit",
+                    "decimals",
+                    "qualifier",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "components": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "additivity": {
+                "type": "object",
+                "properties": {
+                  "group": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "standalone",
+                      "total",
+                      "component",
+                      "non_additive"
+                    ]
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "group",
+                  "role",
+                  "reason"
+                ],
+                "additionalProperties": false
+              },
+              "dimensions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "origin": {
+                "type": "object",
+                "properties": {
+                  "speaker": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "original_source": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "common_origin_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "speaker",
+                  "original_source",
+                  "common_origin_id"
+                ],
+                "additionalProperties": false
+              },
+              "limitations": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "supersedes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "detail": {
+                "type": "object",
+                "properties": {
+                  "obligor": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "beneficiary": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "action": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "deadline": {
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ],
+                        "minimum": 0
+                      },
+                      "unit": {
+                        "type": "string",
+                        "enum": [
+                          "business_days",
+                          "calendar_days",
+                          "months",
+                          "years",
+                          "none"
+                        ]
+                      },
+                      "from_event": {
+                        "type": "string"
+                      },
+                      "from_date": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "format": "date"
+                      },
+                      "deadline_on": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "format": "date"
+                      }
+                    },
+                    "required": [
+                      "amount",
+                      "unit",
+                      "from_event",
+                      "from_date",
+                      "deadline_on"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "conditions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "consequences": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "payment_status": {
+                    "type": "string",
+                    "enum": [
+                      "unpaid",
+                      "paid",
+                      "part_paid",
+                      "due",
+                      "unspecified"
+                    ]
+                  }
+                },
+                "required": [
+                  "obligor",
+                  "beneficiary",
+                  "action",
+                  "deadline",
+                  "conditions",
+                  "consequences",
+                  "payment_status"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "record_id",
+              "record_type",
+              "source",
+              "locator",
+              "excerpts",
+              "disclosed_on",
+              "as_of",
+              "date_notes",
+              "is_market",
+              "extraction_version",
+              "verification",
+              "object_key",
+              "period",
+              "nature",
+              "numbers",
+              "components",
+              "additivity",
+              "dimensions",
+              "origin",
+              "limitations",
+              "supersedes",
+              "detail"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "record_type": {
+                "type": "string",
+                "enum": [
+                  "relationship"
+                ]
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "pdf",
+                      "choice"
+                    ]
+                  },
+                  "source_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "choice_field": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "report_period": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "source_id",
+                  "choice_field",
+                  "report_period"
+                ],
+                "additionalProperties": false
+              },
+              "locator": {
+                "type": "object",
+                "properties": {
+                  "pdf_pages": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "uniqueItems": true
+                  },
+                  "table": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "section": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "pdf_pages",
+                  "table",
+                  "section"
+                ],
+                "additionalProperties": false
+              },
+              "excerpts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "page",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "disclosed_on": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "as_of": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "date_notes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "is_market": {
+                "type": "boolean"
+              },
+              "extraction_version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "verification": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "待核验",
+                      "代码通过",
+                      "人工复核通过",
+                      "待复核",
+                      "未查值",
+                      "拒收"
+                    ]
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "status",
+                  "note"
+                ],
+                "additionalProperties": false
+              },
+              "object_key": {
+                "type": "object",
+                "properties": {
+                  "subject": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "indicator": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "period": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "subject",
+                  "indicator",
+                  "period"
+                ],
+                "additionalProperties": false
+              },
+              "period": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "instant",
+                      "annual",
+                      "half_year",
+                      "quarter",
+                      "range",
+                      "event",
+                      "unspecified"
+                    ]
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "label"
+                ],
+                "additionalProperties": false
+              },
+              "nature": {
+                "type": "string",
+                "enum": [
+                  "actual",
+                  "guidance",
+                  "institution_forecast",
+                  "judgment",
+                  "secondary"
+                ]
+              },
+              "numbers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "元",
+                        "千元",
+                        "万元",
+                        "百万元",
+                        "十亿元",
+                        "亿元",
+                        "元/股",
+                        "元/芯公里",
+                        "股",
+                        "千股",
+                        "万股",
+                        "百万股",
+                        "%",
+                        "百分点",
+                        "基点",
+                        "倍",
+                        "吨",
+                        "吨/年",
+                        "公里",
+                        "芯公里",
+                        "万芯公里",
+                        "亿芯公里",
+                        "个",
+                        "家",
+                        "席",
+                        "轮",
+                        "dB/km",
+                        "GB",
+                        "亿GB",
+                        "份额",
+                        "万份额",
+                        "人",
+                        "户",
+                        "天",
+                        "工作日",
+                        "月",
+                        "年",
+                        "HKD/CNY",
+                        "CNY/HKD",
+                        "无单位",
+                        "未知"
+                      ]
+                    },
+                    "currency": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "CNY",
+                        "HKD",
+                        "USD",
+                        "EUR",
+                        "GBP",
+                        "JPY",
+                        "IDR",
+                        "MYR",
+                        "PLN",
+                        "COP",
+                        "MXN",
+                        "EGP",
+                        "AED",
+                        "BRL",
+                        "ZAR",
+                        "PEN",
+                        "VND",
+                        "INR",
+                        "RUB",
+                        "AUD",
+                        "CHF",
+                        "SGD",
+                        "CAD",
+                        "TRY",
+                        "KRW",
+                        "THB",
+                        null
+                      ]
+                    },
+                    "source_unit": {
+                      "type": "string",
+                      "enum": [
+                        "元",
+                        "千元",
+                        "万元",
+                        "百万元",
+                        "十亿元",
+                        "亿元",
+                        "元/股",
+                        "元/芯公里",
+                        "股",
+                        "千股",
+                        "万股",
+                        "百万股",
+                        "%",
+                        "百分点",
+                        "基点",
+                        "倍",
+                        "吨",
+                        "吨/年",
+                        "公里",
+                        "芯公里",
+                        "万芯公里",
+                        "亿芯公里",
+                        "个",
+                        "家",
+                        "席",
+                        "轮",
+                        "dB/km",
+                        "GB",
+                        "亿GB",
+                        "份额",
+                        "万份额",
+                        "人",
+                        "户",
+                        "天",
+                        "工作日",
+                        "月",
+                        "年",
+                        "HKD/CNY",
+                        "CNY/HKD",
+                        "无单位",
+                        "未知"
+                      ]
+                    },
+                    "decimals": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 12
+                    },
+                    "qualifier": {
+                      "type": "string",
+                      "enum": [
+                        "exact",
+                        "approximate",
+                        "more_than",
+                        "less_than",
+                        "at_least",
+                        "at_most"
+                      ]
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit",
+                    "currency",
+                    "source_unit",
+                    "decimals",
+                    "qualifier",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "components": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "additivity": {
+                "type": "object",
+                "properties": {
+                  "group": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "standalone",
+                      "total",
+                      "component",
+                      "non_additive"
+                    ]
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "group",
+                  "role",
+                  "reason"
+                ],
+                "additionalProperties": false
+              },
+              "dimensions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "origin": {
+                "type": "object",
+                "properties": {
+                  "speaker": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "original_source": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "common_origin_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "speaker",
+                  "original_source",
+                  "common_origin_id"
+                ],
+                "additionalProperties": false
+              },
+              "limitations": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "supersedes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "detail": {
+                "type": "object",
+                "properties": {
+                  "subject": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "object": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "relationship_type": {
+                    "type": "string",
+                    "enum": [
+                      "ownership",
+                      "subsidiary",
+                      "renamed_to",
+                      "director",
+                      "identity_candidate",
+                      "independent_party",
+                      "other"
+                    ]
+                  },
+                  "starts_on": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date"
+                  },
+                  "ends_on": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "current",
+                      "prospective",
+                      "historical",
+                      "unspecified"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "subject",
+                  "object",
+                  "relationship_type",
+                  "starts_on",
+                  "ends_on",
+                  "status",
+                  "description"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "record_id",
+              "record_type",
+              "source",
+              "locator",
+              "excerpts",
+              "disclosed_on",
+              "as_of",
+              "date_notes",
+              "is_market",
+              "extraction_version",
+              "verification",
+              "object_key",
+              "period",
+              "nature",
+              "numbers",
+              "components",
+              "additivity",
+              "dimensions",
+              "origin",
+              "limitations",
+              "supersedes",
+              "detail"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "record_type": {
+                "type": "string",
+                "enum": [
+                  "statement"
+                ]
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "pdf",
+                      "choice"
+                    ]
+                  },
+                  "source_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "choice_field": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "report_period": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "source_id",
+                  "choice_field",
+                  "report_period"
+                ],
+                "additionalProperties": false
+              },
+              "locator": {
+                "type": "object",
+                "properties": {
+                  "pdf_pages": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "uniqueItems": true
+                  },
+                  "table": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "section": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "pdf_pages",
+                  "table",
+                  "section"
+                ],
+                "additionalProperties": false
+              },
+              "excerpts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "page",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "disclosed_on": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "as_of": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "date_notes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "is_market": {
+                "type": "boolean"
+              },
+              "extraction_version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "verification": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "待核验",
+                      "代码通过",
+                      "人工复核通过",
+                      "待复核",
+                      "未查值",
+                      "拒收"
+                    ]
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "status",
+                  "note"
+                ],
+                "additionalProperties": false
+              },
+              "object_key": {
+                "type": "object",
+                "properties": {
+                  "subject": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "indicator": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "period": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "subject",
+                  "indicator",
+                  "period"
+                ],
+                "additionalProperties": false
+              },
+              "period": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "instant",
+                      "annual",
+                      "half_year",
+                      "quarter",
+                      "range",
+                      "event",
+                      "unspecified"
+                    ]
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "label"
+                ],
+                "additionalProperties": false
+              },
+              "nature": {
+                "type": "string",
+                "enum": [
+                  "actual",
+                  "guidance",
+                  "institution_forecast",
+                  "judgment",
+                  "secondary"
+                ]
+              },
+              "numbers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "元",
+                        "千元",
+                        "万元",
+                        "百万元",
+                        "十亿元",
+                        "亿元",
+                        "元/股",
+                        "元/芯公里",
+                        "股",
+                        "千股",
+                        "万股",
+                        "百万股",
+                        "%",
+                        "百分点",
+                        "基点",
+                        "倍",
+                        "吨",
+                        "吨/年",
+                        "公里",
+                        "芯公里",
+                        "万芯公里",
+                        "亿芯公里",
+                        "个",
+                        "家",
+                        "席",
+                        "轮",
+                        "dB/km",
+                        "GB",
+                        "亿GB",
+                        "份额",
+                        "万份额",
+                        "人",
+                        "户",
+                        "天",
+                        "工作日",
+                        "月",
+                        "年",
+                        "HKD/CNY",
+                        "CNY/HKD",
+                        "无单位",
+                        "未知"
+                      ]
+                    },
+                    "currency": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "CNY",
+                        "HKD",
+                        "USD",
+                        "EUR",
+                        "GBP",
+                        "JPY",
+                        "IDR",
+                        "MYR",
+                        "PLN",
+                        "COP",
+                        "MXN",
+                        "EGP",
+                        "AED",
+                        "BRL",
+                        "ZAR",
+                        "PEN",
+                        "VND",
+                        "INR",
+                        "RUB",
+                        "AUD",
+                        "CHF",
+                        "SGD",
+                        "CAD",
+                        "TRY",
+                        "KRW",
+                        "THB",
+                        null
+                      ]
+                    },
+                    "source_unit": {
+                      "type": "string",
+                      "enum": [
+                        "元",
+                        "千元",
+                        "万元",
+                        "百万元",
+                        "十亿元",
+                        "亿元",
+                        "元/股",
+                        "元/芯公里",
+                        "股",
+                        "千股",
+                        "万股",
+                        "百万股",
+                        "%",
+                        "百分点",
+                        "基点",
+                        "倍",
+                        "吨",
+                        "吨/年",
+                        "公里",
+                        "芯公里",
+                        "万芯公里",
+                        "亿芯公里",
+                        "个",
+                        "家",
+                        "席",
+                        "轮",
+                        "dB/km",
+                        "GB",
+                        "亿GB",
+                        "份额",
+                        "万份额",
+                        "人",
+                        "户",
+                        "天",
+                        "工作日",
+                        "月",
+                        "年",
+                        "HKD/CNY",
+                        "CNY/HKD",
+                        "无单位",
+                        "未知"
+                      ]
+                    },
+                    "decimals": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 12
+                    },
+                    "qualifier": {
+                      "type": "string",
+                      "enum": [
+                        "exact",
+                        "approximate",
+                        "more_than",
+                        "less_than",
+                        "at_least",
+                        "at_most"
+                      ]
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit",
+                    "currency",
+                    "source_unit",
+                    "decimals",
+                    "qualifier",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "components": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "additivity": {
+                "type": "object",
+                "properties": {
+                  "group": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "standalone",
+                      "total",
+                      "component",
+                      "non_additive"
+                    ]
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "group",
+                  "role",
+                  "reason"
+                ],
+                "additionalProperties": false
+              },
+              "dimensions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "origin": {
+                "type": "object",
+                "properties": {
+                  "speaker": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "original_source": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "common_origin_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "speaker",
+                  "original_source",
+                  "common_origin_id"
+                ],
+                "additionalProperties": false
+              },
+              "limitations": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "supersedes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "detail": {
+                "type": "object",
+                "properties": {
+                  "speaker": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "content": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "statement_type": {
+                    "type": "string",
+                    "enum": [
+                      "explanation",
+                      "forecast",
+                      "guidance",
+                      "judgment",
+                      "definition",
+                      "risk",
+                      "attribution",
+                      "market_rating",
+                      "market_target",
+                      "other"
+                    ]
+                  },
+                  "attribution_note": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "speaker",
+                  "content",
+                  "statement_type",
+                  "attribution_note"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "record_id",
+              "record_type",
+              "source",
+              "locator",
+              "excerpts",
+              "disclosed_on",
+              "as_of",
+              "date_notes",
+              "is_market",
+              "extraction_version",
+              "verification",
+              "object_key",
+              "period",
+              "nature",
+              "numbers",
+              "components",
+              "additivity",
+              "dimensions",
+              "origin",
+              "limitations",
+              "supersedes",
+              "detail"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "coverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "已抽",
+              "本文档无",
+              "本块未覆盖"
+            ]
+          },
+          "record_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "checked_pages": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "uniqueItems": true
+          },
+          "basis": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "item_id",
+          "status",
+          "record_ids",
+          "checked_pages",
+          "basis"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "records",
+    "coverage"
+  ],
+  "additionalProperties": false
+}

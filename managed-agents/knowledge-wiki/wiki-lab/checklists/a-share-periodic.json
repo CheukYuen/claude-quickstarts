@@ -1,0 +1,23 @@
+{
+  "checklist_version": "s1-1",
+  "document_type": "a-share-periodic",
+  "applies_to": ["A股中报", "A股年报"],
+  "key_convention": "下列$issuer、$period、$subject由文档替换；指标末尾*表示本项目逐科目记录。对象键还须保留分部、产品、地区、合并范围等维度。",
+  "absence_rule": "逐项写明确已查PDF页序、章节及没有该项目的依据；仅有一个块时用本块未覆盖，不能推定整份文档无。",
+  "items": [
+    {"id":"A01","name":"主要会计数据与财务指标","record_types":["metric"],"object_keys":[{"subject":"$issuer","indicator":"main_accounts.*","period":"$period"}],"absence_basis":"列明主要会计数据、财务指标及财务报表目录/正文已查页；缺前期列只标该列缺失，不能整项本文档无。"},
+    {"id":"A02","name":"分部信息","record_types":["metric","statement"],"object_keys":[{"subject":"$issuer","indicator":"segment.*","period":"$period"}],"absence_basis":"检查分部报告及主要经营数据页；写明未披露经营分部或不适用的原文页。对外收入、分部间收入分别记维度。"},
+    {"id":"A03","name":"非经常性损益明细","record_types":["metric","statement"],"object_keys":[{"subject":"$issuer","indicator":"nonrecurring.*","period":"$period"}],"absence_basis":"检查非经常性损益表和其他符合定义项目的说明；不得用净利润替代。跨块续表用本块未覆盖并指向后续页。"},
+    {"id":"A04","name":"收入与成本构成","record_types":["metric","statement"],"object_keys":[{"subject":"$issuer","indicator":"revenue_cost.*","period":"$period"}],"absence_basis":"列明主营业务分析、收入成本附注及产品/地区表已查页；每个缺失维度单列依据。"},
+    {"id":"A05","name":"现金流主要项目","record_types":["metric","statement"],"object_keys":[{"subject":"$issuer","indicator":"cashflow.*","period":"$period"}],"absence_basis":"检查现金流量表及补充资料页；如果仅缺附注明细，应记录主表并注明明细缺失。"},
+    {"id":"A06","name":"借款与债券","record_types":["metric","obligation"],"object_keys":[{"subject":"$issuer","indicator":"debt.*","period":"$period"}],"absence_basis":"检查短期借款、长期借款、应付债券及一年内到期项目；写明无该项的原文页或已查范围，不将空白改零。"},
+    {"id":"A07","name":"担保","record_types":["metric","obligation","relationship"],"object_keys":[{"subject":"$issuer","indicator":"guarantee.*","period":"$period"}],"absence_basis":"检查重大担保、或有事项和关联担保页；无担保须引用明确不适用/无的披露或列已查范围。"},
+    {"id":"A08","name":"关联交易","record_types":["metric","obligation","relationship"],"object_keys":[{"subject":"$issuer","indicator":"related_party.*","period":"$period"}],"absence_basis":"检查重大关联交易、关联方及交易附注页；区分没有交易与关联方存在但本期无该类金额。"},
+    {"id":"A09","name":"承诺及或有事项","record_types":["metric","obligation","statement"],"object_keys":[{"subject":"$issuer","indicator":"commitment_contingency.*","period":"$period"}],"absence_basis":"检查承诺、或有事项及诉讼页；对金额无单位、期限未写或程序未结束分别注明，不能当本文档无。"},
+    {"id":"A10","name":"期后事项","record_types":["event","obligation","statement"],"object_keys":[{"subject":"$issuer","indicator":"subsequent_event.*","period":"$period"}],"absence_basis":"检查资产负债表日后事项及其他重要事项页；引用明确无重大事项的页或详细已查范围。"},
+    {"id":"A11","name":"分红方案","record_types":["metric","obligation","event"],"object_keys":[{"subject":"$issuer","indicator":"dividend.*","period":"$period"}],"absence_basis":"检查利润分配预案、董事会决议及股利附注页；不分红属于有记录的决策，不能标本文档无。"},
+    {"id":"A12","name":"产能与在建工程","record_types":["metric","event","statement"],"object_keys":[{"subject":"$subject","indicator":"capacity_construction.*","period":"$period"}],"absence_basis":"检查经营讨论、投资状况及在建工程附注页；名义产能、在产产能、实际产量分列，缺一项不否认其他项目。"},
+    {"id":"A13","name":"管理层对增长原因的说明","record_types":["statement"],"object_keys":[{"subject":"$issuer","indicator":"management_growth_explanation.*","period":"$period"}],"absence_basis":"检查管理层讨论及主要科目变动原因页；区分管理层解释、指引、假设敏感性测算和转引，注明已查页。"},
+    {"id":"A14","name":"风险因素","record_types":["statement"],"object_keys":[{"subject":"$issuer","indicator":"risk.*","period":"$period"}],"absence_basis":"检查可能面对的风险及重大风险提示页；逐项记录已有风险，只有明确不适用或所查范围未见时才说明缺项。"}
+  ]
+}

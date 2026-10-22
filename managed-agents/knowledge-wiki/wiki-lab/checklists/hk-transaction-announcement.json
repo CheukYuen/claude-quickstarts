@@ -1,0 +1,18 @@
+{
+  "checklist_version": "s1-1",
+  "document_type": "hk-transaction-announcement",
+  "applies_to": ["港股交易公告", "交易补充公告", "交易进展公告"],
+  "key_convention": "$transaction、$party、$target、$period为本文件的交易、主体、期间；不能由后续公告倒填早期阶段。",
+  "absence_rule": "逐项给已查PDF页序、章节及依据。以本文档为界；本文档未载金额/日期不表示现实不存在。",
+  "items": [
+    {"id":"H01","name":"交易阶段与日期","record_types":["event","statement"],"object_keys":[{"subject":"$transaction","indicator":"transaction.stage.*","period":"$period"}],"absence_basis":"检查标题、董事会声明及完成条款页；竞拍、拟签约、签约、付款、过户和完成逐项区分，未知日期null并说明。"},
+    {"id":"H02","name":"对价及组成","record_types":["metric","obligation"],"object_keys":[{"subject":"$transaction","indicator":"consideration.*","period":"$period"}],"absence_basis":"检查对价、定义及付款条款页；人民币金额和港币说明性折算非可加项，保证金属于对价组成还是额外义务须分别记。"},
+    {"id":"H03","name":"付款安排与状态","record_types":["obligation","event","metric"],"object_keys":[{"subject":"$transaction","indicator":"payment.*","period":"$period"}],"absence_basis":"检查付款期限及已付声明页；应付不能当已付。具体付款日缺失时保留截至披露日状态及未知日说明。"},
+    {"id":"H04","name":"偿付支持、履约保证金及其他义务","record_types":["obligation","metric"],"object_keys":[{"subject":"$party","indicator":"other_obligation.*","period":"$period"}],"absence_basis":"检查交易条款、债务支持及保证金页；列明本金/利息/罚息/违约利息组成与as_of，不自动加到对价。没有该义务须列已查页和未见范围。"},
+    {"id":"H05","name":"条件与期限","record_types":["obligation","event"],"object_keys":[{"subject":"$party","indicator":"condition_deadline.*","period":"$period"}],"absence_basis":"检查生效、签约、付款、开产及退款/没收条款页；义务方、期限、起算事件和条件分别记，缺起算日不擅算截止日。"},
+    {"id":"H06","name":"标的财务摘要","record_types":["metric","statement"],"object_keys":[{"subject":"$target","indicator":"target_financial.*","period":"$period"}],"absence_basis":"检查标的资料及财务资料页；资产/负债、税前/税后利润和币种单位各自保留，注明不含这些数据的已查页。"},
+    {"id":"H07","name":"估值基准及交易理由","record_types":["metric","statement"],"object_keys":[{"subject":"$transaction","indicator":"valuation_basis.*","period":"$period"}],"absence_basis":"检查最低竞投价、估值日期、评估方法、对价依据及交易理由页；董事判断不改成独立估值事实，未附评估报告须明确。"},
+    {"id":"H08","name":"交易各方、股权链、更名及产能身份","record_types":["relationship","event","statement","metric"],"object_keys":[{"subject":"$party","indicator":"party_relationship.*","period":"$period"},{"subject":"$target","indicator":"capacity.*","period":"$period"}],"absence_basis":"检查定义、标的资料及完成条款页；名称相近不自动合并，关系的预期/已发生区分，起止日未知用null附说明。缺名义/在产/产量分别列范围。"},
+    {"id":"H09","name":"上市规则分类","record_types":["statement"],"object_keys":[{"subject":"$transaction","indicator":"listing_rule_classification","period":"$period"}],"absence_basis":"检查上市规则涵义页；预计分类与签约后实际分类分开，比例未列明不推算。引用已查分类段或缺失页范围。"}
+  ]
+}

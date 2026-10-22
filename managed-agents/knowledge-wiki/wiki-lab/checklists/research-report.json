@@ -1,0 +1,14 @@
+{
+  "checklist_version":"s1-1",
+  "document_type":"research-report",
+  "applies_to":["机构研报"],
+  "key_convention":"$subject为报告涉及公司或行业，$period为各列期间，$institution为陈述机构。机构模型与法定报表口径分别记。",
+  "absence_rule":"仅阅读所选页时用本块未覆盖；本文档无须说明已查全文页序和相应表格/章节。",
+  "items":[
+    {"id":"R01","name":"机构预测表与历史列","record_types":["metric","statement"],"object_keys":[{"subject":"$subject","indicator":"institution_model.*","period":"$period"}],"absence_basis":"检查估计摘要、财务模型及定义页，A列与E列分开，NA/NM保留状态；注明预测表缺失或未选页。"},
+    {"id":"R02","name":"经营进展、管理层指引与机构判断","record_types":["statement","event","metric"],"object_keys":[{"subject":"$subject","indicator":"research_operating.*","period":"$period"}],"absence_basis":"检查经营更新及研究观点页；公司转述、机构推算和机构判断分别归属，缺原公司公告时注明。"},
+    {"id":"R03","name":"转引出处及共同来源","record_types":["statement","metric"],"object_keys":[{"subject":"$subject","indicator":"secondary_source.*","period":"$period"}],"absence_basis":"检查图表脚注和出处行；CRU等共源标共同出处ID，不能把多份转引当独立验证。未给原始报告日期/版本须注明。"},
+    {"id":"R04","name":"评级及目标价","record_types":["statement","metric"],"object_keys":[{"subject":"$subject","indicator":"rating","period":"$period"},{"subject":"$subject","indicator":"target_price","period":"$period"}],"absence_basis":"检查封面及估值章节；记录is_market=true，评级/目标价缺一项分别列，未读后页用本块未覆盖。"},
+    {"id":"R05","name":"产品价格、行业供需和预测限制","record_types":["metric","statement"],"object_keys":[{"subject":"$subject","indicator":"industry_product.*","period":"$period"}],"absence_basis":"检查行业图表、价格表及注释页；保留型号、价格分母、指数基期、预测者及条件，产品价格不因含价格字样自动列市场证券内容。"}
+  ]
+}
