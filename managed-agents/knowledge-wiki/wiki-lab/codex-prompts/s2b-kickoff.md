@@ -1,6 +1,6 @@
 # wiki-lab v2 S2b 启动 prompt
 
-在 `/Users/leon/Developer/claude-quickstarts/managed-agents/knowledge-wiki/wiki-lab` 工作，分支 `codex/knowledge-wiki-codex-spike`。以当前工作区为基础（S2 的改动可能还没提交）。
+在 `/Users/leon/Developer/claude-quickstarts/managed-agents/knowledge-wiki/wiki-lab` 工作，分支 `codex/knowledge-wiki-codex-spike`。以当前工作区为基础。
 
 S2 证明了单轮抽取可行，抽出的内容大体正确，但成本太高：
 

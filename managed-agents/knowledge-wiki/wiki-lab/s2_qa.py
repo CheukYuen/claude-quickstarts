@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter, defaultdict
+from copy import deepcopy
 from decimal import Decimal
 import hashlib
 import itertools
@@ -12,6 +13,42 @@ from pathlib import Path
 
 import corpus
 import records as contract
+
+
+def semantic_sample(records_by_chunk, size=30, seed=20261022):
+    """Freeze a reproducible S2b sample stratified by actual extraction block.
+
+    Decisions remain pending until a reviewer reads the frozen cited pages.
+    The entire population hash prevents carrying decisions to revised outputs.
+    """
+    import s2_compare
+    rows = []
+    identities = set()
+    for chunk, values in sorted(records_by_chunk.items()):
+        for record in values:
+            identifier = record['record_id']
+            if identifier in identities:
+                raise ValueError('Repeated semantic-sample record_id: ' + identifier)
+            identities.add(identifier)
+            rows.append({'chunk': chunk, 'record_id': identifier,
+                         'pages': record['locator']['pdf_pages'],
+                         'record': deepcopy(record)})
+    population = sorted(rows, key=lambda row: (row['chunk'], row['record_id']))
+    binding = hashlib.sha256(json.dumps(population, ensure_ascii=False,
+                                       sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    selected = s2_compare.stratified_sample(rows, size, lambda row: row['chunk'], seed)
+    for row in selected:
+        row['review'] = {'status': 'pending', 'decision': None,
+                         'reason': None, 'error_types': [], 'evidence_pages': []}
+    return {'schema': 'wiki-lab-s2b-semantic-sample/1', 'seed': seed,
+            'sampling_algorithm': s2_compare.SAMPLING_ALGORITHM,
+            'stratum': 'extraction block; round-robin allocation',
+            'population_sha256': binding, 'population': len(rows),
+            'requested': size, 'selected': len(selected),
+            'population_by_chunk': dict(Counter(row['chunk'] for row in rows)),
+            'selected_by_chunk': dict(Counter(row['chunk'] for row in selected)),
+            'rules': 'S2b硬规则与软规则；主体、指标、期间、as_of、性质、数值单位、范围、维度逐条回读',
+            'rows': selected}
 
 
 def normalized_number(number):

@@ -738,18 +738,379 @@ def frozen_pages(root, source):
     return result
 
 
+# S2b is opt-in: historical S2 acceptance and its replay commands stay frozen.
+S2B_VERSION = 'extract-records-s2b-2'
+S2B_CLI = '/Users/leon/.local/bin/codex'
+S2B_CHUNKS = ('S46.s01', 'S50.s01', 'S34.s03', 'S34.s09', 'S34.s12', 'S42.s01')
+
+
+def summarize_s2b_usage(root):
+    summarize_usage(root)
+    result = load(root / 'usage.json')
+    result['call_limit'] = 16
+    write_json(root / 'usage.json', result)
+    return result
+
+
+def s2b_integrity(root):
+    baseline = load(root / 'integrity-before.json')
+    files = {}
+    for rel in ('runs/p1-20261021', 'runs/s1-20261021', 'runs/s2-20261022', 'DESIGN.md', 'DESIGN-v2.md'):
+        path = HERE / rel
+        for item in sorted(path.rglob('*')) if path.is_dir() else [path]:
+            if item.is_file():
+                files[str(item.relative_to(HERE))] = sha(item)
+    tag = git(HERE / 'runs/p1-20261021/wiki', 'rev-parse', 'refs/tags/p1-sample')
+    changed = sorted(k for k in files.keys() | baseline['files'].keys()
+                     if files.get(k) != baseline['files'].get(k))
+    groups = []
+    for rel in ('runs/p1-20261021', 'runs/s1-20261021', 'runs/s2-20261022', 'DESIGN.md', 'DESIGN-v2.md'):
+        before = {k:v for k,v in baseline['files'].items() if k == rel or k.startswith(rel + '/')}
+        after = {k:v for k,v in files.items() if k == rel or k.startswith(rel + '/')}
+        digest = lambda value: hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
+        groups.append(dict(path=rel, files=len(after), before_sha256=digest(before),
+                           after_sha256=digest(after), unchanged=before == after))
+    result = dict(ok=not changed and tag == baseline['tag'], changed=changed,
+                  tag_before=baseline['tag'], tag_after=tag, protected_files=len(files), groups=groups)
+    write_json(root / 'INPUT-INTEGRITY.json', result)
+    if not result['ok']:
+        raise ValueError('S2b protected input changed')
+    return result
+
+
+def s2b_issuer_names(source):
+    """Bind legal names to verbatim, hash-checked frozen evidence, never records."""
+    registry = load(HERE / 'entities/issuers.json')['issuers']
+    metadata = source.get('metadata_record', {})
+    codes = ([metadata['company_code']] if metadata.get('company_code') else
+             [c['company_code'] for c in metadata.get('coverage', []) if c.get('company_code')])
+    result = []
+    for code in codes:
+        names = registry.get(code)
+        if not names:
+            continue
+        for item in names.values():
+            path = HERE / item['path']
+            if sha(path) != item['sha256'] or item['name'] not in path.read_bytes().decode('utf-8'):
+                raise ValueError('Unverified legal name: ' + code)
+        result.append(dict(company_code=code, legal_names={lang: item['name'] for lang, item in names.items()}))
+    return result
+
+
+def render_s2b_prompt(source, text, checklist, mode='coverage', request=''):
+    metadata = {key: source.get(key) for key in ('id', 'source_id', 'title', 'doc_type')}
+    metadata.update(disclosed_on=source.get('date'), issuers=s2b_issuer_names(source))
+    return template('extract-records', MODE=mode, SOURCE_METADATA=json.dumps(metadata, ensure_ascii=False),
+                    REQUEST=request or '无', CHECKLIST=json.dumps(checklist, ensure_ascii=False),
+                    FIELD_GUIDE=records.compact_field_guide(), PAGE_TEXT=text)
+
+
+def initialize_s2b(root):
+    root = Path(root).resolve()
+    if root.parent != HERE / 'runs' or not root.name.startswith('s2b-'):
+        raise ValueError('S2b artifacts must live in wiki-lab/runs/s2b-*')
+    if git(HERE, 'branch', '--show-current') != 'codex/knowledge-wiki-codex-spike':
+        raise ValueError('S2b branch mismatch')
+    version = subprocess.check_output([S2B_CLI, '--version'], text=True).strip()
+    if version != 'codex-cli 0.163.0':
+        raise ValueError('S2b requires CLI 0.163.0')
+    root.mkdir(parents=True, exist_ok=True)
+    if not (root / 'integrity-before.json').exists():
+        files = {}
+        for rel in ('runs/p1-20261021', 'runs/s1-20261021', 'runs/s2-20261022', 'DESIGN.md', 'DESIGN-v2.md'):
+            path = HERE / rel
+            for item in sorted(path.rglob('*')) if path.is_dir() else [path]:
+                if item.is_file():
+                    files[str(item.relative_to(HERE))] = sha(item)
+        write_json(root / 'integrity-before.json', dict(files=files,
+            tag=git(HERE / 'runs/p1-20261021/wiki', 'rev-parse', 'refs/tags/p1-sample'), cli_version=version))
+    baseline = HERE / 'runs/s2-20261022'
+    chunks = [c for c in load(baseline / 'chunks.json') if c['id'] in S2B_CHUNKS]
+    if len(chunks) != len(S2B_CHUNKS) or {c['id'] for c in chunks} != set(S2B_CHUNKS):
+        raise ValueError('S2b requires all six unique S2 baseline chunks')
+    for chunk in chunks:
+        if sha(Path(chunk['path'])) != chunk['sha256']:
+            raise ValueError('S2 chunk hash changed: ' + chunk['id'])
+    write_json(root / 'chunks.json', chunks)
+    write_json(root / 'corpus-manifest.json', load(baseline / 'corpus-manifest.json'))
+    write_json(root / 'INPUT-CHUNKS.json', dict(ok=len(chunks) == 6,
+        chunks=[dict(id=c['id'], sha256=c['sha256'], matches_s2=True) for c in chunks]))
+    return root
+
+
+class S2bPipeline(S2Pipeline):
+    def probe(self):
+        text = '合成股份有限公司\n合成损益表\n单位：元 币种：人民币\n项目 2025年 2024年\n营业收入 1,234 (56)\n'
+        checklist = dict(items=[dict(id='T01', name='营业收入')])
+        source = dict(id='SYN', source_id='synthetic-only', title='合成文字', date='2026-03-01')
+        prompt = render_s2b_prompt(source, '=== PDF PAGE 1 ===\n' + text, checklist)
+        record = self.invoke('probe', prompt, self.schemas(), dict(is_probe=True, source_chars=len(text)))
+        result = dict(ok=False, schema_accepted=record['status'] == 'completed', record=record)
+        if record['status'] == 'completed' and tool_free(record):
+            try:
+                accepted = records.accept_model_output(load(Path(record['log']) / 'final.json'),
+                    source_id='synthetic-only', disclosed_on=source['date'], extraction_version=S2B_VERSION,
+                    prefix='SYN', pages={('synthetic-only',1):text}, checklist=checklist, compact=True)
+                result.update(accepted)
+                result['ok'] = len(accepted['records']) == 2 and not accepted['rejected']
+            except (ValueError, KeyError, TypeError) as error:
+                result['error'] = str(error)
+        write_json(Path(record['log']) / 'probe-result.json', result)
+        write_json(self.root / 'probe.json', result)
+        return result
+
+    def invoke(self, stage, prompt, schema, metadata=None):
+        if str(self.args.codex) != S2B_CLI:
+            raise ValueError('Use the fixed S2b CLI path')
+        version = subprocess.check_output([S2B_CLI, '--version'], text=True).strip()
+        if version != 'codex-cli 0.163.0':
+            raise ValueError('CLI version changed')
+        with (self.root / 'calls.lock').open('a+') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            ledger = self.root / 'calls.jsonl'
+            rows = ledger.read_text().splitlines() if ledger.exists() else []
+            if len(rows) >= 16:
+                raise RuntimeError('S2b call limit 16 reached')
+            number = len(rows) + 1
+            with ledger.open('a') as stream:
+                stream.write(json.dumps(dict(number=number, stage=stage, reserved_at=time.time())) + '\n')
+                stream.flush()
+                import os
+                os.fsync(stream.fileno())
+        workspace = self.root / 'empty-workspaces' / ('call-%02d' % number)
+        workspace.mkdir(parents=True)
+        try:
+            result = Pipeline.call(self, stage, workspace, prompt, [], output_schema=schema, read_only=True,
+                metadata=dict(call_number=number, configuration=config_identity(),
+                    cli=dict(path=S2B_CLI, version=version, sha256=sha(Path(S2B_CLI))),
+                    prompt_version=S2B_VERSION, schema_sha256=sha(schema),
+                    field_guide_sha256=hashlib.sha256(records.compact_field_guide().encode()).hexdigest(),
+                    **(metadata or {})))
+        except RuntimeError:
+            logs = sorted((self.root / 'logs' / stage).glob('attempt-*/record.json'))
+            if not logs:
+                raise
+            result = load(logs[-1])
+            if result.get('call_number') != number:
+                raise RuntimeError('No log for the newly reserved S2b call')
+            result['log'] = str(logs[-1].parent)
+        summarize_s2b_usage(self.root)
+        return result
+
+    def schemas(self, transport=True):
+        with (self.root / 'snapshot.lock').open('a+') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            return self._schemas_locked()
+
+    def _schemas_locked(self):
+        path = self.root / 'schemas/model-transport.json'
+        candidate = records.compact_model_output_schema(transport=True)
+        if path.exists() and load(path) != candidate:
+            raise ValueError('S2b schema changed after snapshot')
+        write_json(path, candidate)
+        directory = self.root / 'prompt-versions' / S2B_VERSION
+        text = (HERE / 'prompts/extract-records.md').read_text()
+        if S2B_VERSION not in text.splitlines()[0]:
+            raise ValueError('S2b prompt version mismatch')
+        if (directory / 'template.md').exists() and (directory / 'template.md').read_text() != text:
+            raise ValueError('S2b prompt changed: revise version before another call')
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory / 'template.md').write_text(text)
+        (directory / 'field-guide.md').write_text(records.compact_field_guide())
+        return path
+
+    def extract_record_chunk(self, chunk, stage=None, transport=True, mode='coverage', request=''):
+        if mode == 'coverage':
+            baseline = next((c for c in load(HERE / 'runs/s2-20261022/chunks.json')
+                             if c['id'] == chunk['id'] and c['id'] in S2B_CHUNKS), None)
+            if baseline is None or chunk != baseline:
+                raise ValueError('Coverage chunk must exactly equal the frozen S2 baseline')
+        source = next(s for s in load(self.root / 'corpus-manifest.json')['sources'] if s['id'] == chunk['source_id'])
+        text_path = Path(chunk['path'])
+        if sha(text_path) != chunk['sha256']:
+            raise ValueError('S2b input hash changed')
+        checklist = checklist_for(source['id']) if mode == 'coverage' else dict(items=[dict(id=chunk['id'], name=request)])
+        prompt = render_s2b_prompt(source, text_path.read_bytes().decode(), checklist, mode, request)
+        stage = stage or ('extract-' + chunk['id'])
+        record = self.invoke(stage, prompt, self.schemas(), dict(chunk_id=chunk['id'], mode=mode,
+            source_chars=chunk['chars'], chunk_sha256=chunk['sha256'],
+            prompt_template_sha256=sha(HERE / 'prompts/extract-records.md')))
+        result = dict(chunk_id=chunk['id'], source=source['id'], mode=mode, log=record['log'],
+                      call_number=record['call_number'], status=record['status'], prompt_version=S2B_VERSION)
+        log = Path(record['log'])
+        write_json(log / 'input-chunk.json', chunk)
+        write_json(log / 'input-mode.json', dict(mode=mode, request=request))
+        if record['status'] == 'completed' and tool_free(record):
+            try:
+                pages = frozen_pages(self.root, source)
+                allowed = set(chunk['core_pages']) | set(chunk.get('context_pages', []))
+                supplied = {}
+                for fragment in chunk['fragments'] + chunk.get('context_fragments', []):
+                    supplied.setdefault(fragment['page'], []).append(fragment['text'])
+                result.update(records.accept_model_output(load(log / 'final.json'),
+                    source_id=source['source_id'], disclosed_on=source['date'], extraction_version=S2B_VERSION,
+                    prefix=chunk['id'], pages={k:v for k,v in pages.items() if k[1] in allowed},
+                    checklist=checklist, context_pages=chunk.get('context_pages', []), supplied_spans=supplied, compact=True))
+                record.update(output_records=result['output_records'], accepted_records=len(result['records']),
+                              rejected_records=len(result['rejected']), rejection_rate=result['rejection_rate'])
+            except (ValueError, KeyError, TypeError, OSError) as error:
+                result.update(status='invalid_output', error=str(error))
+        elif record['status'] == 'completed':
+            result['status'] = 'tools_executed'
+        result['binding'] = dict(chunk_sha256=chunk['sha256'], prompt_version=S2B_VERSION,
+            schema_sha256=record['schema_sha256'], prompt_template_sha256=record['prompt_template_sha256'],
+            final_sha256=sha(log / 'final.json') if (log / 'final.json').exists() else None)
+        record['s2_status'] = result['status']
+        write_json(log / 'record.json', record)
+        write_json(log / 'acceptance.json', result)
+        target = 'accepted' if result['status'] == 'completed' else 'rejected/whole-blocks'
+        write_json(self.root / target / (chunk['id'] + '.json'), result)
+        for name, key in [('rejected', 'rejected'), ('soft-queue', 'soft_queue'), ('outside-index', 'outside_index'), ('entities', 'entities')]:
+            write_json(self.root / name / (chunk['id'] + '.json'), result.get(key, []))
+        summarize_s2b_usage(self.root)
+        return result
+
+
+def s2b_request_chunk(root, request_id, header_pages=(), request_spec=None):
+    """Use requested frozen pages; explicitly needed header pages are context only.
+
+    Both measured requests already contain their column headers. A continuation
+    can supply additional header pages without extracting their independent facts.
+    """
+    requests = {
+        'R1': ('S34', [111, 112], '固定资产原值本期增加（购置、在建工程转入）、处置或报废，按类别。只抽这些行，列定义保留所有原印列。'),
+        'R2': ('S42', [3], '季度历史表2023–2024年各季度的EBIT、税前利润、销售费用。只抽这些行及所有2023–2024季度列。'),
+    }
+    if request_spec is None:
+        short, core, query = requests[request_id]
+    else:
+        if request_spec.get('request_id') != request_id or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]*', request_id):
+            raise ValueError('Invalid request id')
+        short, core, query = request_spec['source'], request_spec['pages'], request_spec['fact']
+        header_pages = request_spec.get('header_pages', header_pages)
+        if (not isinstance(core, list) or not core or
+                any(type(p) is not int or p < 1 for p in core) or len(set(core)) != len(core) or
+                not isinstance(query, str) or not query.strip()):
+            raise ValueError('Request requires positive unique pages and a fact description')
+    if any(type(p) is not int or p < 1 for p in header_pages):
+        raise ValueError('Invalid read-only header page')
+    context = sorted(set(header_pages) - set(core))
+    source = next(s for s in load(root / 'corpus-manifest.json')['sources'] if s['id'] == short)
+    pages = frozen_pages(root, source)
+    fragments = [dict(page=p, start=0, end=len(pages[(source['source_id'], p)]),
+                      text=pages[(source['source_id'], p)]) for p in core]
+    contexts = [dict(page=p, start=0, end=len(pages[(source['source_id'], p)]),
+                    text=pages[(source['source_id'], p)]) for p in context]
+    text = '\n'.join(('=== READ-ONLY CONTEXT PDF PAGE %s ===\n%s' % (f['page'], f['text'])) for f in contexts)
+    text += '\n' + '\n'.join('=== PDF PAGE %s ===\n%s' % (f['page'], f['text']) for f in fragments)
+    path = root / 'requests' / (request_id + '.md')
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text)
+    chunk = dict(id=request_id, source_id=short, path=str(path), sha256=sha(path),
+                 chars=sum(len(f['text']) for f in fragments), core_pages=core, context_pages=context,
+                 fragments=fragments, context_fragments=contexts)
+    write_json(path.with_suffix('.json'), dict(request_id=request_id, query=query, chunk=chunk))
+    return chunk, query
+
+
+def s2b_collect(root):
+    grouped = {}
+    for path in sorted((root / 'accepted').glob('*.json')):
+        result = load(path)
+        grouped.setdefault(result['source'], []).extend(result['records'])
+    for short, rows in grouped.items():
+        write_json(root / 'records' / (short + '.json'), rows)
+    return sum(len(rows) for rows in grouped.values())
+
+
+def s2b_revalidate(root, chunk_id, attempt=None):
+    """Replay local checks after a code fix, preserving the original model receipt."""
+    candidates = [(load(p).get('call_number', 0), p)
+                  for p in (root / 'logs' / ('extract-' + chunk_id)).glob('attempt-*/record.json')]
+    if not candidates:
+        raise ValueError('No saved call for ' + chunk_id)
+    latest_number, latest_path = max(candidates)
+    receipt_path = (root / 'logs' / ('extract-' + chunk_id) / ('attempt-%02d' % attempt) / 'record.json'
+                    if attempt is not None else latest_path)
+    receipt, log = load(receipt_path), receipt_path.parent
+    if not (log / 'receipt-before-revalidation.json').exists():
+        write_json(log / 'receipt-before-revalidation.json', receipt)
+    if receipt['status'] != 'completed' or not tool_free(receipt):
+        raise ValueError('Only completed tool-free calls can be revalidated')
+    chunk = load(log / 'input-chunk.json')
+    if sha(Path(chunk['path'])) != chunk['sha256']:
+        raise ValueError('Saved input changed')
+    source = next(s for s in load(root / 'corpus-manifest.json')['sources'] if s['id'] == chunk['source_id'])
+    mode = load(log / 'input-mode.json')
+    checklist = checklist_for(source['id']) if mode['mode'] == 'coverage' else dict(items=[dict(id=chunk_id, name=mode['request'])])
+    allowed = set(chunk['core_pages']) | set(chunk.get('context_pages', []))
+    supplied = {}
+    for fragment in chunk['fragments'] + chunk.get('context_fragments', []):
+        supplied.setdefault(fragment['page'], []).append(fragment['text'])
+    result = records.accept_model_output(load(log / 'final.json'), source_id=source['source_id'],
+        disclosed_on=source['date'], extraction_version=receipt['prompt_version'], prefix=chunk_id,
+        pages={k:v for k,v in frozen_pages(root, source).items() if k[1] in allowed},
+        checklist=checklist, context_pages=chunk.get('context_pages', []), supplied_spans=supplied, compact=True)
+    result.update(chunk_id=chunk_id, source=source['id'], mode=mode['mode'], log=str(log),
+        call_number=receipt['call_number'], status='completed', prompt_version=receipt['prompt_version'],
+        revalidated_at=time.time(), validation_code_sha256=sha(HERE / 'records.py'),
+        binding=dict(chunk_sha256=chunk['sha256'], prompt_version=receipt['prompt_version'],
+            schema_sha256=receipt['schema_sha256'], prompt_template_sha256=receipt['prompt_template_sha256'],
+            final_sha256=sha(log / 'final.json')))
+    write_json(log / 'acceptance-revalidated.json', result)
+    if receipt['call_number'] == latest_number:
+        write_json(root / 'accepted' / (chunk_id + '.json'), result)
+        for name, key in [('rejected','rejected'), ('soft-queue','soft_queue'), ('outside-index','outside_index'), ('entities','entities')]:
+            write_json(root / name / (chunk_id + '.json'), result[key])
+    receipt.update(s2_status='completed', output_records=result['output_records'],
+        accepted_records=len(result['records']), rejected_records=len(result['rejected']),
+        rejection_rate=result['rejection_rate'], revalidation_code_sha256=result['validation_code_sha256'])
+    write_json(receipt_path, receipt)
+    summarize_s2b_usage(root)
+    return result
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('command', choices=('init', 'integrity', 'probe', 'extract', 'gate', 'full', 'collect', 'adopt', 'supplement', 'diagnose', 'snapshot', 'metrics'))
+    p.add_argument('command', choices=('init', 'integrity', 'probe', 'extract', 'gate', 'full', 'collect', 'adopt', 'supplement', 'diagnose', 'snapshot', 'metrics', 's2b-init', 's2b-probe', 's2b-extract', 's2b-request', 's2b-collect', 's2b-integrity', 's2b-revalidate'))
     p.add_argument('--run-dir', type=Path, default=DEFAULT_RUN)
     p.add_argument('--round', type=int, default=1)
+    p.add_argument('--attempt', type=int, help='S2b local replay of a specific saved attempt; does not replace a newer selection')
     p.add_argument('--chunk')
+    p.add_argument('--request-file', type=Path, help='S2b JSON: request_id, fact, source, pages, optional header_pages')
     p.add_argument('--stage')
     p.add_argument('--transport', action='store_true')
     p.add_argument('--workers', type=int, default=2)
     p.add_argument('--codex', default='codex')
     p.add_argument('--stage-timeout', type=int, default=1800)
     args = p.parse_args()
+    if args.command.startswith('s2b-'):
+        root = initialize_s2b(args.run_dir if args.run_dir != DEFAULT_RUN else HERE / 'runs/s2b-20261022')
+        args.codex = S2B_CLI
+        pipeline = S2bPipeline(root, args)
+        if args.command == 's2b-init':
+            print(root)
+        elif args.command == 's2b-probe':
+            result = pipeline.probe()
+            print(json.dumps(dict(ok=result['ok'], error=result.get('error'), log=result['record']['log'])))
+        elif args.command == 's2b-extract':
+            chunk = next(c for c in load(root / 'chunks.json') if c['id'] == args.chunk)
+            result = pipeline.extract_record_chunk(chunk)
+            print(json.dumps({k:result.get(k) for k in ('status','log','output_records','rejection_rate','error')}))
+        elif args.command == 's2b-request':
+            spec = load(args.request_file) if args.request_file else None
+            request_id = spec['request_id'] if spec else args.chunk
+            chunk, request = s2b_request_chunk(root, request_id, request_spec=spec)
+            result = pipeline.extract_record_chunk(chunk, mode='request', request=request)
+            print(json.dumps({k:result.get(k) for k in ('status','log','output_records','rejection_rate','error')}))
+        elif args.command == 's2b-collect':
+            print(json.dumps(dict(records=s2b_collect(root))))
+        elif args.command == 's2b-revalidate':
+            result = s2b_revalidate(root, args.chunk, args.attempt)
+            print(json.dumps(dict(records=len(result['records']), rejected=len(result['rejected']))))
+        else:
+            print(json.dumps(s2b_integrity(root)))
+        return
     root = initialize(args.run_dir)
     pipeline = S2Pipeline(root, args)
     if args.command == 'init':

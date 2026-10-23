@@ -154,3 +154,22 @@ PYTHONDONTWRITEBYTECODE=1 python3 s2.py integrity --run-dir runs/s2-new
 有效但未被最终样本选中的裁决留在`retention.skipped_not_selected`，只能作为定向回读证据。最终语义80条、反向40条的分母只取最终队列的实际样本；保留裁决没有覆盖到的最终样本仍待回读，不能用预读总数或`skipped_not_selected`补足分母。转移回执保留旧/新队列哈希、原草稿哈希、reviewer和来源哈希；随后通过`s2_report.py RUN --phase PHASE --reviews RUN/reviews/retained-final.json`应用。
 
 日期合同留有待S3决定的歧义：历史事件的`occurred_on`已知时，`as_of`能否表示当前公告对该事件的观察日；通用方法的期间“不适用”与期间“未知”如何区分。S2保留原输出与逐条回读结论，不据此改动prompt、Schema或核验规则。
+
+S2b 小样本命令（不启用全量或S3）
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 s2.py s2b-init
+PYTHONDONTWRITEBYTECODE=1 python3 s2.py s2b-probe
+PYTHONDONTWRITEBYTECODE=1 python3 s2.py s2b-extract --chunk S46.s01
+# 其余固定块：S50.s01、S34.s03、S34.s09、S34.s12、S42.s01
+PYTHONDONTWRITEBYTECODE=1 python3 s2.py s2b-request --chunk R1
+PYTHONDONTWRITEBYTECODE=1 python3 s2.py s2b-request --chunk R2
+PYTHONDONTWRITEBYTECODE=1 python3 s2.py s2b-collect
+PYTHONDONTWRITEBYTECODE=1 python3 s2b_measure.py --run runs/s2b-20261022
+PYTHONDONTWRITEBYTECODE=1 python3 s2.py s2b-integrity
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s . -p 'test_*.py' -v
+```
+
+默认目录 `runs/s2b-20261022/`，可用 `--run-dir runs/s2b-YYYYMMDD` 指定新轮次；预算在该目录 `calls.jsonl` 中预留，固定CLI及版本，最多16次。每次显式extract/request均消耗调用，不隐式重试；重跑会在日志中保留各次尝试。`accepted`、`rejected`、`soft-queue`、`outside-index`、`entities` 分别保留展开结果及队列。`adjudications.json` 保存带页码和依据的逐条回读裁决，重新测量会把裁决并入对照JSON。名称表、输出合同及新规则详见 [RECORDS.md](RECORDS.md)，实现取舍见 [S2_NOTES.md](S2_NOTES.md)。
+
+自定义请求用 `s2.py s2b-request --request-file REQUEST.json`，文件形如 `{"request_id":"R3","fact":"合成事实","source":"S34","pages":[111,112],"header_pages":[]}`；header_pages仅列真正需要的续表列头页，不默认附前一页。`s2.py s2b-revalidate --chunk ID` 只重放本地核验，保留原输出及原回执，不发模型调用。

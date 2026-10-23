@@ -78,3 +78,26 @@ S2调用与存储
 `accept_model_output()`将顶层/覆盖结构失败与单条记录失败分开：后者只拒收该条，核验状态为拒收，并保留原输出和错误。引用被拒收记录或仅落只读上下文的“已抽”降为“未通过核验”。摘录同时必须存在于冻结页及真正送入该块的字符区间；全落只读上下文的合格记录被丢弃。文档级覆盖按任一块已抽、否则有带页码依据的本文档无、否则未覆盖合并。
 
 `s2_qa.py`使用同一对象键和Decimal生成质检队列，包括同日冲突、跨日覆盖、合计/分部等式、A01与Choice严格键对齐及公告覆盖链。查值报警、约数/舍入差额和无法比较分别保存，均不自动提升为研究缺口或内容接受。
+
+S2b 紧凑传输与核验分级
+
+`extract-records-s2b-1` 仅改变模型传输，存储仍为 `wiki-records/1.0`。旧 S1/S2 校验默认路径保留；S2b 显式调用 `accept_model_output(..., compact=True)`。
+
+紧凑输出的顶层为 `schema_version=wiki-compact/1.0`、`entities`、`tables`、`records`、`coverage`、`outside_index`。每个实体有 `id/type/names/canonical/renamed_from`；记录只引用编号，展开时规范名填入 `object_key.subject`。名称表的每个名称绑定冻结页路径和 SHA256，代码核实逐字出现后，按来源元数据 `company_code` 或研报 `coverage` 代码加入每块输入。名称表不构成跨文档主体登记表。
+
+表级共享 `id/name/pages/header/entity/scope/unit/currency/extras`；列写 `label/period/kind/nature/as_of/unit/currency/dimensions/extras`；行写 `id/name/excerpts/values/extras`。必须定义所有原印数值列，包括历史、同比、占比、变动列。每行 values 数量必须等于列数；原印字符串如 `"1,234"`、`"(56)"` 由代码解析，NA/NM变为值状态，空字符串不生成记录并计数。每个非空单元格独立展开 metric，编号为 `行id-c001` 等；摘录是行摘录加表头摘录。coverage 引用表/行编号时自动展开至单元格。非连续段落必须分开保存，每段仍限500非空白字符。行摘录中数值多于非空单元格时，整行生成记录进入疑似漏列队列；行号、注号也可能触发，须回读。
+
+非表格只写 `id/type/entity/indicator/period/kind/nature/as_of/excerpts/numbers/extras`。稀疏 `extras=[{key,value}]` 的 value 是 JSON 编码字符串，代码按允许字段集合解析并逐条校验类型。常见低频字段 `components/additivity/origin/dimensions/limitations/date_notes` 不用时由代码补默认空值，真正的业务细节不自动编造。表、行、列 extras 按顺序覆盖，JSON strict 所要求的全部固定键仍出现。生成函数为 `compact_model_output_schema(transport=True)`，传输兼容约束与本地完整校验分离。
+
+硬规则失败拒收：字段类型、枚举、日期格式；摘录在冻结页及实际供给片段中连续出现；每段500字上限；每个结构化数值在摘录中出现。整数词复用 `_integer_words`；只有时间分母不同的同量纲单位（如吨与吨/年）按同刻度比，不扩展跨量纲换算。
+
+软规则失败照收，verification=待复核，进入 `soft-queue`：total/component缺组；转引缺 original_source/common_origin_id；null日期缺逐字段说明；statement打包多指标/多期数值；疑似漏列；另将未知单位缺口径说明、机构预测缺陈述方、评级或目标价缺市场标记留作语义软提示。程序通过不等于语义接受；软问题数量按记录和规则分别计。
+
+主体、期间、日期和维度的新规则：
+
+- 公司事实用公司实体，规范名为本文档语言的法定全称。交易的对价、阶段、付款、条件、估值基准用交易实体，规范名为“收购方全称收购标的全称”，双方取本文档印出的名称；期间固定“本次交易”及 event，日期另存。标的公司产能和财务仍用标的公司。
+- 已知事件发生日时 as_of 取发生日，未知则 null 并说明。状态和余额用其所处日期。仅月份的数据以2026-07等期间表达，as_of=null，不能用披露日代替。
+- dimensions 只放分部、产品、地区、项目期别、对外/分部间、调整前后、原预测/本次预测等真正拆分。“本期数”“上年同期”不放维度；非期间列通过列 label 保留账面余额、坏账准备、计提比例、同比、占比等指标含义；已由真正拆分维度表达的列名不重复加入指标。
+- Choice 同名原表行保留 original_table_item 作为查值依据，record_indicator 作为记录键。不同报表位置的补充资料加位置前缀，同一原行的旧/新字段只发出一个，依据写在字段表 `s2b_naming`。A01 主表指标保持原名。
+
+coverage 只抽必抽清单项，本块内相关行列抽全，不能确定归属时纳入清单。清单外的小节和表格只写 `outside_index=[{page,title}]`。请求模式以请求编号和范围为输入，读取指定冻结页，并带只读续表表头上下文；使用同一紧凑输出和逐条核验。

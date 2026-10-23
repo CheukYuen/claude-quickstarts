@@ -18,6 +18,35 @@ DEFAULT_PERIODS = ('2026-06-30', '2025-12-31', '2024-12-31',
 DEFAULT_SUBJECT = '长飞光纤光缆股份有限公司'
 
 
+def record_indicator(mapping):
+    """Keep printed row evidence separate from its unambiguous record key."""
+    return mapping.get('record_indicator', mapping['original_table_item'])
+
+
+def validate_conversion_names(field_map):
+    """Refuse ambiguous emitted names when a map opts into S2b naming.
+
+    Legacy/synthetic maps retain their prior contract. The S2b map documents
+    every duplicate group, including intentional suppression of old fields.
+    """
+    if not field_map.get('s2b_naming'):
+        return
+    names = {}
+    for mapping in field_map['fields']:
+        policy = mapping.get('conversion_policy', 'emit')
+        if policy not in ('emit', 'skip'):
+            raise ValueError('Invalid Choice conversion_policy')
+        if policy == 'skip' and not mapping.get('conversion_basis'):
+            raise ValueError('Skipped Choice field requires conversion_basis')
+        if mapping['category'] != '原表科目' or policy == 'skip':
+            continue
+        name = record_indicator(mapping)
+        identity = mapping['table'] + '.' + mapping['choice_field']
+        if not name or name in names:
+            raise ValueError('Duplicate emitted Choice indicator: ' + str(name))
+        names[name] = identity
+
+
 def period_definition(table, report_date):
     """Canonical labels: balance-sheet date, annual YYYY, half-year YYYYH1."""
     if table == 'BalanceStatementSHSZ':
@@ -42,8 +71,10 @@ def convert_payload(payload, binding, field_map, source_root=corpus.SOURCE_ROOT,
     definitions = {(f['table'], f['choice_field']): f for f in field_map['fields']}
     if len(definitions) != len(field_map['fields']):
         raise ValueError('Duplicate Choice field definition')
+    validate_conversion_names(field_map)
     categories = Counter(f['category'] for f in field_map['fields'])
     result, audits, nulls, invalid, skipped = [], [], [], [], Counter()
+    suppressed = []
     seen_queries = set()
     index = index if index is not None else choice_audit.manifest_index(Path(source_root))
     for selected in binding['queries']:
@@ -81,6 +112,11 @@ def convert_payload(payload, binding, field_map, source_root=corpus.SOURCE_ROOT,
                 if mapping['category'] != '原表科目':
                     skipped[mapping['category']] += 1
                     continue
+                if mapping.get('conversion_policy') == 'skip':
+                    suppressed.append({'table': table, 'field': field,
+                                       'report_period': report_date,
+                                       'reason': mapping['conversion_basis']})
+                    continue
                 raw = row[field]
                 if raw is None or (isinstance(raw, str) and not raw.strip()):
                     nulls.append({'table': table, 'field': field, 'report_period': report_date})
@@ -108,13 +144,13 @@ def convert_payload(payload, binding, field_map, source_root=corpus.SOURCE_ROOT,
                 record_id = f'CHOICE.{table}.{report_date}.{field}'
                 check['record_id'] = record_id
                 record = records.make_record('metric', record_id, binding['source_id'], subject,
-                    mapping['original_table_item'], period['label'], notice, report_date, [],
+                    record_indicator(mapping), period['label'], notice, report_date, [],
                     {'scope': 'consolidated', 'scope_note': 'ReportType=1（合并报表，当期最初公布）',
                      'value_status': 'reported', 'value_note': ''},
                     source={'kind': 'choice', 'source_id': binding['source_id'],
                             'choice_field': table + '.' + field, 'report_period': report_date},
                     period=period,
-                    extraction_version=records.VERSION + '/s2-choice-1',
+                    extraction_version=records.VERSION + ('/s2b-choice-1' if field_map.get('s2b_naming') else '/s2-choice-1'),
                     verification={'status': check['verification_status'], 'note': check['reason']},
                     numbers=[records.number(format(value, 'f'), unit, rule['currency'])],
                     limitations=['Choice原表科目直接采用；全文查值只报警，不证明科目行或期间列定位。'])
@@ -126,14 +162,24 @@ def convert_payload(payload, binding, field_map, source_root=corpus.SOURCE_ROOT,
                'selected_periods': sorted({period for _, period in seen_queries}),
                'field_period_opportunities': sum(1 for table, period in seen_queries
                    for field_table, field in definitions if table == field_table
-                   and definitions[(field_table, field)]['category'] == '原表科目'),
+                   and definitions[(field_table, field)]['category'] == '原表科目'
+                   and definitions[(field_table, field)].get('conversion_policy') != 'skip'),
                'records': len(result), 'empty_original_values': len(nulls),
                'invalid_original_values': len(invalid), 'skipped_field_periods': dict(skipped),
                'value_checks': dict(Counter(item['status'] for audit in audits for item in audit['checks'])),
                'verification_statuses': dict(Counter(r['verification']['status'] for r in result)),
                'no_api_calls': True, 'classification_basis': 'field-level mapping, unchanged across periods'}
+    summary['suppressed_duplicate_field_periods'] = len(suppressed)
+    summary['naming_version'] = field_map.get('s2b_naming', {}).get('version')
+    # No number-based deduplication: genuinely distinct printed positions retain
+    # their own keys, even when the values happen to be equal.
+    from s2_qa import build_qa
+    summary['same_key_conflicts'] = len(build_qa(result)['same_key_conflicts'])
+    if field_map.get('s2b_naming') and summary['same_key_conflicts']:
+        raise ValueError('S2b Choice conversion still has same-key conflicts')
     return {'records': result, 'value_checks': audits, 'summary': summary,
-            'empty_values': nulls, 'invalid_values': invalid}
+            'empty_values': nulls, 'invalid_values': invalid,
+            'suppressed_fields': suppressed}
 
 
 def convert_choice(run_dir, source_root=corpus.SOURCE_ROOT,
@@ -156,7 +202,8 @@ def convert_choice(run_dir, source_root=corpus.SOURCE_ROOT,
     result['summary']['vendor_sha256'] = binding['vendor_sha256']
     for name, value in (('records', result['records']), ('value-checks', result['value_checks']),
                         ('summary', result['summary']), ('empty-values', result['empty_values']),
-                        ('invalid-values', result['invalid_values'])):
+                        ('invalid-values', result['invalid_values']),
+                        ('suppressed-fields', result['suppressed_fields'])):
         corpus.dump(run_dir / 'choice' / (name + '.json'), value)
     result['binding'] = binding
     return result

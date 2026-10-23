@@ -403,7 +403,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md",
+      "record_indicator": "其他应收款",
+      "record_position": "资产负债表/其他应收款合计",
+      "conversion_policy": "emit",
+      "conversion_basis": "TOTAL_OTHER_RECE为含应收利息、应收股利的合计，OTHERREC为其中分项；保留主表合计原行名，分项加位置前缀，不能因部分期间数值相等合并。"
     },
     {
       "table": "BalanceStatementSHSZ",
@@ -466,7 +470,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md",
+      "record_indicator": "其他应收款分项/其他应收款",
+      "record_position": "资产负债表/其他应收款合计之其他应收款分项",
+      "conversion_policy": "emit",
+      "conversion_basis": "TOTAL_OTHER_RECE为含应收利息、应收股利的合计，OTHERREC为其中分项；保留主表合计原行名，分项加位置前缀，不能因部分期间数值相等合并。"
     },
     {
       "table": "BalanceStatementSHSZ",
@@ -2216,7 +2224,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md",
+      "record_indicator": "应付债券/优先股",
+      "record_position": "资产负债表/非流动负债/应付债券",
+      "conversion_policy": "emit",
+      "conversion_basis": "两个字段分别位于应付债券和其他权益工具，按负债与权益位置区分。"
     },
     {
       "table": "BalanceStatementSHSZ",
@@ -2237,7 +2249,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md",
+      "record_indicator": "应付债券/永续债",
+      "record_position": "资产负债表/非流动负债/应付债券",
+      "conversion_policy": "emit",
+      "conversion_basis": "两个字段分别位于应付债券和其他权益工具，按负债与权益位置区分。"
     },
     {
       "table": "BalanceStatementSHSZ",
@@ -2573,7 +2589,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md",
+      "record_indicator": "其他权益工具/优先股",
+      "record_position": "资产负债表/所有者权益/其他权益工具",
+      "conversion_policy": "emit",
+      "conversion_basis": "两个字段分别位于应付债券和其他权益工具，按负债与权益位置区分。"
     },
     {
       "table": "BalanceStatementSHSZ",
@@ -2594,7 +2614,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md",
+      "record_indicator": "其他权益工具/永续债",
+      "record_position": "资产负债表/所有者权益/其他权益工具",
+      "conversion_policy": "emit",
+      "conversion_basis": "两个字段分别位于应付债券和其他权益工具，按负债与权益位置区分。"
     },
     {
       "table": "BalanceStatementSHSZ",
@@ -2615,7 +2639,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010001.md",
+      "record_indicator": "其他权益工具/其他",
+      "record_position": "资产负债表/所有者权益/其他权益工具",
+      "conversion_policy": "emit",
+      "conversion_basis": "权益工具中的其他与现金流调节的其他处于不同报表位置，分别加位置前缀。"
     },
     {
       "table": "BalanceStatementSHSZ",
@@ -3329,7 +3357,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md",
+      "record_indicator": "营业总收入/利息收入",
+      "record_position": "利润表/营业总收入",
+      "conversion_policy": "emit",
+      "conversion_basis": "INTREVE是营业总收入中的利息收入，QZLXSR是财务费用中的利息收入，按上级科目区分。"
     },
     {
       "table": "IncomeStatementSHSZ",
@@ -3728,7 +3760,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md",
+      "record_indicator": "财务费用",
+      "record_position": "利润表主表/财务费用",
+      "conversion_policy": "emit",
+      "conversion_basis": "利润表费用与现金流量表补充资料的调节项不是同一口径；主表保留原行名，补充资料加位置前缀。"
     },
     {
       "table": "IncomeStatementSHSZ",
@@ -3770,7 +3806,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md",
+      "record_indicator": "财务费用/利息收入",
+      "record_position": "利润表/财务费用",
+      "conversion_policy": "emit",
+      "conversion_basis": "INTREVE是营业总收入中的利息收入，QZLXSR是财务费用中的利息收入，按上级科目区分。"
     },
     {
       "table": "IncomeStatementSHSZ",
@@ -3791,7 +3831,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md",
+      "record_indicator": "资产减值损失",
+      "record_position": "利润表/旧版资产减值损失字段",
+      "conversion_policy": "skip",
+      "conversion_basis": "旧字段与新字段映射同一原表行；本轮六个期间旧字段均空、新字段有值，原表使用负号列示损失。只转换新字段；以后新字段为空也不自动回退或合并旧字段。"
     },
     {
       "table": "IncomeStatementSHSZ",
@@ -3812,7 +3856,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md",
+      "record_indicator": "信用减值损失",
+      "record_position": "利润表/旧版信用减值损失字段",
+      "conversion_policy": "skip",
+      "conversion_basis": "旧字段与新字段映射同一原表行；本轮六个期间旧字段均空、新字段有值，原表使用负号列示损失。只转换新字段；以后新字段为空也不自动回退或合并旧字段。"
     },
     {
       "table": "IncomeStatementSHSZ",
@@ -3980,7 +4028,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md",
+      "record_indicator": "资产减值损失",
+      "record_position": "利润表/资产减值损失（损失以负号填列）",
+      "conversion_policy": "emit",
+      "conversion_basis": "旧字段与新字段映射同一原表行；本轮六个期间旧字段均空、新字段有值，原表使用负号列示损失。只转换新字段；以后新字段为空也不自动回退或合并旧字段。"
     },
     {
       "table": "IncomeStatementSHSZ",
@@ -4001,7 +4053,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md",
+      "record_indicator": "信用减值损失",
+      "record_position": "利润表/信用减值损失（损失以负号填列）",
+      "conversion_policy": "emit",
+      "conversion_basis": "旧字段与新字段映射同一原表行；本轮六个期间旧字段均空、新字段有值，原表使用负号列示损失。只转换新字段；以后新字段为空也不自动回退或合并旧字段。"
     },
     {
       "table": "IncomeStatementSHSZ",
@@ -4337,7 +4393,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010002.md",
+      "record_indicator": "净利润",
+      "record_position": "利润表主表/净利润",
+      "conversion_policy": "emit",
+      "conversion_basis": "利润表净利润与现金流调节起点为两个打印位置；主表保留原行名，补充资料加位置前缀。"
     },
     {
       "table": "IncomeStatementSHSZ",
@@ -5474,7 +5534,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md",
+      "record_indicator": "经营活动产生的现金流量净额",
+      "record_position": "现金流量表主表/经营活动产生的现金流量净额",
+      "conversion_policy": "emit",
+      "conversion_basis": "主表与净利润调节表各有该合计行，是两个打印位置；主表保留原行名用于主要会计数据对数，补充资料加位置前缀。"
     },
     {
       "table": "CashFlowStatementSHSZ",
@@ -6419,7 +6483,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md",
+      "record_indicator": "现金及现金等价物净增加额",
+      "record_position": "现金流量表主表/现金及现金等价物净增加额",
+      "conversion_policy": "emit",
+      "conversion_basis": "主表与现金净变动补充资料各有该合计行，是两个打印位置；主表保留原行名，补充资料加位置前缀。"
     },
     {
       "table": "CashFlowStatementSHSZ",
@@ -6524,7 +6592,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md",
+      "record_indicator": "现金流量表补充资料/净利润",
+      "record_position": "现金流量表补充资料/净利润调节为经营活动现金流量",
+      "conversion_policy": "emit",
+      "conversion_basis": "利润表净利润与现金流调节起点为两个打印位置；主表保留原行名，补充资料加位置前缀。"
     },
     {
       "table": "CashFlowStatementSHSZ",
@@ -6797,7 +6869,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md",
+      "record_indicator": "现金流量表补充资料/财务费用",
+      "record_position": "现金流量表补充资料/净利润调节为经营活动现金流量",
+      "conversion_policy": "emit",
+      "conversion_basis": "利润表费用与现金流量表补充资料的调节项不是同一口径；主表保留原行名，补充资料加位置前缀。"
     },
     {
       "table": "CashFlowStatementSHSZ",
@@ -6989,7 +7065,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md",
+      "record_indicator": "现金流量表补充资料/其他",
+      "record_position": "现金流量表补充资料/净利润调节为经营活动现金流量",
+      "conversion_policy": "emit",
+      "conversion_basis": "权益工具中的其他与现金流调节的其他处于不同报表位置，分别加位置前缀。"
     },
     {
       "table": "CashFlowStatementSHSZ",
@@ -7052,7 +7132,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md",
+      "record_indicator": "现金流量表补充资料/经营活动产生的现金流量净额",
+      "record_position": "现金流量表补充资料/净利润调节为经营活动现金流量",
+      "conversion_policy": "emit",
+      "conversion_basis": "主表与净利润调节表各有该合计行，是两个打印位置；主表保留原行名用于主要会计数据对数，补充资料加位置前缀。"
     },
     {
       "table": "CashFlowStatementSHSZ",
@@ -7283,7 +7367,11 @@
       "derived_formula": null,
       "derived_inputs": [],
       "period_limits": null,
-      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md"
+      "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md",
+      "record_indicator": "现金流量表补充资料/现金及现金等价物净增加额",
+      "record_position": "现金流量表补充资料/现金及现金等价物净变动",
+      "conversion_policy": "emit",
+      "conversion_basis": "主表与现金净变动补充资料各有该合计行，是两个打印位置；主表保留原行名，补充资料加位置前缀。"
     },
     {
       "table": "CashFlowStatementSHSZ",
@@ -7348,5 +7436,200 @@
       "period_limits": null,
       "documentation_path": "/Users/leon/Stock/invest-lab/.agents/skills/choice-quantapi-skill/references/indicators/ctr/00010002000100010003.md"
     }
-  ]
+  ],
+  "s2b_naming": {
+    "version": "s2b-choice-names-1",
+    "preserves_classification": true,
+    "rule": "original_table_item保留原表行名；record_indicator定义记录键。不同位置加前缀，主表保留原行名以对齐主要会计数据；同一行旧/新字段只转换一个。",
+    "evidence": "字段文档顺序/上级科目；S2冻结Choice六期返回值；原表列示位置。不以数值相等单独认定同一科目。",
+    "groups": [
+      {
+        "id": "other_receivables",
+        "original_table_item": "其他应收款",
+        "basis": "TOTAL_OTHER_RECE为含应收利息、应收股利的合计，OTHERREC为其中分项；保留主表合计原行名，分项加位置前缀，不能因部分期间数值相等合并。",
+        "fields": [
+          {
+            "field": "BalanceStatementSHSZ.TOTAL_OTHER_RECE",
+            "record_indicator": "其他应收款",
+            "conversion_policy": "emit"
+          },
+          {
+            "field": "BalanceStatementSHSZ.OTHERREC",
+            "record_indicator": "其他应收款分项/其他应收款",
+            "conversion_policy": "emit"
+          }
+        ]
+      },
+      {
+        "id": "preferred_shares",
+        "original_table_item": "优先股",
+        "basis": "两个字段分别位于应付债券和其他权益工具，按负债与权益位置区分。",
+        "fields": [
+          {
+            "field": "BalanceStatementSHSZ.YXGYF",
+            "record_indicator": "应付债券/优先股",
+            "conversion_policy": "emit"
+          },
+          {
+            "field": "BalanceStatementSHSZ.YXGQY",
+            "record_indicator": "其他权益工具/优先股",
+            "conversion_policy": "emit"
+          }
+        ]
+      },
+      {
+        "id": "perpetual_bonds",
+        "original_table_item": "永续债",
+        "basis": "两个字段分别位于应付债券和其他权益工具，按负债与权益位置区分。",
+        "fields": [
+          {
+            "field": "BalanceStatementSHSZ.YXZYF",
+            "record_indicator": "应付债券/永续债",
+            "conversion_policy": "emit"
+          },
+          {
+            "field": "BalanceStatementSHSZ.YXZQY",
+            "record_indicator": "其他权益工具/永续债",
+            "conversion_policy": "emit"
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "original_table_item": "其他",
+        "basis": "权益工具中的其他与现金流调节的其他处于不同报表位置，分别加位置前缀。",
+        "fields": [
+          {
+            "field": "BalanceStatementSHSZ.QT",
+            "record_indicator": "其他权益工具/其他",
+            "conversion_policy": "emit"
+          },
+          {
+            "field": "CashFlowStatementSHSZ.OTHER",
+            "record_indicator": "现金流量表补充资料/其他",
+            "conversion_policy": "emit"
+          }
+        ]
+      },
+      {
+        "id": "interest_income",
+        "original_table_item": "利息收入",
+        "basis": "INTREVE是营业总收入中的利息收入，QZLXSR是财务费用中的利息收入，按上级科目区分。",
+        "fields": [
+          {
+            "field": "IncomeStatementSHSZ.INTREVE",
+            "record_indicator": "营业总收入/利息收入",
+            "conversion_policy": "emit"
+          },
+          {
+            "field": "IncomeStatementSHSZ.QZLXSR",
+            "record_indicator": "财务费用/利息收入",
+            "conversion_policy": "emit"
+          }
+        ]
+      },
+      {
+        "id": "finance_expense",
+        "original_table_item": "财务费用",
+        "basis": "利润表费用与现金流量表补充资料的调节项不是同一口径；主表保留原行名，补充资料加位置前缀。",
+        "fields": [
+          {
+            "field": "IncomeStatementSHSZ.FINANCEEXP",
+            "record_indicator": "财务费用",
+            "conversion_policy": "emit"
+          },
+          {
+            "field": "CashFlowStatementSHSZ.FINANCEEXP",
+            "record_indicator": "现金流量表补充资料/财务费用",
+            "conversion_policy": "emit"
+          }
+        ]
+      },
+      {
+        "id": "asset_impairment",
+        "original_table_item": "资产减值损失",
+        "basis": "旧字段与新字段映射同一原表行；本轮六个期间旧字段均空、新字段有值，原表使用负号列示损失。只转换新字段；以后新字段为空也不自动回退或合并旧字段。",
+        "fields": [
+          {
+            "field": "IncomeStatementSHSZ.ASSETDEVALUELOSS",
+            "record_indicator": "资产减值损失",
+            "conversion_policy": "skip"
+          },
+          {
+            "field": "IncomeStatementSHSZ.ZCJZSSX",
+            "record_indicator": "资产减值损失",
+            "conversion_policy": "emit"
+          }
+        ]
+      },
+      {
+        "id": "credit_impairment",
+        "original_table_item": "信用减值损失",
+        "basis": "旧字段与新字段映射同一原表行；本轮六个期间旧字段均空、新字段有值，原表使用负号列示损失。只转换新字段；以后新字段为空也不自动回退或合并旧字段。",
+        "fields": [
+          {
+            "field": "IncomeStatementSHSZ.XYZJSZ",
+            "record_indicator": "信用减值损失",
+            "conversion_policy": "skip"
+          },
+          {
+            "field": "IncomeStatementSHSZ.XYJZSSX",
+            "record_indicator": "信用减值损失",
+            "conversion_policy": "emit"
+          }
+        ]
+      },
+      {
+        "id": "net_profit",
+        "original_table_item": "净利润",
+        "basis": "利润表净利润与现金流调节起点为两个打印位置；主表保留原行名，补充资料加位置前缀。",
+        "fields": [
+          {
+            "field": "IncomeStatementSHSZ.NETPROFIT",
+            "record_indicator": "净利润",
+            "conversion_policy": "emit"
+          },
+          {
+            "field": "CashFlowStatementSHSZ.NETPROFIT",
+            "record_indicator": "现金流量表补充资料/净利润",
+            "conversion_policy": "emit"
+          }
+        ]
+      },
+      {
+        "id": "operating_cashflow",
+        "original_table_item": "经营活动产生的现金流量净额",
+        "basis": "主表与净利润调节表各有该合计行，是两个打印位置；主表保留原行名用于主要会计数据对数，补充资料加位置前缀。",
+        "fields": [
+          {
+            "field": "CashFlowStatementSHSZ.NETOPERATECASHFLOW",
+            "record_indicator": "经营活动产生的现金流量净额",
+            "conversion_policy": "emit"
+          },
+          {
+            "field": "CashFlowStatementSHSZ.DEC_JYHDCSDXJLLJE",
+            "record_indicator": "现金流量表补充资料/经营活动产生的现金流量净额",
+            "conversion_policy": "emit"
+          }
+        ]
+      },
+      {
+        "id": "cash_increase",
+        "original_table_item": "现金及现金等价物净增加额",
+        "basis": "主表与现金净变动补充资料各有该合计行，是两个打印位置；主表保留原行名，补充资料加位置前缀。",
+        "fields": [
+          {
+            "field": "CashFlowStatementSHSZ.NICASHEQUI",
+            "record_indicator": "现金及现金等价物净增加额",
+            "conversion_policy": "emit"
+          },
+          {
+            "field": "CashFlowStatementSHSZ.DEC_XJJXJDJWJZJ",
+            "record_indicator": "现金流量表补充资料/现金及现金等价物净增加额",
+            "conversion_policy": "emit"
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -1,0 +1,41 @@
+{
+  "version": "s2b-1",
+  "issuers": {
+    "601869.SH": {
+      "zh": {
+        "name": "长飞光纤光缆股份有限公司",
+        "path": "runs/s2-20261022/corpus/pages/S34/p0014.txt",
+        "sha256": "fc0a0d078fcbc395bf8865cba121af6bfb4aca5d3786116c28aaa3906c619544"
+      },
+      "en": {
+        "name": "Yangtze Optical Fibre and Cable Joint Stock Limited Company",
+        "path": "runs/s2-20261022/corpus/pages/S34/p0005.txt",
+        "sha256": "b3d3f53bc8877244349b5cbb8201d43babf64026c6ef7dc51c4f61830e2194ac"
+      }
+    },
+    "1300.HK": {
+      "zh": {
+        "name": "俊知集團有限公司",
+        "path": "runs/s2-20261022/corpus/pages/S50/p0001.txt",
+        "sha256": "1841c4f1f9d624a53793e2012887ec12f80c90a720c916bc003d82db69393d62"
+      },
+      "en": {
+        "name": "TRIGIANT GROUP LIMITED",
+        "path": "runs/s2-20261022/corpus/pages/S50/p0001.txt",
+        "sha256": "1841c4f1f9d624a53793e2012887ec12f80c90a720c916bc003d82db69393d62"
+      }
+    },
+    "600522.SH": {
+      "zh": {
+        "name": "江苏中天科技股份有限公司",
+        "path": "runs/p0-20261021/corpus/pages/S41/p0014.txt",
+        "sha256": "6de4f386c6ae40aeb7b4e5ab30619c77ada496bb8baa31ab86a072f75e89848e"
+      },
+      "en": {
+        "name": "Jiangsu Zhongtian Technology Co., Ltd.",
+        "path": "runs/s2-20261022/corpus/pages/S42/p0002.txt",
+        "sha256": "08306f4ecad8e8f6ac5053e7f6aed0a5b6121103cb2194a3cc6ffd8e8e88f3a4"
+      }
+    }
+  }
+}
